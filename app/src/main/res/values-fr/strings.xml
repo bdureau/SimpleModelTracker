@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">SimpleModelTracker</string>
+    <!-- GPS -->
+    <string name="gps_network_not_enabled">Voulez vous activer votre GPS?</string>
+    <string name="open_location_settings">OK</string>
+    <string name="Cancel">Annuler</string>
+    <string name="gps_status">Status GPS</string>
+    <string name="satellites">Satellites</string>
+    <string name="hdop">hdop</string>
+    <string name="gps_altitude">Altitude GPS</string>
+    <string name="gps_speed">Vittesse GPS</string>
+    <string name="location_age">Age Localisation</string>
+    <string name="time_sat_acquisition">temps acquisition sat</string>
+    <string name="tel_latitude">Latitude Tel</string>
+    <string name="tel_longitude">Longitude Tel</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+
+    <!-- config -->
+    <string name="color_black">NOIR</string>
+    <string name="color_white">BLANC</string>
+    <string name="color_magenta">MAGENTA</string>
+    <string name="color_blue">BLEU</string>
+    <string name="color_yellow">JAUNE</string>
+    <string name="color_green">VERT</string>
+    <string name="color_gray">GRIS</string>
+    <string name="color_cyan">CYAN</string>
+    <string name="color_dkgray">GRIS FONCE</string>
+    <string name="color_ltgray">GRIS CLAIR</string>
+    <string name="color_red">ROUGE</string>
+    <!-- Application preference screen-->
+    <string name="titre_application_pref">Preferences Application</string>
+    <string name="map_line_color">Couleur Ligne Carte</string>
+    <string name="altigps_config">config AltiGPS</string>
+    <string name="application_langage_config">Langue Application</string>
+    <string name="application_units_config">Unitées Application</string>
+    <string name="baud_rate">Baud Rate</string>
+    <string name="connection_type">Type de Connexion</string>
+    <string name="telemetry_voice">Voix Telemetrie</string>
+    <string name="test_telemetry_voice">Test Voix</string>
+    <string name="phone_english">Anglais</string>
+    <string name="phone_french">Français</string>
+    <string name="phone_language">langue telphone</string>
+    <string name="config_unit_meters">Metres</string>
+    <string name="config_unit_feet">Pieds</string>
+
+    <!-- About screen -->
+    <string name="about_screen">A propos</string>
+    <string name="bear_console_version">version Simple tracker</string>
+    <string name="dismiss_about">Fermer</string>
+    <string name="version"> pre 1.0.0</string>
+
+    <!--connection screen -->
+    <string name="select_device_to_use">Choisir le module à utiliser</string>
+
+    <!-- bluetooth messages -->
+    <string name="BT_msg1">Le module Bluetooth n\'est pas disponible</string>
+    <string name="BT_msg2">Aucun modules Bluetooth apairés trouvé.</string>
+    <string name="select_bluetooth_device">Choisir le module Bluetooth</string>
+
+    <!-- Menu -->
+    <string name="share">Partager</string>
+    <string name="help">Aide</string>
+    <string name="about">A propos</string>
+    <string name="action_settings">Configuration Application</string>
+    <string name="bluetooth_device">module bluetooth</string>
+</resources>

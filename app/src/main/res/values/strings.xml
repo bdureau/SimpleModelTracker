@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">SimpleModelTracker</string>
+    <!-- GPS -->
+    <string name="gps_network_not_enabled">Do you want to enable your GPS?</string>
+    <string name="open_location_settings">OK</string>
+    <string name="Cancel">Cancel</string>
+    <string name="gps_status">GPS Status</string>
+    <string name="satellites">Satellites</string>
+    <string name="hdop">hdop</string>
+    <string name="gps_altitude">GPS altitude</string>
+    <string name="gps_speed">GPS Speed</string>
+    <string name="location_age">Location age</string>
+    <string name="time_sat_acquisition">Time sat acquisition</string>
+    <string name="tel_latitude">Tel Latitude</string>
+    <string name="tel_longitude">Tel Longitude</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+
+    <!-- config -->
+    <string name="color_black">BLACK</string>
+    <string name="color_white">WHITE</string>
+    <string name="color_magenta">MAGENTA</string>
+    <string name="color_blue">BLUE</string>
+    <string name="color_yellow">YELLOW</string>
+    <string name="color_green">GREEN</string>
+    <string name="color_gray">GRAY</string>
+    <string name="color_cyan">CYAN</string>
+    <string name="color_dkgray">DKGRAY</string>
+    <string name="color_ltgray">LTGRAY</string>
+    <string name="color_red">RED</string>
+    <!-- Application preference screen-->
+    <string name="titre_application_pref">Application preferences</string>
+    <string name="map_line_color">Map Line Color</string>
+    <string name="altigps_config">AltiGPS config</string>
+    <string name="application_langage_config">Application langage</string>
+    <string name="application_units_config">Application Units</string>
+    <string name="baud_rate">Baud Rate</string>
+    <string name="connection_type">Connection Type</string>
+    <string name="telemetry_voice">Telemetry voice</string>
+    <string name="test_telemetry_voice">Test Voice</string>
+    <string name="phone_english">English</string>
+    <string name="phone_french">French</string>
+    <string name="phone_language">Phone language</string>
+    <string name="config_unit_meters">Meters</string>
+    <string name="config_unit_feet">Feet</string>
+
+    <!-- About screen -->
+    <string name="about_screen">About</string>
+    <string name="bear_console_version">Bear Console version</string>
+    <string name="dismiss_about">Dismiss</string>
+    <string name="version"> pre 2.0.0 candidate 4</string>
+
+    <!--connection screen -->
+    <string name="select_device_to_use">Select Device to use</string>
+
+    <!-- bluetooth messages -->
+    <string name="BT_msg1">Bluetooth Device Not Available</string>
+    <string name="BT_msg2">No Paired Bluetooth Devices Found.</string>
+    <string name="select_bluetooth_device">Select Bluetooth device</string>
+
+    <!-- Menu -->
+    <string name="share">Share</string>
+    <string name="help">Help</string>
+    <string name="about">About</string>
+    <string name="action_settings">Application Settings</string>
+    <string name="bluetooth_device">bluetooth Device</string>
+</resources>

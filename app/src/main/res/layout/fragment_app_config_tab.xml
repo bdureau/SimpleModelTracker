@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/textViewConfigTitleTab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altigps_config"
+        android:elegantTextHeight="true"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_horizontal"
+        android:textSize="18sp"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1"
+        />
+
+    <TextView
+        android:id="@+id/textMapLineColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewConfigTitleTab"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/map_line_color" />
+
+    <Spinner
+        android:id="@+id/spinnerMapColor"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textMapLineColor"
+        android:layout_below="@+id/textViewConfigTitleTab"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:id="@+id/txtViewAppLang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textMapLineColor"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="14dp"
+        android:text="@string/application_langage_config"
+        />
+
+    <Spinner
+        android:id="@+id/spinnerLanguage"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtViewAppLang"
+        android:layout_alignParentRight="true"
+        android:drawSelectorOnTop="true"
+        android:focusableInTouchMode="false"
+
+        android:theme="@style/ThemeOverlay.AppCompat.DayNight" />
+
+    <TextView
+        android:id="@+id/txtViewUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtViewAppLang"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/application_units_config" />
+
+    <Spinner
+        android:id="@+id/spinnerUnits"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtViewUnits"
+        android:layout_alignParentRight="true" />
+    <TextView
+        android:id="@+id/textViewBaudRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtViewUnits"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/baud_rate"
+        />
+
+    <Spinner
+        android:id="@+id/spinnerBaudRate"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textViewBaudRate"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:id="@+id/textConnectionType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewBaudRate"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/connection_type"
+        />
+
+    <Spinner
+        android:id="@+id/spinnerConnectionType"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textConnectionType"
+        android:layout_alignParentRight="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/telemetry_voice"
+        android:id="@+id/txtViewTelemetryVoice"
+        android:layout_below="@+id/textConnectionType"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp"/>
+
+    <Spinner
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerTelemetryVoice"
+        android:layout_width="175dp"
+        android:layout_alignBaseline="@+id/txtViewTelemetryVoice"
+        android:layout_alignParentRight="true"
+        android:focusableInTouchMode="false" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtViewTelemetryVoice"
+        android:text="@string/test_telemetry_voice"
+        android:id="@+id/butTestVoice"
+        android:layout_marginTop="18dp"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>
