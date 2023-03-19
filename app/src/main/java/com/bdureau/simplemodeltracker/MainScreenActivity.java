@@ -79,7 +79,7 @@ public class MainScreenActivity extends AppCompatActivity {
     private Button btnDismiss, butAudio;
     private ConsoleApplication myBT;
     Thread rocketTelemetry;
-    private boolean telemetry = true;
+    private boolean telemetry = false;
     private TextToSpeech mTTS;
     private long lastSpeakTime = 1000;
     private long distanceTime = 0;
@@ -110,8 +110,12 @@ public class MainScreenActivity extends AppCompatActivity {
                         myBT.setConnectionType("usb");
                         if (!telemetry) {
                             telemetry = true;
-                            startTelemetry();
+
                         }
+                        if (soundOn) {
+                            mTTS.speak(getString(R.string.connected), TextToSpeech.QUEUE_FLUSH, null);
+                        }
+                        startTelemetry();
                     }
 
                 } else {
@@ -128,7 +132,11 @@ public class MainScreenActivity extends AppCompatActivity {
                         myBT.Disconnect();
                         // we are disconnected enable flash firmware
                         telemetry = false;
+                        myBT.setConnected(false);
                         Log.d(TAG, "Stopped telemetry");
+                        if (soundOn) {
+                            mTTS.speak(getString(R.string.disconnected), TextToSpeech.QUEUE_FLUSH, null);
+                        }
                     }
             }
         }
@@ -385,7 +393,8 @@ public class MainScreenActivity extends AppCompatActivity {
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                connect();
+                finish();
+                System.exit(0);
             }
         });
         butAudio.setOnClickListener(new View.OnClickListener()

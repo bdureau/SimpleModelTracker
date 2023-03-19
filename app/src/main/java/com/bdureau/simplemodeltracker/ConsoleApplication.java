@@ -145,10 +145,10 @@ public class ConsoleApplication extends Application {
             }
             state = BTCon.connect(address, getApplicationContext());
             setConnectionType("bluetooth");
-            if (!isConnectionValid()) {
+            /*if (!isConnectionValid()) {
                 Disconnect();
                 state = false;
-            }
+            }*/
         }
         return state;
     }
@@ -160,12 +160,12 @@ public class ConsoleApplication extends Application {
             state = UsbCon.connect(usbManager, device, baudRate);
             setConnectionType("usb");
 
-            for (int i = 0; i < 3; i++) {
+            /*for (int i = 0; i < 3; i++) {
                 if (isConnectionValid()) {
                     state = true;
                     break;
                 }
-            }
+            }*/
             if (!state)
                 Disconnect();
         }

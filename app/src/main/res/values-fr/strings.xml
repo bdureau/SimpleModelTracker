@@ -64,4 +64,6 @@
     <string name="about">A propos</string>
     <string name="action_settings">Configuration Application</string>
     <string name="bluetooth_device">module bluetooth</string>
+    <string name="disconnected">Déconnecté</string>
+    <string name="connected">Connecté</string>
 </resources>
