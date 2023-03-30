@@ -306,8 +306,8 @@ public class AppConfig1Fragment extends Fragment {
         super.onDestroy();
         try {
             mTTS.shutdown();
-        } finally {
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void msg(String s) {

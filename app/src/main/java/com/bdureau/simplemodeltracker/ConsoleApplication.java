@@ -39,7 +39,7 @@ import java.util.Locale;
  * @author: boris.dureau@neuf.fr
  **/
 public class ConsoleApplication extends Application {
-    private boolean isConnected = false;
+    //private boolean isConnected = false;
     private static boolean DataReady = false;
     public long lastReceived = 0;
     public String commandRet = "";
@@ -293,7 +293,8 @@ public class ConsoleApplication extends Application {
 
                         //long chk = 0;
                         if (currentSentence != null)
-                        if (currentSentence != null & currentSentence[0].length() > 2)
+                        //if (currentSentence != null & currentSentence[0].length() > 2)
+                            if (currentSentence != null & currentSentence.length > 2)
                             //Log.d("Cons", currentSentence[0]);
                             switch (currentSentence[0]) {
                                 case "GPGGA":

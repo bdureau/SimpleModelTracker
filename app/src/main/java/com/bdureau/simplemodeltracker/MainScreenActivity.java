@@ -86,8 +86,6 @@ public class MainScreenActivity extends AppCompatActivity {
     private boolean soundOn=true;
     Intent locIntent = null;
 
-    //private TextView textViewdistance;
-
     UsbManager usbManager;
     UsbDevice device;
 
@@ -425,7 +423,7 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         });*/
 
-        startTelemetry();
+        //startTelemetry();
     }
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsStatusPageAdapter(getSupportFragmentManager());
@@ -546,7 +544,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 while (true) {
                     if (!telemetry) break;
                     if (myBT.getConnected())
-                        myBT.ReadResult(5000);
+                        myBT.ReadResult(10000);
                 }
             }
         };
