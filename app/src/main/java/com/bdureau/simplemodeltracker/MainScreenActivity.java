@@ -76,7 +76,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
     private float rocketLatitude=48.8698f, rocketLongitude=2.2190f;
 
-    private Button btnDismiss, butAudio;
+    private Button btnDismiss, butAudio, btnConnect;
     private ConsoleApplication myBT;
     Thread rocketTelemetry;
     private boolean telemetry = false;
@@ -84,6 +84,7 @@ public class MainScreenActivity extends AppCompatActivity {
     private long lastSpeakTime = 1000;
     private long distanceTime = 0;
     private boolean soundOn=true;
+    //private boolean connected=false;
     Intent locIntent = null;
 
     UsbManager usbManager;
@@ -123,6 +124,8 @@ public class MainScreenActivity extends AppCompatActivity {
                 msg("I can connect via usb");
                 myBT.setConnectionType("usb");
                 telemetry = true;
+                btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
+                        0,0,0);
                 connect();
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
                 if (myBT.getConnectionType().equals("usb"))
@@ -132,6 +135,8 @@ public class MainScreenActivity extends AppCompatActivity {
                         telemetry = false;
                         myBT.setConnected(false);
                         Log.d(TAG, "Stopped telemetry");
+                        btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
+                                0,0,0);
                         if (soundOn) {
                             mTTS.speak(getString(R.string.disconnected), TextToSpeech.QUEUE_FLUSH, null);
                         }
@@ -383,6 +388,9 @@ public class MainScreenActivity extends AppCompatActivity {
 
 
         btnDismiss = (Button) findViewById(R.id.butDismiss);
+        btnConnect = (Button) findViewById(R.id.butConnect);
+        btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
+                0,0,0);
         //butShareMap = (Button) findViewById(R.id.butShareMap);
         butAudio= (Button) findViewById(R.id.butAudio);
         butAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.audio_on32x32,
@@ -413,6 +421,38 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         });
 
+        btnConnect.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(myBT.getConnected()) {
+                    //connected = false;
+                    btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
+                            0,0,0);
+                    if (myBT.getConnectionType().equals("usb"))
+                        if (myBT.getConnected()) {
+                            myBT.Disconnect();
+                            // we are disconnected enable flash firmware
+                            telemetry = false;
+                            myBT.setConnected(false);
+                            Log.d(TAG, "Stopped telemetry");
+                            if (soundOn) {
+                                mTTS.speak(getString(R.string.disconnected), TextToSpeech.QUEUE_FLUSH, null);
+                            }
+                        }
+                }
+                else {
+                    //connected = true;
+                    btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
+                            0,0,0);
+
+                    myBT.setConnectionType("usb");
+                    telemetry = true;
+                    connect();
+                }
+            }
+        });
 
        /* butShareMap.setOnClickListener(new View.OnClickListener()
         {
@@ -544,7 +584,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 while (true) {
                     if (!telemetry) break;
                     if (myBT.getConnected())
-                        myBT.ReadResult(10000);
+                        myBT.ReadResult(1000);
                 }
             }
         };

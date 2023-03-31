@@ -47,7 +47,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="start|bottom"
-        app:icon="@drawable/ok_30x30_trans" />
+        app:icon="@drawable/cancel_30x30_trans" />
 
 
     <Button
@@ -56,5 +56,13 @@
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
+        />
+
+    <Button
+        android:id="@+id/butConnect"
+        android:layout_width="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top"
         />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
