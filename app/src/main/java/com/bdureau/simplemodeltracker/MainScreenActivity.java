@@ -102,7 +102,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
                 if (granted) {
                     Log.d("Flight win", "Permission granted");
-                    if (myBT.connect(usbManager, device, /*Integer.parseInt(myBT.getAppConf().getBaudRateValue())*/38400)) {
+                    if (myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRateValue()))) {
                         //Log.d("baud rate", "baud:"+myBT.getAppConf().getBaudRateValue());
                         myBT.setConnected(true);
                         Log.d("Flight win", "about to enableUI");
@@ -433,7 +433,6 @@ public class MainScreenActivity extends AppCompatActivity {
                     if (myBT.getConnectionType().equals("usb"))
                         if (myBT.getConnected()) {
                             myBT.Disconnect();
-                            // we are disconnected enable flash firmware
                             telemetry = false;
                             myBT.setConnected(false);
                             Log.d(TAG, "Stopped telemetry");

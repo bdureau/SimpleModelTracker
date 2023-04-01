@@ -51,6 +51,10 @@
             android:label="@string/titre_application_pref"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".Help.HelpActivity"
+            android:label="@string/help"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Help.AboutActivity"
             android:label="@string/about_screen"
             android:screenOrientation="portrait" />

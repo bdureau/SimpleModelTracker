@@ -1,11 +1,12 @@
 package com.bdureau.simplemodeltracker.Help;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+//import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
-import android.os.Build;
+//import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -34,7 +35,7 @@ public class HelpActivity extends AppCompatActivity {
         myBT = (ConsoleApplication) getApplication();
         //Check the local and force it if needed
         //getApplicationContext().getResources().updateConfiguration(myBT.getAppLocal(), null);
-
+        Log.d("language", "Help file");
         setContentView(R.layout.activity_help);
         webView = (WebView) findViewById(R.id.webView);
 
@@ -44,9 +45,9 @@ public class HelpActivity extends AppCompatActivity {
         webSetting.setJavaScriptEnabled(true);
 
         webView.setWebViewClient(new WebViewClient());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        webView.getSettings().setAllowFileAccess(true);
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        //webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        //webView.getSettings().setAllowFileAccess(true);
 
         Intent newint = getIntent();
         String FileName = newint.getStringExtra("help_file");
@@ -54,6 +55,7 @@ public class HelpActivity extends AppCompatActivity {
         if(myBT.getAppConf().getApplicationLanguage()==0) {
             //use phone language
             try {
+                Log.d("language", Locale.getDefault().getLanguage());
                 if (Locale.getDefault().getLanguage() == "fr")
                     webView.loadUrl("file:///android_asset/help/" + FileName + "_fr.html");
                 else if (Locale.getDefault().getLanguage() == "es")
@@ -69,6 +71,7 @@ public class HelpActivity extends AppCompatActivity {
         } else {
             //force it to English
             webView.loadUrl("file:///android_asset/help/" + FileName + ".html");
+            Log.d("language", "Default it to English");
         }
 
         btnDismiss = (Button) findViewById(R.id.butClose);
