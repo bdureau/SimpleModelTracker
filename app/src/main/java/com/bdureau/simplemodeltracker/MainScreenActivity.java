@@ -44,6 +44,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.bdureau.simplemodeltracker.Help.AboutActivity;
 import com.bdureau.simplemodeltracker.Help.HelpActivity;
 import com.bdureau.simplemodeltracker.config.AppTabConfigActivity;
+import com.bdureau.simplemodeltracker.config.ConfigModules.Config3DR;
+import com.bdureau.simplemodeltracker.config.ConfigModules.ConfigBT;
+import com.bdureau.simplemodeltracker.config.ConfigModules.ConfigLora;
 import com.bdureau.simplemodeltracker.connection.SearchBluetooth;
 import com.bdureau.simplemodeltracker.nmea.Parser;
 import com.bdureau.simplemodeltracker.track.TrackGPSTrameFragment;
@@ -776,6 +779,24 @@ public class MainScreenActivity extends AppCompatActivity {
         if (id == R.id.action_bluetooth) {
             // choose the bluetooth device
             Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
+            startActivity(i);
+            return true;
+        }
+        //Open the 3DR module config
+        if (id == R.id.action_mod3dr_settings) {
+            Intent i = new Intent(MainScreenActivity.this, Config3DR.class);
+            startActivity(i);
+            return true;
+        }
+        //Open the bluetooth module config
+        if (id == R.id.action_modbt_settings) {
+            Intent i = new Intent(MainScreenActivity.this, ConfigBT.class);
+            startActivity(i);
+            return true;
+        }
+        //Open the lora module config
+        if (id == R.id.action_modlora_settings) {
+            Intent i = new Intent(MainScreenActivity.this, ConfigLora.class);
             startActivity(i);
             return true;
         }
