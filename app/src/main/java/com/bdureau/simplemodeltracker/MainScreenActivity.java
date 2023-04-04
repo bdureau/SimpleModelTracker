@@ -47,6 +47,7 @@ import com.bdureau.simplemodeltracker.config.AppTabConfigActivity;
 import com.bdureau.simplemodeltracker.config.ConfigModules.Config3DR;
 import com.bdureau.simplemodeltracker.config.ConfigModules.ConfigBT;
 import com.bdureau.simplemodeltracker.config.ConfigModules.ConfigLora;
+import com.bdureau.simplemodeltracker.config.ConfigModules.ConfigLoraE32;
 import com.bdureau.simplemodeltracker.connection.SearchBluetooth;
 import com.bdureau.simplemodeltracker.nmea.Parser;
 import com.bdureau.simplemodeltracker.track.TrackGPSTrameFragment;
@@ -666,7 +667,7 @@ public class MainScreenActivity extends AppCompatActivity {
     public class LocationBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d ("coordinate",intent.getAction());
+            //Log.d ("coordinate",intent.getAction());
             distanceTime = System.currentTimeMillis();
             if(intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
@@ -685,8 +686,8 @@ public class MainScreenActivity extends AppCompatActivity {
                     }
                     lastSpeakTime = distanceTime;
                 }
-                Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
-                Log.d ("coordinate","rocketLatitude is:" + latitude + " rocketLongitude is: " + longitude );
+                //Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
+                //Log.d ("coordinate","rocketLatitude is:" + latitude + " rocketLongitude is: " + longitude );
                 if(tabPage1 != null) {
                     tabPage1.updateMap(latitude, longitude, rocketLatitude, rocketLongitude);
                     tabPage1.setDistance(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
@@ -797,6 +798,12 @@ public class MainScreenActivity extends AppCompatActivity {
         //Open the lora module config
         if (id == R.id.action_modlora_settings) {
             Intent i = new Intent(MainScreenActivity.this, ConfigLora.class);
+            startActivity(i);
+            return true;
+        }
+        //Open the lora module config
+        if (id == R.id.action_modlorae32_settings) {
+            Intent i = new Intent(MainScreenActivity.this, ConfigLoraE32.class);
             startActivity(i);
             return true;
         }

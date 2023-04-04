@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".config.ConfigModules.ConfigLora">
+
+
+    <TextView
+        android:id="@+id/textLoraConfigTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Configure Lora E32 module"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:elegantTextHeight="true"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center_horizontal"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/textLoraModule"
+        android:layout_below="@+id/textLoraConfigTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/module"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:id="@+id/textLoraModuleValue"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textLoraConfigTitle"
+        android:layout_alignBaseline="@+id/textLoraModule"
+        android:layout_toRightOf="@id/textLoraFixedMode"
+        android:text=""
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textLoraBaud"
+        android:layout_below="@+id/textLoraModule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_baud_rate"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerLoraBaudRate"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textLoraBaud"
+        android:spinnerMode="dropdown"
+        android:layout_toRightOf="@id/textLoraFixedMode"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textLoraChannel"
+        android:layout_below="@+id/textLoraModule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lora_module_channel"
+        android:layout_toRightOf="@id/spinnerLoraBaudRate"
+        android:layout_marginTop="18dp" />
+
+    <EditText
+        android:id="@+id/textLoraChannelValue"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBaseline="@+id/textLoraBaud"
+        android:layout_marginTop="18dp"
+        android:text=""
+        android:textSize="12sp"
+        android:textAlignment="textEnd"/>
+    <!-- second line -->
+    <TextView
+        android:id="@+id/textLoraIOMode"
+        android:layout_below="@+id/textLoraBaud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="IO Mode" />
+
+    <Spinner
+        android:id="@+id/spinnerLoraIOMode"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textLoraIOMode"
+        android:layout_toRightOf="@id/textLoraFixedMode"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textLoraAddress"
+        android:layout_below="@+id/textLoraBaud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/spinnerLoraFixedMode"
+        android:text="@string/lora_module_address"
+        android:layout_marginTop="18dp" />
+
+    <EditText
+        android:id="@+id/textLoraAddressValue"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textLoraBaud"
+        android:layout_marginTop="18dp"
+        android:layout_alignBaseline="@+id/textLoraAddress"
+        android:text=""
+        android:layout_alignParentRight="true"
+        android:textSize="12sp"
+        android:textAlignment="textEnd"/>
+
+    <!-- Third line -->
+    <TextView
+        android:id="@+id/textLoraFixedMode"
+        android:layout_below="@+id/textLoraIOMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fixed Mode"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerLoraFixedMode"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textLoraFixedMode"
+        android:spinnerMode="dropdown"
+        android:layout_toRightOf="@id/textLoraFixedMode"
+        android:textAlignment="textEnd" />
+
+
+    <!-- fourth line -->
+    <TextView
+        android:id="@+id/textLoraParity"
+        android:layout_below="@+id/textLoraFixedMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lora_module_parity"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerLoraParity"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textLoraParity"
+        android:spinnerMode="dropdown"
+        android:layout_toRightOf="@id/textLoraFixedMode"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textLoraWakeupTime"
+        android:layout_below="@+id/textLoraParity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WOR timing:"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerLoraWakeupTime"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textLoraWakeupTime"
+        android:layout_toRightOf="@id/textLoraFixedMode"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textLoraFECswitch"
+        android:layout_below="@+id/textLoraWakeupTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FEC:"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerLoraFECswitch"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textLoraFECswitch"
+        android:spinnerMode="dropdown"
+        android:layout_toRightOf="@id/textLoraFixedMode"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textLoraAirRate"
+        android:layout_below="@+id/textLoraFECswitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lora_module_air_rate"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerLoraAirRate"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textLoraAirRate"
+        android:spinnerMode="dropdown"
+        android:layout_toRightOf="@id/textLoraFixedMode"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textLoraPower"
+        android:layout_below="@+id/textLoraAirRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lora_module_power"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spinnerLoraPower"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textLoraPower"
+        android:spinnerMode="dropdown"
+        android:layout_toRightOf="@id/textLoraFixedMode"
+        android:textAlignment="textEnd" />
+
+
+
+
+    <Button
+        android:id="@+id/butLoraRetrieveConfig"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="onClickRetrieveConfig"
+        app:icon="@drawable/refresh_30x30_trans" />
+
+    <Button
+        android:id="@+id/butLoraDismiss"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="onClickDismiss"
+        app:icon="@drawable/ok_30x30_trans" />
+
+    <Button
+        android:id="@+id/butLoraSaveConfig"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="onClickSaveConfig"
+        app:icon="@drawable/save_30x30_trans" />
+</RelativeLayout>
