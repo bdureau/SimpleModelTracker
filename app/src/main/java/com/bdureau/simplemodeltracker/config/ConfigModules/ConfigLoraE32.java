@@ -553,7 +553,7 @@ public class ConfigLoraE32 extends AppCompatActivity {
         long error = 0;
 
         String sBaudRate, sIOMode, sFixedMode, sParity, sWakeupTime, sFECswitch,
-                sAiRate, sPower, /*sPacketRSSI, sPacketSize,*/ sChannel, sAddress;
+                sAiRate, sPower,  sChannel, sAddress;
 
         String cancelMsg = "";
 
@@ -635,8 +635,24 @@ public class ConfigLoraE32 extends AppCompatActivity {
             // change address
             //first split the address in 2 bytes
             //sAddress
-            addh = 0;
-            addl = 0;
+            if(sAddress.length()  < 3){
+                addh = 0;
+                addl = (byte) (Integer.valueOf(sAddress)& 0x0000000011111111);
+            } else {
+                String sAddl = sAddress.substring(0,1);
+                String sAddh = sAddress.substring(2,sAddress.length()-1);
+                int iAddl = Integer.valueOf(sAddl);
+                int iAddh = Integer.valueOf(sAddh);
+                addl = (byte)(iAddl & 0x0000000011111111);
+                addh = (byte)(iAddh & 0x0000000011111111);
+            }
+
+
+            /*int iAddress = Integer.valueOf(sAddress);
+            addh = (byte)(iAddress >>8);*/
+            Log.d(TAG,"addh:" +addh );
+            /*addl = (byte)(iAddress & 0x0000000011111111);*/
+            Log.d(TAG,"addl:" +addl );
             dialogAppend(getString(R.string.lora_module_updating_address_msg));
 
 
