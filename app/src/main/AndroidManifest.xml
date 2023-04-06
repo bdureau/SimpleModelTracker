@@ -67,7 +67,7 @@
                 android:resource="@xml/device_filter" />
         </activity>
         <activity
-            android:name=".config.ConfigModules.ConfigLora"
+            android:name=".config.ConfigModules.ConfigLoraE220"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

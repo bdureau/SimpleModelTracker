@@ -26,15 +26,15 @@ import com.bdureau.simplemodeltracker.ShareHandler;
 import com.bdureau.simplemodeltracker.config.AppTabConfigActivity;
 import com.physicaloid.lib.Physicaloid;
 /**
- * @description: This allows the configuration of Lora Ebytes telemetry modules from an Android
+ * @description: This allows the configuration of Lora E220 Ebytes telemetry modules from an Android
  * phone or tablet using a ttl cable.
  * This is not perfect code but should work. Feel free to re-use it for your own project.
  * Make sure that you report any bugs or suggestions so that it can be improved
  * @author: boris.dureau@neuf.fr
  **/
-public class ConfigLora extends AppCompatActivity {
+public class ConfigLoraE220 extends AppCompatActivity {
     Physicaloid mPhysicaloid;
-
+    public String TAG = "ConfigLoraE220.class";
     private Button btRetrieveConfig, btSaveConfig;
 
     private Spinner spinnerLoraBaudRate, spinnerLoraTransMode, spinnerLoraChannelRSSI,
@@ -54,7 +54,7 @@ public class ConfigLora extends AppCompatActivity {
 
     private AlertDialog.Builder builder = null;
     private AlertDialog alert;
-    ConfigLora.ModuleInfo mInfo;
+    ConfigLoraE220.ModuleInfo mInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -268,7 +268,7 @@ public class ConfigLora extends AppCompatActivity {
 
         mPhysicaloid = new Physicaloid(this);
         mPhysicaloid.open();
-        mInfo = new ConfigLora.ModuleInfo(mPhysicaloid);
+        mInfo = new ConfigLoraE220.ModuleInfo(mPhysicaloid);
 
         DisableUI();
         btRetrieveConfig.setEnabled(true);
@@ -353,18 +353,30 @@ public class ConfigLora extends AppCompatActivity {
     }
 
     public void onClickDismiss(View v) {
-        //close();
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed()");
+        finish();
+    }
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy()");
+        super.onDestroy();
+        if(mPhysicaloid.isOpened())
+            mPhysicaloid.close();
     }
 
     public void onClickRetrieveConfig(View v) {
         // go to AT mode
         Log.d("Config Lora", "retrieving config");
-        new ConfigLora.connectRetrieveAsyc().execute();
+        new ConfigLoraE220.connectRetrieveAsyc().execute();
     }
 
     public void onClickSaveConfig(View v) {
-        new ConfigLora.connectSaveAsyc().execute();
+        new ConfigLoraE220.connectSaveAsyc().execute();
     }
 
 
@@ -473,7 +485,7 @@ public class ConfigLora extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLora.this);
+            builder = new AlertDialog.Builder(ConfigLoraE220.this);
             //Recover firmware...
             builder.setMessage(R.string.lora_module_loading_config_msg)
                     .setTitle(getResources().getString(R.string.m3DR_retrieving_cfg))
@@ -610,7 +622,7 @@ public class ConfigLora extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLora.this);
+            builder = new AlertDialog.Builder(ConfigLoraE220.this);
             //Running Saving commands
             builder.setMessage(getResources().getString(R.string.m3DR_run_save))
                     .setTitle(getResources().getString(R.string.m3DR_save_cfg))
@@ -780,7 +792,7 @@ public class ConfigLora extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLora.this);
+            builder = new AlertDialog.Builder(ConfigLoraE220.this);
             //
             builder.setMessage(R.string.lora_module_connecting_msg)
                     .setTitle(getResources().getString(R.string.m3DR_connecting))
@@ -821,7 +833,7 @@ public class ConfigLora extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            builder = new AlertDialog.Builder(ConfigLora.this);
+            builder = new AlertDialog.Builder(ConfigLoraE220.this);
             //.
             builder.setMessage(R.string.lora_module_connecting_msg)
                     .setTitle(getResources().getString(R.string.m3DR_connecting))
@@ -1020,20 +1032,20 @@ public class ConfigLora extends AppCompatActivity {
 
         //open application settings screen
         if (id == R.id.action_settings) {
-            Intent i = new Intent(ConfigLora.this, AppTabConfigActivity.class);
+            Intent i = new Intent(ConfigLoraE220.this, AppTabConfigActivity.class);
             startActivity(i);
             return true;
         }
         //open Lora config help screen
         if (id == R.id.action_help) {
-            Intent i = new Intent(ConfigLora.this, HelpActivity.class);
+            Intent i = new Intent(ConfigLoraE220.this, HelpActivity.class);
             i.putExtra("help_file", "help_configLora");
             startActivity(i);
             return true;
         }
         //open about screen
         if (id == R.id.action_about) {
-            Intent i = new Intent(ConfigLora.this, AboutActivity.class);
+            Intent i = new Intent(ConfigLoraE220.this, AboutActivity.class);
             startActivity(i);
             return true;
         }

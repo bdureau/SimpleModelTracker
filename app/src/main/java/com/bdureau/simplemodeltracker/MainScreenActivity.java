@@ -46,7 +46,7 @@ import com.bdureau.simplemodeltracker.Help.HelpActivity;
 import com.bdureau.simplemodeltracker.config.AppTabConfigActivity;
 import com.bdureau.simplemodeltracker.config.ConfigModules.Config3DR;
 import com.bdureau.simplemodeltracker.config.ConfigModules.ConfigBT;
-import com.bdureau.simplemodeltracker.config.ConfigModules.ConfigLora;
+import com.bdureau.simplemodeltracker.config.ConfigModules.ConfigLoraE220;
 import com.bdureau.simplemodeltracker.config.ConfigModules.ConfigLoraE32;
 import com.bdureau.simplemodeltracker.connection.SearchBluetooth;
 import com.bdureau.simplemodeltracker.nmea.Parser;
@@ -797,7 +797,7 @@ public class MainScreenActivity extends AppCompatActivity {
         }
         //Open the lora module config
         if (id == R.id.action_modlora_settings) {
-            Intent i = new Intent(MainScreenActivity.this, ConfigLora.class);
+            Intent i = new Intent(MainScreenActivity.this, ConfigLoraE220.class);
             startActivity(i);
             return true;
         }

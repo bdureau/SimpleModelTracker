@@ -39,7 +39,7 @@ import com.physicaloid.lib.usb.driver.uart.UartConfig;
 public class ConfigBT extends AppCompatActivity {
 
     Physicaloid mPhysicaloid;
-
+    public String TAG = "ConfigBT.class";
 
     private String[] itemsBaudRate, itemsBaudRateShort, itemsModules;
     private Spinner dropdownBaudRate, dropdownModules;
@@ -145,8 +145,6 @@ public class ConfigBT extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton(R.string.bt_info_ok, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-
-
                         dialog.cancel();
 
                     }
@@ -185,21 +183,29 @@ public class ConfigBT extends AppCompatActivity {
     }
 
     public void onClickDismiss(View v) {
-        close();
+        //close();
         finish();
     }
-
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed()");
+        finish();
+    }
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy()");
+        super.onDestroy();
+        if(mPhysicaloid.isOpened())
+            mPhysicaloid.close();
+    }
     public void onClickRetrieveConfig(View v) {
         tvRead.setText("");
         // go to AT mode
         Log.d("Flight win", "retrieving config");
-
         new connectRetrieveAsyc().execute();
-
     }
 
     public void onClickSaveConfig(View v) {
-
         new connectSaveAsyc().execute();
     }
 

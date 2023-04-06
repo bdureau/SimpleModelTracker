@@ -26,7 +26,7 @@ import com.bdureau.simplemodeltracker.ShareHandler;
 import com.bdureau.simplemodeltracker.config.AppTabConfigActivity;
 import com.physicaloid.lib.Physicaloid;
 /**
- * @description: This allows the configuration of Lora Ebytes telemetry modules from an Android
+ * @description: This allows the configuration of Lora E32 Ebytes telemetry modules from an Android
  * phone or tablet using a ttl cable.
  * This is not perfect code but should work. Feel free to re-use it for your own project.
  * Make sure that you report any bugs or suggestions so that it can be improved
@@ -34,19 +34,19 @@ import com.physicaloid.lib.Physicaloid;
  **/
 public class ConfigLoraE32 extends AppCompatActivity {
     Physicaloid mPhysicaloid;
-
+    public String TAG = "ConfigLoraE32.class";
     private Button btRetrieveConfig, btSaveConfig;
 
     private Spinner spinnerLoraBaudRate, spinnerLoraIOMode, spinnerLoraFixedMode,
             spinnerLoraParity, spinnerLoraWakeupTime, spinnerLoraFECswitch, spinnerLoraAirRate,
-            spinnerLoraPower; //, spinnerLoraPacketRSSI, spinnerLoraPacketSize;
+            spinnerLoraPower;
     private String[] itemsLoraBaudRate, itemsLoraIOMode, itemsLoraFixedMode,
             itemsLoraParity, itemsLoraWakeupTime, itemsLoraFECswitch, itemsLoraAirRate, itemsLoraPower;
-            //, itemsLoraPacketRSSI, itemsLoraPacketSize;
+
 
     private StringBit[] strBLoraBaudRateVal, strBLoraIOModeVal, strBLoraFixedModeVal,
             strBLoraParityVal, strBLoraWakeupTimeVal, strBLoraFECswitchVal, strBLoraAirRateVal,
-            strBLoraPowerVal; //, strBLoraPacketRSSIVal, strBLoraPacketSizeVal;
+            strBLoraPowerVal;
 
     private TextView textLoraModuleValue;
 
@@ -74,13 +74,7 @@ public class ConfigLoraE32 extends AppCompatActivity {
         textLoraChannelValue = (EditText) findViewById(R.id.textLoraChannelValue);
         spinnerLoraWakeupTime = (Spinner) findViewById(R.id.spinnerLoraWakeupTime);
 
-
-        //spinnerLoraPacketRSSI = (Spinner) findViewById(R.id.spinnerLoraPacketRSSI);
-        //spinnerLoraPacketSize = (Spinner) findViewById(R.id.spinnerLoraPacketSize);
-
         textLoraModuleValue = (TextView) findViewById(R.id.textLoraModuleValue);
-
-
 
         // baud rate
         itemsLoraBaudRate = new String[]{
@@ -237,38 +231,6 @@ public class ConfigLoraE32 extends AppCompatActivity {
         adapterPowerVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerLoraPower.setAdapter(adapterPowerVal);
 
-        // PacketRSSI
-        /*itemsLoraPacketRSSI = new String[]{
-                "Disable",
-                "Enable"
-        };
-        strBLoraPacketRSSIVal = new StringBit[]{
-                new StringBit("Disable", 0b0),
-                new StringBit("Enable", 0b1)
-        };
-        ArrayAdapter<String> adapterPacketRSSIVal = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraPacketRSSI);
-        adapterPacketRSSIVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraPacketRSSI.setAdapter(adapterPacketRSSIVal);
-
-        // Packet Size
-        itemsLoraPacketSize = new String[]{
-                "200 Bytes",
-                "128 Bytes",
-                "64 Bytes",
-                "32 Bytes"
-        };
-        strBLoraPacketSizeVal = new StringBit[]{
-                new StringBit("200 Bytes", 0b00),
-                new StringBit("128 Bytes", 0b01),
-                new StringBit("64 Bytes", 0b10),
-                new StringBit("32 Bytes", 0b11)
-        };
-        ArrayAdapter<String> adapterPacketSizeVal = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, itemsLoraPacketSize);
-        adapterPacketSizeVal.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerLoraPacketSize.setAdapter(adapterPacketSizeVal);
-*/
         mPhysicaloid = new Physicaloid(this);
         mPhysicaloid.open();
         mInfo = new ConfigLoraE32.ModuleInfo(mPhysicaloid);
@@ -305,8 +267,6 @@ public class ConfigLoraE32 extends AppCompatActivity {
         spinnerLoraFECswitch.setEnabled(true);
         spinnerLoraAirRate.setEnabled(true);
         spinnerLoraPower.setEnabled(true);
-        //spinnerLoraPacketRSSI.setEnabled(true);
-        //spinnerLoraPacketSize.setEnabled(true);
     }
 
     public void DisableUI() {
@@ -318,8 +278,6 @@ public class ConfigLoraE32 extends AppCompatActivity {
         spinnerLoraFECswitch.setEnabled(false);
         spinnerLoraAirRate.setEnabled(false);
         spinnerLoraPower.setEnabled(false);
-        //spinnerLoraPacketRSSI.setEnabled(false);
-        //spinnerLoraPacketSize.setEnabled(false);
     }
 
     public static String searchStringFromBit(StringBit[] in, int search) {
@@ -355,9 +313,21 @@ public class ConfigLoraE32 extends AppCompatActivity {
         return -1;
     }
 
+
     public void onClickDismiss(View v) {
-        //close();
         finish();
+    }
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed()");
+        finish();
+    }
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy()");
+        super.onDestroy();
+        if(mPhysicaloid.isOpened())
+            mPhysicaloid.close();
     }
 
     public void onClickRetrieveConfig(View v) {
@@ -382,7 +352,6 @@ public class ConfigLoraE32 extends AppCompatActivity {
     }
 
     public class ModuleInfo {
-
 
         ModuleInfo(Physicaloid mPhysi) {
 
@@ -459,7 +428,6 @@ public class ConfigLoraE32 extends AppCompatActivity {
         public void close() {
             mPhysicaloid.close();
         }
-
     }
 
 
@@ -707,8 +675,6 @@ public class ConfigLoraE32 extends AppCompatActivity {
                 if (value[0] != (byte) 0xC1)
                     error++;
             }
-
-
 
             return null;
         }
