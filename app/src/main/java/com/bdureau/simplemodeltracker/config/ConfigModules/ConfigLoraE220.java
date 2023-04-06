@@ -25,6 +25,9 @@ import com.bdureau.simplemodeltracker.R;
 import com.bdureau.simplemodeltracker.ShareHandler;
 import com.bdureau.simplemodeltracker.config.AppTabConfigActivity;
 import com.physicaloid.lib.Physicaloid;
+
+import java.nio.ByteBuffer;
+
 /**
  * @description: This allows the configuration of Lora E220 Ebytes telemetry modules from an Android
  * phone or tablet using a ttl cable.
@@ -508,7 +511,9 @@ public class ConfigLoraE220 extends AppCompatActivity {
                 if (value[0] == (byte) 0xC1) {
                     Log.d("Lora config", "We have a good config return");
                 }
-                int module_address = (value[3] << 8) | value[4];
+                //int module_address = (value[3] << 8) | value[4];
+                byte [] bytes = {value[3] , value[4]};
+                int module_address = ByteBuffer.wrap(bytes).getShort();
                 Log.d("Lora Config", "module_address:" + module_address);
                 setLoraAddressValue(module_address + "");
 
@@ -694,8 +699,15 @@ public class ConfigLoraE220 extends AppCompatActivity {
                 //first split the address in 2 bytes
                 //sAddress
                 byte addh = 0;
-                byte addl = 3;
+                byte addl = 0;
+                int iAddress = Integer.valueOf(sAddress);
+                byte [] add = new byte[] {(byte)(iAddress >> 8),  (byte)iAddress };
+                addh = add[0];
+                addl = add[1];
+                Log.d(TAG,"addh:" +addh );
+                Log.d(TAG,"addl:" +addl );
                 dialogAppend(getString(R.string.lora_module_updating_address_msg));
+
                 byte cmd[] = {(byte) 0xC2, 0x00, 0x02, (byte) addh, (byte) addl};
                 byte[] value = mInfo.runCommand(cmd);
                 if (value[0] != (byte) 0xC1)

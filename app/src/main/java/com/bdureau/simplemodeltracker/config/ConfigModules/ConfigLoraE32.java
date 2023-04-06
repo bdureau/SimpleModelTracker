@@ -25,6 +25,9 @@ import com.bdureau.simplemodeltracker.R;
 import com.bdureau.simplemodeltracker.ShareHandler;
 import com.bdureau.simplemodeltracker.config.AppTabConfigActivity;
 import com.physicaloid.lib.Physicaloid;
+
+import java.nio.ByteBuffer;
+
 /**
  * @description: This allows the configuration of Lora E32 Ebytes telemetry modules from an Android
  * phone or tablet using a ttl cable.
@@ -468,7 +471,9 @@ public class ConfigLoraE32 extends AppCompatActivity {
                 if (value[0] == (byte) 0xC1) {
                     Log.d("Lora config", "We have a good config return");
                 }
-                int module_address = (value[1] << 8) | value[2];
+                //int module_address = ((value[1] & 0xFF<< 4) | (value[2] & 0xFF));
+                byte [] bytes = {value[1] , value[2]};
+                int module_address = ByteBuffer.wrap(bytes).getShort();
                 Log.d("Lora Config", "module_address:" + module_address);
                 setLoraAddressValue(module_address + "");
 
@@ -583,8 +588,6 @@ public class ConfigLoraE32 extends AppCompatActivity {
             sFECswitch = spinnerLoraFECswitch.getSelectedItem().toString();
             sAiRate = spinnerLoraAirRate.getSelectedItem().toString();
             sPower = spinnerLoraPower.getSelectedItem().toString();
-            //sPacketRSSI = spinnerLoraPacketRSSI.getSelectedItem().toString();
-            //sPacketSize = spinnerLoraPacketSize.getSelectedItem().toString();
             sChannel = textLoraChannelValue.getText().toString();
             sAddress = textLoraAddressValue.getText().toString();
 
@@ -635,23 +638,12 @@ public class ConfigLoraE32 extends AppCompatActivity {
             // change address
             //first split the address in 2 bytes
             //sAddress
-            if(sAddress.length()  < 3){
-                addh = 0;
-                addl = (byte) (Integer.valueOf(sAddress)& 0x0000000011111111);
-            } else {
-                String sAddl = sAddress.substring(0,1);
-                String sAddh = sAddress.substring(2,sAddress.length()-1);
-                int iAddl = Integer.valueOf(sAddl);
-                int iAddh = Integer.valueOf(sAddh);
-                addl = (byte)(iAddl & 0x0000000011111111);
-                addh = (byte)(iAddh & 0x0000000011111111);
-            }
+            int iAddress = Integer.valueOf(sAddress);
+            byte [] add = new byte[] {(byte)(iAddress >> 8),  (byte)iAddress };
+            addh = add[0];
+            addl = add[1];
 
-
-            /*int iAddress = Integer.valueOf(sAddress);
-            addh = (byte)(iAddress >>8);*/
             Log.d(TAG,"addh:" +addh );
-            /*addl = (byte)(iAddress & 0x0000000011111111);*/
             Log.d(TAG,"addl:" +addl );
             dialogAppend(getString(R.string.lora_module_updating_address_msg));
 
