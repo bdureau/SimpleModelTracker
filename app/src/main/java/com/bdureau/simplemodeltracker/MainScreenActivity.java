@@ -14,6 +14,7 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -69,6 +70,7 @@ import java.util.Map;
 public class MainScreenActivity extends AppCompatActivity {
     public String TAG = "MainScreenActivity";
     private static ViewPager mViewPager; // it is static to avoid losing the map
+    String address = null;
 
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
@@ -78,7 +80,7 @@ public class MainScreenActivity extends AppCompatActivity {
     private TrackInfoFragment tabPage2 = null;
     private TrackGPSTrameFragment tabPage3 = null;
 
-    private float rocketLatitude=48.8698f, rocketLongitude=2.2190f;
+    private float rocketLatitude = 48.8698f, rocketLongitude = 2.2190f;
 
     private Button btnDismiss, butAudio, btnConnect;
     private ConsoleApplication myBT;
@@ -87,7 +89,7 @@ public class MainScreenActivity extends AppCompatActivity {
     private TextToSpeech mTTS;
     private long lastSpeakTime = 1000;
     private long distanceTime = 0;
-    private boolean soundOn=true;
+    private boolean soundOn = true;
     //private boolean connected=false;
     Intent locIntent = null;
 
@@ -101,7 +103,7 @@ public class MainScreenActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
                 boolean granted = true;
-                if(android.os.Build.VERSION.SDK_INT < 31)
+                if (android.os.Build.VERSION.SDK_INT < 31)
                     granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
 
                 if (granted) {
@@ -113,7 +115,6 @@ public class MainScreenActivity extends AppCompatActivity {
                         myBT.setConnectionType("usb");
                         if (!telemetry) {
                             telemetry = true;
-
                         }
                         if (soundOn) {
                             mTTS.speak(getString(R.string.connected), TextToSpeech.QUEUE_FLUSH, null);
@@ -129,18 +130,18 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.setConnectionType("usb");
                 telemetry = true;
                 btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
-                        0,0,0);
+                        0, 0, 0);
                 connect();
             } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
                 if (myBT.getConnectionType().equals("usb"))
                     if (myBT.getConnected()) {
                         myBT.Disconnect();
-                        // we are disconnected enable flash firmware
+
                         telemetry = false;
                         myBT.setConnected(false);
                         Log.d(TAG, "Stopped telemetry");
                         btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
-                                0,0,0);
+                                0, 0, 0);
                         if (soundOn) {
                             mTTS.speak(getString(R.string.disconnected), TextToSpeech.QUEUE_FLUSH, null);
                         }
@@ -172,7 +173,7 @@ public class MainScreenActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if(tabPage3 !=null)
+                    if (tabPage3 != null)
                         tabPage3.setTrame((String) msg.obj);
                     break;
             }
@@ -180,14 +181,14 @@ public class MainScreenActivity extends AppCompatActivity {
     };
 
     private void setGPSTram(String value) {
-        Log.d(TAG,value );
+        Log.d(TAG, value);
         Parser p = new Parser();
         Location l = p.parse(value);
-        if(l!=null) {
+        if (l != null) {
             setLatitudeValue(l.getLatitude() + "");
             setLongitudeValue(l.getLongitude() + "");
 
-            if(tabPage2!=null) {
+            if (tabPage2 != null) {
                 tabPage2.setLatitudeValue(l.getLatitude() + "");
                 tabPage2.setLongitudeValue(l.getLongitude() + "");
                 tabPage2.setHdopVal("");
@@ -195,38 +196,27 @@ public class MainScreenActivity extends AppCompatActivity {
                 tabPage2.setGPSSpeedVal("");
             }
         }
-        /*NmeaParser p = new NmeaParser();
-        NmeaValues l = p.parseNmeaSentence(value);
-        if(l !=null) {
-            setLatitudeValue(l.getLocation().getLatitude()+ "");
-            setLongitudeValue(l.getLocation().getLongitude()+"");
-            if(tabPage2!=null) {
-                tabPage2.setLatitudeValue(l.getLocation().getLatitude()+ "");
-                tabPage2.setLongitudeValue(l.getLocation().getLongitude()+"");
-                //tabPage2.setHdopVal(l.getNmeaSentence().get"");
-                tabPage2.setGPSAltitudeVal("");
-                tabPage2.setGPSSpeedVal("");
-            }
-        }*/
 
     }
+
     private void setLatitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
             float val = Float.parseFloat(value);
-            Log.d("track", "latitude:"+ value);
-            if(val !=0.0f) {
-                rocketLatitude = Float.parseFloat(value) ;
+            Log.d("track", "latitude:" + value);
+            if (val != 0.0f) {
+                rocketLatitude = Float.parseFloat(value);
                 myBT.getAppConf().setRocketLatitude(rocketLatitude);
             }
         }
     }
+
     private void setLongitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
             float val = Float.parseFloat(value);
-            Log.d("track", "longitude:"+ value);
-            if(val !=0.0f) {
-                rocketLongitude = Float.parseFloat(value) ;
-                myBT.getAppConf().setRocketLongitude( rocketLongitude);
+            Log.d("track", "longitude:" + value);
+            if (val != 0.0f) {
+                rocketLongitude = Float.parseFloat(value);
+                myBT.getAppConf().setRocketLongitude(rocketLongitude);
                 myBT.getAppConf().SaveConfig();
             }
         }
@@ -243,10 +233,12 @@ public class MainScreenActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         Log.d(TAG, "onRestoreInstanceState()");
     }
+
     // fast way to call Toast
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -306,9 +298,9 @@ public class MainScreenActivity extends AppCompatActivity {
 
         //textViewdistance = (TextView) findViewById(R.id.textViewdistance);
 
-        if(Build.VERSION.SDK_INT>=23) {
-            if(checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             } else {
                 startService();
             }
@@ -316,15 +308,15 @@ public class MainScreenActivity extends AppCompatActivity {
             startService();
         }
 
-        if(Build.VERSION.SDK_INT>=23) {
-            if(checkSelfPermission(android.Manifest.permission.INTERNET)!= PackageManager.PERMISSION_GRANTED){
-                requestPermissions(new String[]{Manifest.permission.INTERNET},1);
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.INTERNET}, 1);
             }
-            if(checkSelfPermission(android.Manifest.permission.ACCESS_NETWORK_STATE)!= PackageManager.PERMISSION_GRANTED){
-                requestPermissions(new String[]{Manifest.permission.ACCESS_NETWORK_STATE},1);
+            if (checkSelfPermission(android.Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, 1);
             }
-            if(checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
         }
 
@@ -390,15 +382,14 @@ public class MainScreenActivity extends AppCompatActivity {
         mTTS.setSpeechRate(1.0f);
 
 
-
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         btnConnect = (Button) findViewById(R.id.butConnect);
         btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
-                0,0,0);
+                0, 0, 0);
         //butShareMap = (Button) findViewById(R.id.butShareMap);
-        butAudio= (Button) findViewById(R.id.butAudio);
+        butAudio = (Button) findViewById(R.id.butAudio);
         butAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.audio_on32x32,
-                0,0,0);
+                0, 0, 0);
 
         btnDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -407,52 +398,109 @@ public class MainScreenActivity extends AppCompatActivity {
                 System.exit(0);
             }
         });
-        butAudio.setOnClickListener(new View.OnClickListener()
-        {
+        butAudio.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if(soundOn) {
+            public void onClick(View v) {
+                if (soundOn) {
                     soundOn = false;
                     butAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.audio_off_32x32,
-                            0,0,0);
-                }
-                else {
+                            0, 0, 0);
+                } else {
                     soundOn = true;
                     butAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.audio_on32x32,
-                            0,0,0);
+                            0, 0, 0);
                 }
             }
         });
 
-        btnConnect.setOnClickListener(new View.OnClickListener()
-        {
+        btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if(myBT.getConnected()) {
+            public void onClick(View v) {
+                Log.d(TAG, "connected clicked");
+                myBT.getAppConf().ReadConfig();
+                if (myBT.getAppConf().getConnectionType() == 0)
+                    myBT.setConnectionType("bluetooth");
+                else
+                    myBT.setConnectionType("usb");
+
+                if (myBT.getConnected()) {
                     //connected = false;
                     btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
-                            0,0,0);
-                    if (myBT.getConnectionType().equals("usb"))
-                        if (myBT.getConnected()) {
-                            myBT.Disconnect();
-                            telemetry = false;
-                            myBT.setConnected(false);
-                            Log.d(TAG, "Stopped telemetry");
-                            if (soundOn) {
-                                mTTS.speak(getString(R.string.disconnected), TextToSpeech.QUEUE_FLUSH, null);
-                            }
-                        }
-                }
-                else {
-                    //connected = true;
-                    btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
-                            0,0,0);
+                            0, 0, 0);
+                    //if (myBT.getConnectionType().equals("usb"))
+                    //if (myBT.getConnected()) {
+                    myBT.Disconnect();
+                    telemetry = false;
+                    myBT.setConnected(false);
+                    Log.d(TAG, "Stopped telemetry");
+                    if (soundOn) {
+                        mTTS.speak(getString(R.string.disconnected), TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    //}
 
-                    myBT.setConnectionType("usb");
-                    telemetry = true;
-                    connect();
+                } else {
+                    if (myBT.getConnectionType().equals("bluetooth")) {
+                        address = myBT.getAddress();
+                        Log.d(TAG,"Connecting using bluetooth");
+                        if (address != null) {
+                            Log.d(TAG,"Connecting using bluetooth2");
+                            new ConnectBT().execute(); //Call the class to connect
+                            Log.d(TAG,"Connecting using bluetooth3");
+                            while(!myBT.getConnected())
+                            {
+
+                            }
+                            if (myBT.getConnected()) {
+                                Log.d(TAG,"Connecting using bluetooth4");
+                                btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
+                                        0, 0, 0);
+                                telemetry = true;
+                                if (soundOn) {
+                                    mTTS.speak(getString(R.string.connected), TextToSpeech.QUEUE_FLUSH, null);
+                                }
+                                startTelemetry();
+                            }
+                        } else {
+                            // choose the bluetooth device
+                            Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
+                            startActivity(i);
+                        }
+                    } else {
+                        myBT.setModuleName("USB");
+                        //this is a USB connection
+                        /*HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
+                        if (!usbDevices.isEmpty()) {
+                            boolean keep = true;
+                            for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
+                                device = entry.getValue();
+                                int deviceVID = device.getVendorId();
+
+                                PendingIntent pi;
+                                if (android.os.Build.VERSION.SDK_INT >= 31) {
+                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
+                                            new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
+                                } else {
+                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
+                                            new Intent(ACTION_USB_PERMISSION), 0);
+                                }
+
+                                usbManager.requestPermission(device, pi);
+                                keep = false;
+
+                                if (!keep)
+                                    break;
+                            }
+                        }*/
+                        telemetry = true;
+                        btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
+                                0, 0, 0);
+                        connect();
+                    }
+
+
+                    //myBT.setConnectionType("usb");
+                    //telemetry = true;
+                    //connect();
                 }
             }
         });
@@ -468,12 +516,13 @@ public class MainScreenActivity extends AppCompatActivity {
 
         //startTelemetry();
     }
+
     private void setupViewPager(ViewPager viewPager) {
         adapter = new SectionsStatusPageAdapter(getSupportFragmentManager());
 
         tabPage1 = new TrackMapFragment(myBT);
         tabPage2 = new TrackInfoFragment(myBT);
-        tabPage3 = new TrackGPSTrameFragment() ;
+        tabPage3 = new TrackGPSTrameFragment();
 
         adapter.addFragment(tabPage1, "TAB1");
         adapter.addFragment(tabPage2, "TAB2");
@@ -561,7 +610,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 int deviceVID = device.getVendorId();
 
                 PendingIntent pi;
-                if(android.os.Build.VERSION.SDK_INT >= 31) {
+                if (android.os.Build.VERSION.SDK_INT >= 31) {
                     pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
                             new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
                 } else {
@@ -577,6 +626,7 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         }
     }
+
     public void startTelemetry() {
         telemetry = true;
         Log.d(TAG, "Started telemetry");
@@ -598,16 +648,16 @@ public class MainScreenActivity extends AppCompatActivity {
     private void startService() {
         IntentFilter filter = new IntentFilter("ACT_LOC");
         registerReceiver(receiver, filter);
-        locIntent = new Intent( MainScreenActivity.this, LocationService.class);
+        locIntent = new Intent(MainScreenActivity.this, LocationService.class);
         startService(locIntent);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (locIntent !=null)
+        if (locIntent != null)
             stopService(locIntent);
-        if (receiver !=null) {
+        if (receiver != null) {
             unregisterReceiver(receiver);
             receiver = null;
         }
@@ -621,18 +671,20 @@ public class MainScreenActivity extends AppCompatActivity {
         }*/
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 1:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startService();
                 } else {
                     Toast.makeText(this, "permission need to be granted", Toast.LENGTH_LONG).show();
                 }
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -644,9 +696,10 @@ public class MainScreenActivity extends AppCompatActivity {
             myBT.clearInput();
             status = true;
         }*/
-        if(receiver == null)
+        if (receiver == null)
             startService();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -669,17 +722,17 @@ public class MainScreenActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             //Log.d ("coordinate",intent.getAction());
             distanceTime = System.currentTimeMillis();
-            if(intent.getAction().equals("ACT_LOC")) {
+            if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
-                if(tabPage2!=null) {
+                if (tabPage2 != null) {
                     tabPage2.setTelLatitudeValue(latitude + "");
                     tabPage2.setTelLongitudeValue(longitude + "");
                 }
                 double distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude, longitude, rocketLongitude);
                 //textViewdistance.setText(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
                 // Tell distance every 15 secondes
-                if ((distanceTime - lastSpeakTime) > 15000 ) {
+                if ((distanceTime - lastSpeakTime) > 15000) {
                     if (soundOn) {
                         mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
                                 + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
@@ -688,15 +741,15 @@ public class MainScreenActivity extends AppCompatActivity {
                 }
                 //Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
                 //Log.d ("coordinate","rocketLatitude is:" + latitude + " rocketLongitude is: " + longitude );
-                if(tabPage1 != null) {
+                if (tabPage1 != null) {
                     tabPage1.updateMap(latitude, longitude, rocketLatitude, rocketLongitude);
-                    tabPage1.setDistance(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
+                    tabPage1.setDistance(String.format("%.2f", distance) + " " + myBT.getAppConf().getUnitsValue());
                 }
             }
         }
     }
 
-    private  void takeMapScreenshot() {
+    private void takeMapScreenshot() {
         Date date = new Date();
         CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
 
@@ -731,20 +784,20 @@ public class MainScreenActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         myBT.getAppConf().ReadConfig();
         //only enable bluetooth module search if connection type is bluetooth
-        if(myBT.getAppConf().getConnectionType()==1) {
+        if (myBT.getAppConf().getConnectionType() == 1) {
             menu.findItem(R.id.action_bluetooth).setEnabled(false);
-        }
-        else {
+        } else {
             menu.findItem(R.id.action_bluetooth).setEnabled(true);
         }
 
         //if we are connected then enable some menu options and if not disable them
-        if(myBT.getConnected()){
+        if (myBT.getConnected()) {
             // We are connected so no need to choose the bluetooth
             menu.findItem(R.id.action_bluetooth).setEnabled(false);
 
@@ -752,6 +805,7 @@ public class MainScreenActivity extends AppCompatActivity {
         return true;
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -817,4 +871,59 @@ public class MainScreenActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /* This is the Bluetooth connection sub class */
+    private class ConnectBT extends AsyncTask<Void, Void, Void>  // UI thread
+    {
+        private AlertDialog.Builder builder = null;
+        private AlertDialog alert;
+        private boolean ConnectSuccess = true; //if it's here, it's almost connected
+
+        @Override
+        protected void onPreExecute() {
+            //"Connecting...", "Please wait!!!"
+            builder = new AlertDialog.Builder(MainScreenActivity.this);
+            //Connecting...
+            builder.setMessage(getResources().getString(R.string.MS_msg1) + "\n" + myBT.getModuleName())
+                    .setTitle(getResources().getString(R.string.MS_msg2))
+                    .setCancelable(false)
+                    .setNegativeButton(getResources().getString(R.string.main_screen_actity), new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            dialog.cancel();
+                            myBT.setExit(true);
+                            myBT.Disconnect();
+                        }
+                    });
+            alert = builder.create();
+            alert.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
+        {
+
+            if (!myBT.getConnected()) {
+                if (myBT.connect())
+                    ConnectSuccess = true;
+                else
+                    ConnectSuccess = false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) //after the doInBackground, it checks if everything went fine
+        {
+            super.onPostExecute(result);
+
+            if (!ConnectSuccess) {
+                Log.d(TAG,"connection unsuccessfull");
+            } else {
+                //Connected.
+                myBT.setConnected(true);
+                //EnableUI();
+                Log.d(TAG,"connection success");
+            }
+            alert.dismiss();
+        }
+    }
 }

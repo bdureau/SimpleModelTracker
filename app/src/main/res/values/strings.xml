@@ -155,4 +155,8 @@
 
     <string name="_3dr_settings">3DR settings...</string>
     <string name="bt_settings">BT settings...</string>
+
+    <string name="main_screen_actity">Cancel</string>
+    <string name="MS_msg1">Connecting...</string>
+    <string name="MS_msg2">Please wait!!!</string>
 </resources>

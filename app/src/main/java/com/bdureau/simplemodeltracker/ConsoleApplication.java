@@ -71,8 +71,6 @@ public class ConsoleApplication extends Application {
         UsbCon = new UsbConnection();
 
         myTypeOfConnection = AppConf.getConnectionTypeValue();
-        myTypeOfConnection = "usb";
-
     }
 
     public void setConnectionType(String TypeOfConnection) {
@@ -134,21 +132,27 @@ public class ConsoleApplication extends Application {
     public boolean connect() {
         boolean state = false;
         //appendLog("connect:");
+        Log.d("TAG", "connecting BT ...");
         if (myTypeOfConnection.equals("bluetooth")) {
+            Log.d("TAG", "connecting BT 2...");
             if (ContextCompat.checkSelfPermission(ConsoleApplication.this, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_DENIED) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     //getApplicationContext()
-
+                    Log.d("TAG", "connecting BT 3...");
                     //ActivityCompat.requestPermissions(this.getApplicationContext(), new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 2);
                     return false;
                 }
             }
             state = BTCon.connect(address, getApplicationContext());
+            Log.d("TAG", "connecting BT 4...");
             setConnectionType("bluetooth");
+
             /*if (!isConnectionValid()) {
                 Disconnect();
                 state = false;
             }*/
+            if (!state)
+                Disconnect();
         }
         return state;
     }
