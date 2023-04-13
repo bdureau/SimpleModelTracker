@@ -154,13 +154,14 @@
 
     <string name="module_name_cannot_be_empty_msg">Module name cannot be empty\n</string>
     <string name="module_pin_cannot_be_empty_msg">Module Pin cannot be empty\n</string>
-    <string name="attempting_connect_msg">Attempting connecting to the Bluetooth module</string>
-    <string name="attempting_connect_bt_msg">Attempting connecting to the Bluetooth module</string>
+    <string name="attempting_connect_msg">Tentative de connexion au module Bluetooth</string>
+    <string name="attempting_connect_bt_msg">Tentative de connexion au module Bluetooth</string>
 
-    <string name="_3dr_settings">3DR settings...</string>
-    <string name="bt_settings">BT settings...</string>
+    <string name="_3dr_settings">config 3DR ...</string>
+    <string name="bt_settings">config BT ...</string>
 
     <string name="main_screen_actity">Cancel</string>
-    <string name="MS_msg1">Connecting...</string>
+    <string name="MS_msg1">Connexion en cours...</string>
     <string name="MS_msg2">Please wait!!!</string>
+    <string name="notconnected_msg">Vous n\'etes pas connecté, connectez s\'il vous plait votre recepteur</string>
 </resources>

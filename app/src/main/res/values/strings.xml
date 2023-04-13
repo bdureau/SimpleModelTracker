@@ -159,4 +159,5 @@
     <string name="main_screen_actity">Cancel</string>
     <string name="MS_msg1">Connecting...</string>
     <string name="MS_msg2">Please wait!!!</string>
+    <string name="notconnected_msg">You are not connected please connect the receiver module</string>
 </resources>

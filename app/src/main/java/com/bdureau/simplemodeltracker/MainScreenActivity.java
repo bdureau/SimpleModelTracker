@@ -734,8 +734,14 @@ public class MainScreenActivity extends AppCompatActivity {
                 // Tell distance every 15 secondes
                 if ((distanceTime - lastSpeakTime) > 15000) {
                     if (soundOn) {
-                        mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
-                                + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                        if(myBT.getConnected()) {
+                            mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
+                                    + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                        } else
+                        {
+                            mTTS.speak(getString(R.string.notconnected_msg), TextToSpeech.QUEUE_FLUSH, null);
+
+                        }
                     }
                     lastSpeakTime = distanceTime;
                 }
