@@ -515,7 +515,7 @@ public class GlobalConfig {
         return myColor;
     }
 
-    public static class AltitudeUnit
+  /*  public static class AltitudeUnit
     {
         public static int METERS = 0;
         public static int FEET = 1;
@@ -529,5 +529,5 @@ public class GlobalConfig {
     {
         public static int AfreeChart =0;
         public static int MPChart =1;
-    }
+    }*/
 }

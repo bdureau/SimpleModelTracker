@@ -66,6 +66,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainScreenActivity extends AppCompatActivity {
     public String TAG = "MainScreenActivity";
@@ -87,8 +89,8 @@ public class MainScreenActivity extends AppCompatActivity {
     Thread rocketTelemetry;
     private boolean telemetry = false;
     private TextToSpeech mTTS;
-    private long lastSpeakTime = 1000;
-    private long distanceTime = 0;
+    //private long lastSpeakTime = 1000;
+    //private long distanceTime = 0;
 
     private long notConnectedTime =0;
     private long lastSpeakNotConnectedTime =1000;
@@ -101,6 +103,10 @@ public class MainScreenActivity extends AppCompatActivity {
 
     UsbManager usbManager;
     UsbDevice device;
+    double distance;
+    boolean receiving = false;
+    Timer timerDistance;
+    Timer timerNotReceiving;
 
     public final String ACTION_USB_PERMISSION = "com.bdureau.simplemodeltracker.USB_PERMISSION";
 
@@ -177,8 +183,8 @@ public class MainScreenActivity extends AppCompatActivity {
                             else {
                                 if(sateliteAcquisitionCompleteSaid && nbrOfSat < 3) {
                                     sateliteAcquisitionCompleteSaid = false;
-                                    if(soundOn)
-                                        mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);
+                                    /*if(soundOn)
+                                        mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);*/
                                 }
                             }
 
@@ -190,6 +196,11 @@ public class MainScreenActivity extends AppCompatActivity {
                                 tabPage2.setGPSSpeedVal(l.getSpeed()+"");
                                 tabPage2.setSatellitesVal(l.getExtras().getInt("satellites") +"");
                                 //tabPage2.setTimeSatValue(l.getElapsedRealtimeAgeMillis()+"");
+                                receiving = true;
+                            }
+                            else {
+                                receiving = false;
+                                sateliteAcquisitionCompleteSaid = false;
                             }
                         }
                         else {
@@ -500,39 +511,12 @@ public class MainScreenActivity extends AppCompatActivity {
                     } else {
                         myBT.setModuleName("USB");
                         //this is a USB connection
-                        /*HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
-                        if (!usbDevices.isEmpty()) {
-                            boolean keep = true;
-                            for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
-                                device = entry.getValue();
-                                int deviceVID = device.getVendorId();
-
-                                PendingIntent pi;
-                                if (android.os.Build.VERSION.SDK_INT >= 31) {
-                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
-                                            new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
-                                } else {
-                                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
-                                            new Intent(ACTION_USB_PERMISSION), 0);
-                                }
-
-                                usbManager.requestPermission(device, pi);
-                                keep = false;
-
-                                if (!keep)
-                                    break;
-                            }
-                        }*/
                         telemetry = true;
                         btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
                                 0, 0, 0);
                         connect();
                     }
 
-
-                    //myBT.setConnectionType("usb");
-                    //telemetry = true;
-                    //connect();
                 }
             }
         });
@@ -546,7 +530,39 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         });*/
 
-        //startTelemetry();
+        //tell the distance every 15 seconds
+        timerDistance = new Timer();
+        timerDistance.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                if (soundOn) {
+                    if(myBT.getConnected()) {
+                        mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
+                                + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                        Log.d(TAG, "unit value:" + myBT.getAppConf().getUnitsValue());
+                    } else
+                    {
+                        mTTS.speak(getString(R.string.notconnected_msg), TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                }
+            }
+
+        }, 0, 15000);
+
+
+        timerNotReceiving = new Timer();
+        timerNotReceiving.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                if(!receiving) {
+                    if (soundOn)
+                        mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);
+                }
+            }
+
+        }, 0, 30000);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -693,14 +709,10 @@ public class MainScreenActivity extends AppCompatActivity {
             unregisterReceiver(receiver);
             receiver = null;
         }
-        /*if (status & myBT.getConnected()) {
-
-            status = false;
-
-            myBT.setExit(true);
-            myBT.clearInput();
-            myBT.flush();
-        }*/
+        if(timerDistance !=null)
+            timerDistance.cancel();
+        if(timerNotReceiving!=null)
+            timerNotReceiving.cancel();
 
     }
 
@@ -753,7 +765,7 @@ public class MainScreenActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             //Log.d ("coordinate",intent.getAction());
-            distanceTime = System.currentTimeMillis();
+            //distanceTime = System.currentTimeMillis();
             if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
@@ -761,10 +773,10 @@ public class MainScreenActivity extends AppCompatActivity {
                     tabPage2.setTelLatitudeValue(latitude + "");
                     tabPage2.setTelLongitudeValue(longitude + "");
                 }
-                double distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude, longitude, rocketLongitude);
+                distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude, longitude, rocketLongitude);
                 //textViewdistance.setText(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
                 // Tell distance every 15 secondes
-                if ((distanceTime - lastSpeakTime) > 15000) {
+                /*if ((distanceTime - lastSpeakTime) > 15000) {
                     if (soundOn) {
                         if(myBT.getConnected()) {
                             mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
@@ -776,7 +788,7 @@ public class MainScreenActivity extends AppCompatActivity {
                         }
                     }
                     lastSpeakTime = distanceTime;
-                }
+                }*/
 
                 //Warn if we have not received GPS trame
                 if((lastReceivedMessageTime -System.currentTimeMillis()) > 60000) {
@@ -850,7 +862,6 @@ public class MainScreenActivity extends AppCompatActivity {
 
         }
         return true;
-
     }
 
     @Override

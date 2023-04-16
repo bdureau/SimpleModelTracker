@@ -14,15 +14,9 @@ import android.hardware.usb.UsbManager;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
-//import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
-//import com.altimeter.bdureau.bearconsole.Flight.FlightData;
-//import com.altimeter.bdureau.bearconsole.config.AltiConfigData;
-//import com.altimeter.bdureau.bearconsole.config.GlobalConfig;
-//import com.altimeter.bdureau.bearconsole.connection.BluetoothConnection;
-//import com.altimeter.bdureau.bearconsole.connection.UsbConnection;
 
 import com.bdureau.simplemodeltracker.config.GlobalConfig;
 import com.bdureau.simplemodeltracker.connection.BluetoothConnection;
@@ -39,7 +33,6 @@ import java.util.Locale;
  * @author: boris.dureau@neuf.fr
  **/
 public class ConsoleApplication extends Application {
-    //private boolean isConnected = false;
     private static boolean DataReady = false;
     public long lastReceived = 0;
     public String commandRet = "";
@@ -128,6 +121,7 @@ public class ConsoleApplication extends Application {
         }
         return ret;
     }
+
     // connect to the bluetooth adapter
     public boolean connect() {
         boolean state = false;
@@ -164,58 +158,10 @@ public class ConsoleApplication extends Application {
             state = UsbCon.connect(usbManager, device, baudRate);
             setConnectionType("usb");
 
-            /*for (int i = 0; i < 3; i++) {
-                if (isConnectionValid()) {
-                    state = true;
-                    break;
-                }
-            }*/
             if (!state)
                 Disconnect();
         }
         return state;
-    }
-
-
-    public boolean isConnectionValid() {
-        boolean valid = false;
-
-        setDataReady(false);
-
-        flush();
-        clearInput();
-        //  send 2 commands to get rid off the module connection string on some modules
-        write("h;".toString());
-
-        flush();
-        clearInput();
-        write("h;".toString());
-
-        String myMessage = "";
-        long timeOut = 10000;
-        long startTime = System.currentTimeMillis();
-        long diffTime = 0;
-        //get the results
-        //wait for the result to come back
-        try {
-            /*while (getInputStream().available() <= 0 || diffTime < timeOut) {
-                diffTime = System.currentTimeMillis() - startTime;}*/
-            while (getInputStream().available() <= 0) ;
-        } catch (IOException e) {
-
-        }
-
-        myMessage = ReadResult(3000);
-
-        if (myMessage.equals("OK")) {
-            lastReadResult = myMessage;
-            valid = true;
-        } else {
-            lastReadResult = myMessage;
-            valid = false;
-        }
-
-        return valid;
     }
 
     public void Disconnect() {
@@ -267,62 +213,60 @@ public class ConsoleApplication extends Application {
                 if ((System.currentTimeMillis() - lastReceived) > timeout)
                     this.exit = true;
                 if (getInputStream() != null)
-                if (getInputStream().available() > 0) {
-                    // Read in the available character
-                    char ch = (char) getInputStream().read();
-                    lastData = lastData + ch;
-                    if (ch == '$') {
-                        // read entire sentence until the end
-                        String tempBuff = "";
-                        while (ch != '\n') {
-                            // this is not the end of our command
-                            ch = (char) getInputStream().read();
-                            if (ch != '\r')
-                                if (ch != '\n')
-                                    tempBuff = tempBuff
-                                            + Character.toString(ch);
-                        }
-                        if (ch == '\r') {
-                            ch = (char) getInputStream().read();
-                        }
-
-                        // Sentence currentSentence = null;
-                        String currentSentence[] = new String[50];
-                        if (!tempBuff.isEmpty()) {
-                            //currentSentence = readSentence(tempBuff);
-                            currentSentence = tempBuff.split(",");
-
-                            fullBuff = fullBuff + tempBuff;
-                        }
-
-                        //long chk = 0;
-                        if (currentSentence != null)
-                        //if (currentSentence != null & currentSentence[0].length() > 2)
-                            if (currentSentence != null & currentSentence.length > 2)
-                            //Log.d("Cons", currentSentence[0]);
-                            switch (currentSentence[0]) {
-                                case "GPGGA":
-
-                                    if (mHandler != null) {
-                                        Log.d("Cons", currentSentence[0]);
-                                        // Value 1 contain the current altitude
-                                        if (currentSentence.length > 1) {
-                                            mHandler.obtainMessage(1, String.valueOf("$" + tempBuff)).sendToTarget();
-                                            Log.d("Cons", tempBuff);
-                                        }
-                                    }
-                                    break;
-
-                                case "UNKNOWN":
-                                    setDataReady(true);
-                                    commandRet = currentSentence[0];
-                                    break;
-                                default:
-
-                                    break;
+                    if (getInputStream().available() > 0) {
+                        // Read in the available character
+                        char ch = (char) getInputStream().read();
+                        lastData = lastData + ch;
+                        if (ch == '$') {
+                            // read entire sentence until the end
+                            String tempBuff = "";
+                            while (ch != '\n') {
+                                // this is not the end of our command
+                                ch = (char) getInputStream().read();
+                                if (ch != '\r')
+                                    if (ch != '\n')
+                                        tempBuff = tempBuff
+                                                + Character.toString(ch);
                             }
+                            if (ch == '\r') {
+                                ch = (char) getInputStream().read();
+                            }
+
+                            // Sentence currentSentence = null;
+                            String currentSentence[] = new String[50];
+                            if (!tempBuff.isEmpty()) {
+                                //currentSentence = readSentence(tempBuff);
+                                currentSentence = tempBuff.split(",");
+
+                                fullBuff = fullBuff + tempBuff;
+                            }
+
+                            //long chk = 0;
+                            if (currentSentence != null)
+                                if (currentSentence.length > 2)
+                                    switch (currentSentence[0]) {
+                                        case "GPGGA":
+
+                                            if (mHandler != null) {
+                                                Log.d("Cons", currentSentence[0]);
+                                                // Value 1 contain the current altitude
+                                                if (currentSentence.length > 1) {
+                                                    mHandler.obtainMessage(1, String.valueOf("$" + tempBuff)).sendToTarget();
+                                                    Log.d("Cons", tempBuff);
+                                                }
+                                            }
+                                            break;
+
+                                        case "UNKNOWN":
+                                            setDataReady(true);
+                                            commandRet = currentSentence[0];
+                                            break;
+                                        default:
+
+                                            break;
+                                    }
+                        }
                     }
-                }
             }
         } catch (IOException e) {
             myMessage = myMessage + " " + "error:" + e.getMessage();
