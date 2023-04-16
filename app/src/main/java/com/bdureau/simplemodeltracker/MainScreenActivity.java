@@ -89,8 +89,14 @@ public class MainScreenActivity extends AppCompatActivity {
     private TextToSpeech mTTS;
     private long lastSpeakTime = 1000;
     private long distanceTime = 0;
+
+    private long notConnectedTime =0;
+    private long lastSpeakNotConnectedTime =1000;
+
+    private long lastReceivedMessageTime = 0;
+
     private boolean soundOn = true;
-    //private boolean connected=false;
+    private boolean sateliteAcquisitionCompleteSaid=false;
     Intent locIntent = null;
 
     UsbManager usbManager;
@@ -155,19 +161,45 @@ public class MainScreenActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
+                    lastReceivedMessageTime = System.currentTimeMillis();
                     Parser p = new Parser();
                     try {
                         Location l = p.parse((String) msg.obj);
                         if (l != null) {
                             setLatitudeValue(l.getLatitude() + "");
                             setLongitudeValue(l.getLongitude() + "");
+                            int nbrOfSat= l.getExtras().getInt("satellites");
+                            if(!sateliteAcquisitionCompleteSaid && nbrOfSat > 2 ) {
+                                sateliteAcquisitionCompleteSaid = true;
+                                if(soundOn)
+                                    mTTS.speak(getString(R.string.sat_acq_complete_msg), TextToSpeech.QUEUE_FLUSH, null);
+                            }
+                            else {
+                                if(sateliteAcquisitionCompleteSaid && nbrOfSat < 3) {
+                                    sateliteAcquisitionCompleteSaid = false;
+                                    if(soundOn)
+                                        mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);
+                                }
+                            }
 
                             if (tabPage2 != null) {
                                 tabPage2.setLatitudeValue(l.getLatitude() + "");
                                 tabPage2.setLongitudeValue(l.getLongitude() + "");
-                                tabPage2.setHdopVal("");
-                                tabPage2.setGPSAltitudeVal("");
-                                tabPage2.setGPSSpeedVal("");
+                                tabPage2.setHdopVal(l.getAccuracy()+"");
+                                tabPage2.setGPSAltitudeVal(l.getAltitude()+"");
+                                tabPage2.setGPSSpeedVal(l.getSpeed()+"");
+                                tabPage2.setSatellitesVal(l.getExtras().getInt("satellites") +"");
+                                //tabPage2.setTimeSatValue(l.getElapsedRealtimeAgeMillis()+"");
+                            }
+                        }
+                        else {
+                            Log.d(TAG, "Connection lost");
+                            sateliteAcquisitionCompleteSaid = false;
+                            notConnectedTime = System.currentTimeMillis();
+                            if ((notConnectedTime - lastSpeakNotConnectedTime) > 60000) {
+                                if (soundOn)
+                                    mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);
+                                lastSpeakNotConnectedTime = notConnectedTime;
                             }
                         }
                     } catch (Exception e) {
@@ -745,8 +777,17 @@ public class MainScreenActivity extends AppCompatActivity {
                     }
                     lastSpeakTime = distanceTime;
                 }
-                //Log.d ("coordinate","latitude is:" + latitude + " longitude is: " + longitude );
-                //Log.d ("coordinate","rocketLatitude is:" + latitude + " rocketLongitude is: " + longitude );
+
+                //Warn if we have not received GPS trame
+                if((lastReceivedMessageTime -System.currentTimeMillis()) > 60000) {
+                    notConnectedTime = System.currentTimeMillis();
+                    if ((notConnectedTime - lastSpeakNotConnectedTime) > 60000) {
+                        if (soundOn)
+                            mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);
+                        lastSpeakNotConnectedTime = notConnectedTime;
+                    }
+                }
+
                 if (tabPage1 != null) {
                     tabPage1.updateMap(latitude, longitude, rocketLatitude, rocketLongitude);
                     tabPage1.setDistance(String.format("%.2f", distance) + " " + myBT.getAppConf().getUnitsValue());

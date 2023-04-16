@@ -59,7 +59,10 @@ public class Parser {
 
 				// number of sat
 				Bundle extras = new Bundle();
-				extras.putInt("satellites", toInt(satString));
+				int sat =0;
+				if(toInt(satString)!=null)
+					sat = toInt(satString);
+				extras.putInt("satellites", sat);
 				l.setExtras(extras);
 
 				// Check sanity.  If we haven't received a fix, don't use it.

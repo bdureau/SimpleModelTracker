@@ -263,7 +263,7 @@ public class ConsoleApplication extends Application {
         lastReceived = System.currentTimeMillis();
         try {
 
-            while (this.exit == false) {
+            while (!this.exit) {
                 if ((System.currentTimeMillis() - lastReceived) > timeout)
                     this.exit = true;
                 if (getInputStream() != null)

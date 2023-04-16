@@ -152,8 +152,8 @@
     <string name="lora_module_updating_msg6">mise à jour key</string>
     <string name="lora_module_connecting_msg">Tentative de connexion au module Lora</string>
 
-    <string name="module_name_cannot_be_empty_msg">Module name cannot be empty\n</string>
-    <string name="module_pin_cannot_be_empty_msg">Module Pin cannot be empty\n</string>
+    <string name="module_name_cannot_be_empty_msg">Le nom du module ne peut pas etre vide\n</string>
+    <string name="module_pin_cannot_be_empty_msg">Le pin du module ne peut pas etre vide\n</string>
     <string name="attempting_connect_msg">Tentative de connexion au module Bluetooth</string>
     <string name="attempting_connect_bt_msg">Tentative de connexion au module Bluetooth</string>
 
@@ -164,4 +164,6 @@
     <string name="MS_msg1">Connexion en cours...</string>
     <string name="MS_msg2">Attendez s\'il vous plait!!!</string>
     <string name="notconnected_msg">Vous n\'etes pas connecté, connectez s\'il vous plait votre recepteur</string>
+    <string name="sat_acq_complete_msg">Acquisition Satellites terminée</string>
+    <string name="sat_acq_lost_msg">Acquisition Satellites perdue</string>
 </resources>
