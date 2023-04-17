@@ -25,7 +25,7 @@ import java.util.Locale;
 
 public class AppConfig1Fragment extends Fragment {
     private Spinner spMapColor, spAppLanguage, spAppUnit, spBaudRate, spConnectionType;
-    //private CheckBox cbAllowManualRecording, cbUseOpenMap;
+
     private boolean ViewCreated = false;
     private ConsoleApplication BT;
     private Button btnTestVoice;

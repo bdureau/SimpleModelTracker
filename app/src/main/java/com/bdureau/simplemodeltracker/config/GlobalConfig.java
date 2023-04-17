@@ -17,11 +17,6 @@ public class GlobalConfig {
     //Graph units
     private int units = 0;
 
-    //flight retrieval timeout
-    //private long flightRetrievalTimeout;
-    //data retrieval timeout
-    //private long configRetrievalTimeout;
-
     //graph background color
     private int graphBackColor = 1;
     //graph color
@@ -37,9 +32,10 @@ public class GlobalConfig {
 
     private boolean allowMultipleDrogueMain = false;
     private boolean fullUSBSupport = false;
-    private boolean say_main_event = false;
-    private boolean say_apogee_altitude = false;
-    private boolean say_main_altitude = false;
+
+    private boolean say_connecteddisconnected_event = false;
+    private boolean say_acquisiation_satellite_event = false;
+    private boolean say_distance_event = false;
     private boolean say_drogue_event = false;
     private boolean say_altitude_event = false;
     private boolean say_landing_event = false;
@@ -81,9 +77,10 @@ public class GlobalConfig {
         graphicsLibType = 1; //Default to MP android chart lib
         allowMultipleDrogueMain = false;
         fullUSBSupport = false;
-        say_main_event = false;
-        say_apogee_altitude = false;
-        say_main_altitude = false;
+
+        say_connecteddisconnected_event = false;
+        say_acquisiation_satellite_event = false;
+        say_distance_event = false;
         say_drogue_event = false;
         say_altitude_event = false;
         say_landing_event = false;
@@ -147,17 +144,17 @@ public class GlobalConfig {
             boolean fullUSBSupport = appConfig.getBoolean("fullUSBSupport", false);
             setFullUSBSupport(fullUSBSupport);
 
-            //main_event
-            boolean say_main_event = appConfig.getBoolean("say_main_event", false);
-            setMain_event(say_main_event);
+            //say_connecteddisconnected_event
+            boolean say_connecteddisconnected_event = appConfig.getBoolean("say_connecteddisconnected_event", false);
+            setConnectedDisconnected_event(say_connecteddisconnected_event);
 
-            //apogee_altitude
-            boolean say_apogee_altitude = appConfig.getBoolean("say_apogee_altitude", false);
-            setApogee_altitude(say_apogee_altitude);
+            //say_acquisition_satellite_event
+            boolean say_acquisition_satellite_event = appConfig.getBoolean("say_acquisition_satellite_event", false);
+            setAcquisition_satellite_event(say_acquisition_satellite_event);
 
-            //main_altitude
-            boolean say_main_altitude = appConfig.getBoolean("say_main_altitude", false);
-            setMain_altitude(say_main_altitude);
+            //say_distance_event
+            boolean say_distance_event = appConfig.getBoolean("say_distance_event", false);
+            setDistance_event(say_distance_event);
 
             //drogue_event
             boolean say_drogue_event = appConfig.getBoolean("say_drogue_event", false);
@@ -221,9 +218,9 @@ public class GlobalConfig {
         edit.putBoolean("AllowMultipleDrogueMain", getAllowMultipleDrogueMain());
         edit.putBoolean("fullUSBSupport", getFullUSBSupport());
 
-        edit.putBoolean("say_main_event", getMain_event());
-        edit.putBoolean("say_apogee_altitude", getApogee_altitude());
-        edit.putBoolean("say_main_altitude", getMain_altitude());
+        edit.putBoolean("say_connecteddisconnected_event", getConnectedDisconnected_event());
+        edit.putBoolean("say_acquisition_satellite_event", getAcquisition_satellite_event());
+        edit.putBoolean("say_main_altitude", getDistance_event());
         edit.putBoolean("say_drogue_event", getDrogue_event());
         edit.putBoolean("say_altitude_event", getAltitude_event());
         edit.putBoolean("say_landing_event", getLanding_event());
@@ -356,28 +353,30 @@ public class GlobalConfig {
         return fullUSBSupport;
     }
 
-    public void setMain_event(boolean value) {
-        say_main_event = value;
+
+
+    public void setConnectedDisconnected_event(boolean value) {
+        say_connecteddisconnected_event = value;
     }
 
-    public boolean getMain_event() {
-        return say_main_event;
+    public boolean getConnectedDisconnected_event() {
+        return say_connecteddisconnected_event;
     }
 
-    public void setApogee_altitude(boolean value) {
-        say_apogee_altitude = value;
+    public void setAcquisition_satellite_event(boolean value) {
+        say_acquisiation_satellite_event = value;
     }
 
-    public boolean getApogee_altitude() {
-        return say_apogee_altitude;
+    public boolean getAcquisition_satellite_event() {
+        return say_acquisiation_satellite_event;
     }
 
-    public void setMain_altitude(boolean value) {
-        say_main_altitude = value;
+    public void setDistance_event(boolean value) {
+        say_distance_event = value;
     }
 
-    public boolean getMain_altitude() {
-        return say_main_altitude;
+    public boolean getDistance_event() {
+        return say_distance_event;
     }
 
     public void setDrogue_event(boolean value) {
@@ -514,20 +513,4 @@ public class GlobalConfig {
         }
         return myColor;
     }
-
-  /*  public static class AltitudeUnit
-    {
-        public static int METERS = 0;
-        public static int FEET = 1;
-    }
-    public static class ConnectionType
-    {
-        public static int BT = 0;
-        public static int USB = 1;
-    }
-    public static class GraphLib
-    {
-        public static int AfreeChart =0;
-        public static int MPChart =1;
-    }*/
 }

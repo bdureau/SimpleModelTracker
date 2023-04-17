@@ -16,8 +16,6 @@ import android.os.Handler;
 import android.util.Log;
 
 import androidx.core.content.ContextCompat;
-
-
 import com.bdureau.simplemodeltracker.config.GlobalConfig;
 import com.bdureau.simplemodeltracker.connection.BluetoothConnection;
 import com.bdureau.simplemodeltracker.connection.UsbConnection;
@@ -51,7 +49,7 @@ public class ConsoleApplication extends Application {
         this.mHandler = mHandler;
     }
 
-    public String lastReadResult;
+    //public String lastReadResult;
     public String lastData;
 
     @Override

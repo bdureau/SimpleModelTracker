@@ -89,8 +89,7 @@ public class MainScreenActivity extends AppCompatActivity {
     Thread rocketTelemetry;
     private boolean telemetry = false;
     private TextToSpeech mTTS;
-    //private long lastSpeakTime = 1000;
-    //private long distanceTime = 0;
+
 
     private long notConnectedTime =0;
     private long lastSpeakNotConnectedTime =1000;
@@ -223,7 +222,7 @@ public class MainScreenActivity extends AppCompatActivity {
         }
     };
 
-    private void setGPSTram(String value) {
+    /*private void setGPSTram(String value) {
         Log.d(TAG, value);
         Parser p = new Parser();
         Location l = p.parse(value);
@@ -240,7 +239,7 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         }
 
-    }
+    }*/
 
     private void setLatitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
@@ -521,15 +520,6 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         });
 
-       /* butShareMap.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                takeMapScreenshot();
-            }
-        });*/
-
         //tell the distance every 15 seconds
         timerDistance = new Timer();
         timerDistance.scheduleAtFixedRate(new TimerTask() {
@@ -732,14 +722,6 @@ public class MainScreenActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        //Configuration.getInstance().load(getApplicationContext(),
-        //        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
-
-        /*if(myBT.getConnected() && !status) {
-            myBT.flush();
-            myBT.clearInput();
-            status = true;
-        }*/
         if (receiver == null)
             startService();
     }
@@ -747,25 +729,11 @@ public class MainScreenActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //Configuration.getInstance().save(getApplicationContext(),
-        //        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
-
-        /*if (receiver !=null) {
-            try {
-                unregisterReceiver(receiver);
-                receiver = null;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            receiver = null;
-        }*/
     }
 
     public class LocationBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            //Log.d ("coordinate",intent.getAction());
-            //distanceTime = System.currentTimeMillis();
             if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
@@ -774,21 +742,6 @@ public class MainScreenActivity extends AppCompatActivity {
                     tabPage2.setTelLongitudeValue(longitude + "");
                 }
                 distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude, longitude, rocketLongitude);
-                //textViewdistance.setText(String.format("%.2f",distance )+ " " + myBT.getAppConf().getUnitsValue());
-                // Tell distance every 15 secondes
-                /*if ((distanceTime - lastSpeakTime) > 15000) {
-                    if (soundOn) {
-                        if(myBT.getConnected()) {
-                            mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
-                                    + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
-                        } else
-                        {
-                            mTTS.speak(getString(R.string.notconnected_msg), TextToSpeech.QUEUE_FLUSH, null);
-
-                        }
-                    }
-                    lastSpeakTime = distanceTime;
-                }*/
 
                 //Warn if we have not received GPS trame
                 if((lastReceivedMessageTime -System.currentTimeMillis()) > 60000) {
@@ -808,7 +761,7 @@ public class MainScreenActivity extends AppCompatActivity {
         }
     }
 
-    private void takeMapScreenshot() {
+   /* private void takeMapScreenshot() {
         Date date = new Date();
         CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
 
@@ -835,7 +788,7 @@ public class MainScreenActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -859,7 +812,6 @@ public class MainScreenActivity extends AppCompatActivity {
         if (myBT.getConnected()) {
             // We are connected so no need to choose the bluetooth
             menu.findItem(R.id.action_bluetooth).setEnabled(false);
-
         }
         return true;
     }
@@ -958,7 +910,6 @@ public class MainScreenActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
         {
-
             if (!myBT.getConnected()) {
                 if (myBT.connect())
                     ConnectSuccess = true;
