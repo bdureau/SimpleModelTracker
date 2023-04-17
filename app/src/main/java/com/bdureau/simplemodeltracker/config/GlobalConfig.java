@@ -36,7 +36,7 @@ public class GlobalConfig {
     private boolean say_connecteddisconnected_event = false;
     private boolean say_acquisiation_satellite_event = false;
     private boolean say_distance_event = false;
-    private boolean say_drogue_event = false;
+    private boolean say_notconnected_event = false;
     private boolean say_altitude_event = false;
     private boolean say_landing_event = false;
     private boolean say_burnout_event = false;
@@ -81,7 +81,8 @@ public class GlobalConfig {
         say_connecteddisconnected_event = false;
         say_acquisiation_satellite_event = false;
         say_distance_event = false;
-        say_drogue_event = false;
+        say_notconnected_event = false;
+
         say_altitude_event = false;
         say_landing_event = false;
         say_burnout_event = false;
@@ -156,9 +157,9 @@ public class GlobalConfig {
             boolean say_distance_event = appConfig.getBoolean("say_distance_event", false);
             setDistance_event(say_distance_event);
 
-            //drogue_event
-            boolean say_drogue_event = appConfig.getBoolean("say_drogue_event", false);
-            setDrogue_event(say_drogue_event);
+            //say_notconnected_event
+            boolean say_notconnected_event = appConfig.getBoolean("say_notconnected_event", false);
+            setNotConnected_event(say_notconnected_event);
 
             //altitude_event
             boolean say_altitude_event = appConfig.getBoolean("say_altitude_event", false);
@@ -220,8 +221,9 @@ public class GlobalConfig {
 
         edit.putBoolean("say_connecteddisconnected_event", getConnectedDisconnected_event());
         edit.putBoolean("say_acquisition_satellite_event", getAcquisition_satellite_event());
-        edit.putBoolean("say_main_altitude", getDistance_event());
-        edit.putBoolean("say_drogue_event", getDrogue_event());
+        edit.putBoolean("say_distance_event", getDistance_event());
+        edit.putBoolean("say_notconnected_event", getNotConnected_event());
+
         edit.putBoolean("say_altitude_event", getAltitude_event());
         edit.putBoolean("say_landing_event", getLanding_event());
         edit.putBoolean("say_burnout_event", getBurnout_event());
@@ -379,13 +381,14 @@ public class GlobalConfig {
         return say_distance_event;
     }
 
-    public void setDrogue_event(boolean value) {
-        say_drogue_event = value;
+    public void setNotConnected_event(boolean value) {
+        say_notconnected_event = value;
     }
 
-    public boolean getDrogue_event() {
-        return say_drogue_event;
+    public boolean getNotConnected_event() {
+        return say_notconnected_event;
     }
+
 
     public void setAltitude_event(boolean value) {
         say_altitude_event = value;

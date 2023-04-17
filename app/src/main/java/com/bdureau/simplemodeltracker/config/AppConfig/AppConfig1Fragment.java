@@ -1,4 +1,4 @@
-package com.bdureau.simplemodeltracker.config;
+package com.bdureau.simplemodeltracker.config.AppConfig;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bdureau.simplemodeltracker.ConsoleApplication;
 import com.bdureau.simplemodeltracker.R;
+import com.bdureau.simplemodeltracker.config.AppConfigData;
 
 import java.util.Locale;
 

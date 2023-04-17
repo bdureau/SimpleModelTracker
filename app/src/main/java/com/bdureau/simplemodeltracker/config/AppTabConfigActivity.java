@@ -31,6 +31,8 @@ import com.bdureau.simplemodeltracker.Help.AboutActivity;
 import com.bdureau.simplemodeltracker.Help.HelpActivity;
 import com.bdureau.simplemodeltracker.R;
 import com.bdureau.simplemodeltracker.ShareHandler;
+import com.bdureau.simplemodeltracker.config.AppConfig.AppConfig1Fragment;
+import com.bdureau.simplemodeltracker.config.AppConfig.AppConfig2Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,7 @@ public class AppTabConfigActivity extends AppCompatActivity {
     private TextToSpeech mTTS;
 
     private AppConfig1Fragment appConfigPage1 = null;
+    private AppConfig2Fragment appConfigPage2 = null;
 
     private AppConfigData appConfigData = null;
 
@@ -160,6 +163,12 @@ public class AppTabConfigActivity extends AppCompatActivity {
             myBT.getAppConf().setTelemetryVoice(appConfigPage1.getTelemetryVoice());
             myBT.getAppConf().setMapColor(appConfigPage1.getMapColor());
         }
+        if(appConfigPage2.isViewCreated()) {
+            myBT.getAppConf().setAcquisition_satellite_event(appConfigPage2.getAcquisitionSatelliteEvent());
+            myBT.getAppConf().setConnectedDisconnected_event(appConfigPage2.getConnectedDisconnectedEvent());
+            myBT.getAppConf().setDistance_event(appConfigPage2.getDistanceEvent());
+            myBT.getAppConf().setNotConnected_event(appConfigPage2.getNotConnectedEvent());
+        }
         myBT.getAppConf().SaveConfig();
         invalidateOptionsMenu();
         finish();
@@ -175,6 +184,12 @@ public class AppTabConfigActivity extends AppCompatActivity {
             appConfigPage1.setTelemetryVoice(myBT.getAppConf().getTelemetryVoice());
             appConfigPage1.setMapColor(myBT.getAppConf().getMapColor());
         }
+        if(appConfigPage2.isViewCreated()) {
+            appConfigPage2.setNotConnectedEvent(myBT.getAppConf().getNotConnected_event());
+            appConfigPage2.setAcquisitionSatelliteEvent(myBT.getAppConf().getAcquisition_satellite_event());
+            appConfigPage2.setConnectedDisconnectedEvent(myBT.getAppConf().getConnectedDisconnected_event());
+            appConfigPage2.setDistanceEvent(myBT.getAppConf().getDistance_event());
+        }
     }
 
 
@@ -182,8 +197,10 @@ public class AppTabConfigActivity extends AppCompatActivity {
         adapter = new AppTabConfigActivity.SectionsPageAdapter(getSupportFragmentManager());
 
         appConfigPage1 = new AppConfig1Fragment(myBT, appConfigData);
+        appConfigPage2 = new AppConfig2Fragment(myBT, appConfigData);
 
         adapter.addFragment(appConfigPage1, "TAB1");
+        adapter.addFragment(appConfigPage2, "TAB2");
 
 
         linearDots = findViewById(R.id.idAppConfigLinearDots);
