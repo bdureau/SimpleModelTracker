@@ -139,10 +139,27 @@ public class ConsoleApplication extends Application {
             Log.d("TAG", "connecting BT 4...");
             setConnectionType("bluetooth");
 
+
+
             /*if (!isConnectionValid()) {
                 Disconnect();
                 state = false;
             }*/
+            /*try {
+                while (getInputStream().available() <= 0) ;
+            } catch (IOException e) {
+
+            }
+            String myMessage = "";
+            myMessage = ReadResult(3000);
+            Log.d("TAG",myMessage);*/
+            long timer = System.currentTimeMillis();
+            while ((timer - System.currentTimeMillis()) < 3000) {
+                state = BTCon.getBtSocket().isConnected();
+                if(state)
+                    break;
+            }
+
             if (!state)
                 Disconnect();
         }

@@ -222,25 +222,6 @@ public class MainScreenActivity extends AppCompatActivity {
         }
     };
 
-    /*private void setGPSTram(String value) {
-        Log.d(TAG, value);
-        Parser p = new Parser();
-        Location l = p.parse(value);
-        if (l != null) {
-            setLatitudeValue(l.getLatitude() + "");
-            setLongitudeValue(l.getLongitude() + "");
-
-            if (tabPage2 != null) {
-                tabPage2.setLatitudeValue(l.getLatitude() + "");
-                tabPage2.setLongitudeValue(l.getLongitude() + "");
-                tabPage2.setHdopVal("");
-                tabPage2.setGPSAltitudeVal("");
-                tabPage2.setGPSSpeedVal("");
-            }
-        }
-
-    }*/
-
     private void setLatitudeValue(String value) {
         if (value.matches("\\d+(?:\\.\\d+)?")) {
             float val = Float.parseFloat(value);
@@ -338,8 +319,6 @@ public class MainScreenActivity extends AppCompatActivity {
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         registerReceiver(broadcastReceiver, filter);
 
-        //textViewdistance = (TextView) findViewById(R.id.textViewdistance);
-
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -428,7 +407,7 @@ public class MainScreenActivity extends AppCompatActivity {
         btnConnect = (Button) findViewById(R.id.butConnect);
         btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
                 0, 0, 0);
-        //butShareMap = (Button) findViewById(R.id.butShareMap);
+
         butAudio = (Button) findViewById(R.id.butAudio);
         butAudio.setCompoundDrawablesWithIntrinsicBounds(R.drawable.audio_on32x32,
                 0, 0, 0);
@@ -466,11 +445,8 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.setConnectionType("usb");
 
                 if (myBT.getConnected()) {
-                    //connected = false;
                     btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
                             0, 0, 0);
-                    //if (myBT.getConnectionType().equals("usb"))
-                    //if (myBT.getConnected()) {
                     myBT.Disconnect();
                     telemetry = false;
                     myBT.setConnected(false);
@@ -478,7 +454,6 @@ public class MainScreenActivity extends AppCompatActivity {
                     if (soundOn) {
                         mTTS.speak(getString(R.string.disconnected), TextToSpeech.QUEUE_FLUSH, null);
                     }
-                    //}
 
                 } else {
                     if (myBT.getConnectionType().equals("bluetooth")) {
@@ -761,35 +736,6 @@ public class MainScreenActivity extends AppCompatActivity {
         }
     }
 
-   /* private void takeMapScreenshot() {
-        Date date = new Date();
-        CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
-
-        try {
-            File mainDir = new File(
-                    this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FilShare");
-            if (!mainDir.exists()) {
-                boolean mkdir = mainDir.mkdir();
-            }
-
-            String path = mainDir + "/" + "AltiMultiCurve" + "-" + format + ".jpeg";
-            findViewById(android.R.id.content).getRootView().setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(findViewById(android.R.id.content).getRootView().getDrawingCache());
-            findViewById(android.R.id.content).getRootView().setDrawingCacheEnabled(false);
-
-
-            File imageFile = new File(path);
-            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
-            fileOutputStream.flush();
-            fileOutputStream.close();
-
-            ShareHandler.shareScreenShot(imageFile, this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -893,6 +839,7 @@ public class MainScreenActivity extends AppCompatActivity {
             //"Connecting...", "Please wait!!!"
             builder = new AlertDialog.Builder(MainScreenActivity.this);
             //Connecting...
+            Log.d(TAG,"Connecting...");
             builder.setMessage(getResources().getString(R.string.MS_msg1) + "\n" + myBT.getModuleName())
                     .setTitle(getResources().getString(R.string.MS_msg2))
                     .setCancelable(false)

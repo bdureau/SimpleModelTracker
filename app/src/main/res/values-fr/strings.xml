@@ -46,7 +46,7 @@
 
     <!-- About screen -->
     <string name="about_screen">A propos</string>
-    <string name="bear_console_version">version Simple tracker</string>
+    <string name="simple_tracker_version">Simple tracker version</string>
     <string name="dismiss_about">Fermer</string>
     <string name="version"> pre 1.0.0</string>
 
