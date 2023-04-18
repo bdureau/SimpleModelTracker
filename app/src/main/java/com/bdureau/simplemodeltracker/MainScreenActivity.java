@@ -463,11 +463,11 @@ public class MainScreenActivity extends AppCompatActivity {
                             Log.d(TAG,"Connecting using bluetooth2");
                             new ConnectBT().execute(); //Call the class to connect
                             Log.d(TAG,"Connecting using bluetooth3");
-                            while(!myBT.getConnected())
+                            /*while(!myBT.getConnected())
                             {
 
-                            }
-                            if (myBT.getConnected()) {
+                            }*/
+                            /*if (myBT.getConnected()) {
                                 Log.d(TAG,"Connecting using bluetooth4");
                                 btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
                                         0, 0, 0);
@@ -476,7 +476,7 @@ public class MainScreenActivity extends AppCompatActivity {
                                     mTTS.speak(getString(R.string.connected), TextToSpeech.QUEUE_FLUSH, null);
                                 }
                                 startTelemetry();
-                            }
+                            }*/
                         } else {
                             // choose the bluetooth device
                             Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
@@ -878,6 +878,14 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.setConnected(true);
                 //EnableUI();
                 Log.d(TAG,"connection success");
+                Log.d(TAG,"Connecting using bluetooth4");
+                btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
+                        0, 0, 0);
+                telemetry = true;
+                if (soundOn) {
+                    mTTS.speak(getString(R.string.connected), TextToSpeech.QUEUE_FLUSH, null);
+                }
+                startTelemetry();
             }
             alert.dismiss();
         }

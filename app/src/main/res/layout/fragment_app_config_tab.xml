@@ -106,29 +106,21 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textConnectionType"
         android:layout_alignParentRight="true" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/telemetry_voice"
-        android:id="@+id/txtViewTelemetryVoice"
-        android:layout_below="@+id/textConnectionType"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp"/>
 
-    <Spinner
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerTelemetryVoice"
-        android:layout_width="175dp"
-        android:layout_alignBaseline="@+id/txtViewTelemetryVoice"
-        android:layout_alignParentRight="true"
-        android:focusableInTouchMode="false" />
-    <Button
+    <TextView
+        android:id="@+id/textViewModel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtViewTelemetryVoice"
-        android:text="@string/test_telemetry_voice"
-        android:id="@+id/butTestVoice"
-        android:layout_marginTop="18dp"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/textConnectionType"
+        android:layout_alignParentStart="true"
+
+        android:text="Model type:"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+    <Spinner
+        android:id="@+id/spinnerModelType"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textViewModel"
+        android:layout_alignParentRight="true" />
+
 </RelativeLayout>

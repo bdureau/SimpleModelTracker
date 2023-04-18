@@ -26,7 +26,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bear_console_version"
+        android:text="@string/simple_tracker_version"
         android:id="@+id/txtViewTitle"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
@@ -54,7 +54,7 @@
         android:layout_below="@+id/txtViewCopyright"
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
-        android:text="Credit goes to Philippe Huguenin-Bergenat \n for all the testing"
+        android:text="@string/credit_goes_to_philippe_huguenin_bergenat_n_for_all_the_testing"
         android:textAlignment="center" />
 
     <TextView

@@ -29,10 +29,10 @@ public class AppConfig1Fragment extends Fragment {
 
     private boolean ViewCreated = false;
     private ConsoleApplication BT;
-    private Button btnTestVoice;
-    private TextToSpeech mTTS;
-    private Spinner spTelemetryVoice;
-    private int nbrVoices = 0;
+    //private Button btnTestVoice;
+    //private TextToSpeech mTTS;
+    //private Spinner spTelemetryVoice;
+    //private int nbrVoices = 0;
     private AppConfigData appConfigData;
 
     public AppConfig1Fragment(ConsoleApplication lBT,
@@ -49,14 +49,14 @@ public class AppConfig1Fragment extends Fragment {
         this.spMapColor.setSelection(value);
     }
 
-    public void setTelemetryVoice(int value) {
+    /*public void setTelemetryVoice(int value) {
         if (value < nbrVoices)
             this.spTelemetryVoice.setSelection(value);
     }
 
     public int getTelemetryVoice() {
         return (int) this.spTelemetryVoice.getSelectedItemId();
-    }
+    }*/
 
     public int getAppLanguage() {
         return (int) this.spAppLanguage.getSelectedItemId();
@@ -90,14 +90,14 @@ public class AppConfig1Fragment extends Fragment {
         this.spConnectionType.setSelection(value);
     }
 
-    public void setVoices(String itemsVoices[]) {
+   /* public void setVoices(String itemsVoices[]) {
         nbrVoices = itemsVoices.length;
         ArrayAdapter<String> adapterVoice = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, itemsVoices);
         spTelemetryVoice.setAdapter(adapterVoice);
         if (BT.getAppConf().getTelemetryVoice() < nbrVoices)
             spTelemetryVoice.setSelection(BT.getAppConf().getTelemetryVoice());
-    }
+    }*/
 
     public boolean isViewCreated() {
         return ViewCreated;
@@ -141,7 +141,7 @@ public class AppConfig1Fragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsConnectionType());
         spConnectionType.setAdapter(adapterConnectionType);
 
-        spTelemetryVoice = (Spinner) view.findViewById(R.id.spinnerTelemetryVoice);
+        //spTelemetryVoice = (Spinner) view.findViewById(R.id.spinnerTelemetryVoice);
 
         //init text to speech
         /*mTTS = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
@@ -215,7 +215,7 @@ public class AppConfig1Fragment extends Fragment {
             }
         });*/
 
-        btnTestVoice = (Button) view.findViewById(R.id.butTestVoice);
+        /*btnTestVoice = (Button) view.findViewById(R.id.butTestVoice);
         btnTestVoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -292,7 +292,7 @@ public class AppConfig1Fragment extends Fragment {
                 });
 
             }
-        });
+        });*/
 
         spAppLanguage.setSelection(BT.getAppConf().getApplicationLanguage());
         spAppUnit.setSelection(BT.getAppConf().getUnits());
@@ -305,11 +305,11 @@ public class AppConfig1Fragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
+       /* try {
             mTTS.shutdown();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
     private void msg(String s) {
         Toast.makeText(getContext(), s, Toast.LENGTH_LONG).show();

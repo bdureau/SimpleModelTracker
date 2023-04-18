@@ -153,15 +153,20 @@ public class ConsoleApplication extends Application {
             String myMessage = "";
             myMessage = ReadResult(3000);
             Log.d("TAG",myMessage);*/
-            long timer = System.currentTimeMillis();
-            while ((timer - System.currentTimeMillis()) < 3000) {
+            long timer2 = System.currentTimeMillis();
+            Log.d("TAG","timer2"+timer2);
+            while ((System.currentTimeMillis() - timer2  ) < 3000) {
+                Log.d("TAG","test"+timer2);
                 state = BTCon.getBtSocket().isConnected();
                 if(state)
                     break;
             }
 
-            if (!state)
+            if (!state) {
+                Log.d("TAG", "Disconnected");
                 Disconnect();
+                BTCon.setBTConnected(false);
+            }
         }
         return state;
     }

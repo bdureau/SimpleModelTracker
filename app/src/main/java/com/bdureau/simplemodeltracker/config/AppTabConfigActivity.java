@@ -138,7 +138,7 @@ public class AppTabConfigActivity extends AppCompatActivity {
 
                         itemsVoices = items.split(",");
 
-                        appConfigPage1.setVoices(itemsVoices);
+                        appConfigPage2.setVoices(itemsVoices);
                         if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                             Log.e("TTS", "Language not supported");
                         } else {
@@ -160,7 +160,7 @@ public class AppTabConfigActivity extends AppCompatActivity {
             myBT.getAppConf().setUnits(appConfigPage1.getAppUnit());
             myBT.getAppConf().setBaudRate(appConfigPage1.getBaudRate());
             myBT.getAppConf().setConnectionType(appConfigPage1.getConnectionType());
-            myBT.getAppConf().setTelemetryVoice(appConfigPage1.getTelemetryVoice());
+
             myBT.getAppConf().setMapColor(appConfigPage1.getMapColor());
         }
         if(appConfigPage2.isViewCreated()) {
@@ -168,6 +168,7 @@ public class AppTabConfigActivity extends AppCompatActivity {
             myBT.getAppConf().setConnectedDisconnected_event(appConfigPage2.getConnectedDisconnectedEvent());
             myBT.getAppConf().setDistance_event(appConfigPage2.getDistanceEvent());
             myBT.getAppConf().setNotConnected_event(appConfigPage2.getNotConnectedEvent());
+            myBT.getAppConf().setTelemetryVoice(appConfigPage2.getTelemetryVoice());
         }
         myBT.getAppConf().SaveConfig();
         invalidateOptionsMenu();
@@ -181,7 +182,7 @@ public class AppTabConfigActivity extends AppCompatActivity {
             appConfigPage1.setAppUnit(myBT.getAppConf().getUnits());
             appConfigPage1.setBaudRate(myBT.getAppConf().getBaudRate());
             appConfigPage1.setConnectionType(myBT.getAppConf().getConnectionType());
-            appConfigPage1.setTelemetryVoice(myBT.getAppConf().getTelemetryVoice());
+
             appConfigPage1.setMapColor(myBT.getAppConf().getMapColor());
         }
         if(appConfigPage2.isViewCreated()) {
@@ -189,6 +190,7 @@ public class AppTabConfigActivity extends AppCompatActivity {
             appConfigPage2.setAcquisitionSatelliteEvent(myBT.getAppConf().getAcquisition_satellite_event());
             appConfigPage2.setConnectedDisconnectedEvent(myBT.getAppConf().getConnectedDisconnected_event());
             appConfigPage2.setDistanceEvent(myBT.getAppConf().getDistance_event());
+            appConfigPage2.setTelemetryVoice(myBT.getAppConf().getTelemetryVoice());
         }
     }
 

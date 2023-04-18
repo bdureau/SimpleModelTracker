@@ -163,7 +163,8 @@
     <string name="main_screen_actity">Cancel</string>
     <string name="MS_msg1">Connexion en cours...</string>
     <string name="MS_msg2">Attendez s\'il vous plait!!!</string>
-    <string name="notconnected_msg">Vous n\'etes pas connecté, connectez s\'il vous plait votre recepteur</string>
+    <string name="notconnected_msg">Vous n\'etes pas connecté, connectez s\'il vous plait votre récepteur</string>
     <string name="sat_acq_complete_msg">Acquisition Satellites terminée</string>
     <string name="sat_acq_lost_msg">Acquisition Satellites perdue</string>
+    <string name="credit_goes_to_philippe_huguenin_bergenat_n_for_all_the_testing">Merci à Philippe Huguenin-Bergenat \n pour les tests</string>
 </resources>

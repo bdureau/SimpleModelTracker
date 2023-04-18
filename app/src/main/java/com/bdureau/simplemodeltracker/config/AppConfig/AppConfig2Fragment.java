@@ -204,6 +204,11 @@ public class AppConfig2Fragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         //mTTS.shutdown();
+        try {
+            mTTS.shutdown();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void msg(String s) {
         Toast.makeText(getContext(), s, Toast.LENGTH_LONG).show();
