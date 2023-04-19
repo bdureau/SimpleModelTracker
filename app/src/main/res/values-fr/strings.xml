@@ -167,4 +167,5 @@
     <string name="sat_acq_complete_msg">Acquisition Satellites terminée</string>
     <string name="sat_acq_lost_msg">Acquisition Satellites perdue</string>
     <string name="credit_goes_to_philippe_huguenin_bergenat_n_for_all_the_testing">Merci à Philippe Huguenin-Bergenat \n pour les tests</string>
+    <string name="distance">Distance</string>
 </resources>

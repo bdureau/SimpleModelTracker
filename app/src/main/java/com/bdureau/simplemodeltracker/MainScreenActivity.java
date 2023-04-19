@@ -127,7 +127,7 @@ public class MainScreenActivity extends AppCompatActivity {
                         if (!telemetry) {
                             telemetry = true;
                         }
-                        if (soundOn) {
+                        if (soundOn & myBT.getAppConf().getConnectedDisconnected_event()) {
                             mTTS.speak(getString(R.string.connected), TextToSpeech.QUEUE_FLUSH, null);
                         }
                         startTelemetry();
@@ -153,7 +153,7 @@ public class MainScreenActivity extends AppCompatActivity {
                         Log.d(TAG, "Stopped telemetry");
                         btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
                                 0, 0, 0);
-                        if (soundOn) {
+                        if (soundOn & myBT.getAppConf().getConnectedDisconnected_event()) {
                             mTTS.speak(getString(R.string.disconnected), TextToSpeech.QUEUE_FLUSH, null);
                         }
                     }
@@ -176,7 +176,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             int nbrOfSat= l.getExtras().getInt("satellites");
                             if(!sateliteAcquisitionCompleteSaid && nbrOfSat > 2 ) {
                                 sateliteAcquisitionCompleteSaid = true;
-                                if(soundOn)
+                                if(soundOn & myBT.getAppConf().getAcquisition_satellite_event())
                                     mTTS.speak(getString(R.string.sat_acq_complete_msg), TextToSpeech.QUEUE_FLUSH, null);
                             }
                             else {
@@ -207,7 +207,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             sateliteAcquisitionCompleteSaid = false;
                             notConnectedTime = System.currentTimeMillis();
                             if ((notConnectedTime - lastSpeakNotConnectedTime) > 60000) {
-                                if (soundOn)
+                                if (soundOn & myBT.getAppConf().getAcquisition_satellite_event())
                                     mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);
                                 lastSpeakNotConnectedTime = notConnectedTime;
                             }
@@ -451,7 +451,7 @@ public class MainScreenActivity extends AppCompatActivity {
                     telemetry = false;
                     myBT.setConnected(false);
                     Log.d(TAG, "Stopped telemetry");
-                    if (soundOn) {
+                    if (soundOn & myBT.getAppConf().getConnectedDisconnected_event()) {
                         mTTS.speak(getString(R.string.disconnected), TextToSpeech.QUEUE_FLUSH, null);
                     }
 
@@ -463,20 +463,7 @@ public class MainScreenActivity extends AppCompatActivity {
                             Log.d(TAG,"Connecting using bluetooth2");
                             new ConnectBT().execute(); //Call the class to connect
                             Log.d(TAG,"Connecting using bluetooth3");
-                            /*while(!myBT.getConnected())
-                            {
 
-                            }*/
-                            /*if (myBT.getConnected()) {
-                                Log.d(TAG,"Connecting using bluetooth4");
-                                btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
-                                        0, 0, 0);
-                                telemetry = true;
-                                if (soundOn) {
-                                    mTTS.speak(getString(R.string.connected), TextToSpeech.QUEUE_FLUSH, null);
-                                }
-                                startTelemetry();
-                            }*/
                         } else {
                             // choose the bluetooth device
                             Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
@@ -503,12 +490,15 @@ public class MainScreenActivity extends AppCompatActivity {
             public void run() {
                 if (soundOn) {
                     if(myBT.getConnected()) {
-                        mTTS.speak("Distance" + " " + String.valueOf((int) distance) + " "
-                                + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                        if(myBT.getAppConf().getDistance_event()) {
+                            mTTS.speak(getString(R.string.distance) + " " + String.valueOf((int) distance) + " "
+                                    + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                        }
                         Log.d(TAG, "unit value:" + myBT.getAppConf().getUnitsValue());
                     } else
                     {
-                        mTTS.speak(getString(R.string.notconnected_msg), TextToSpeech.QUEUE_FLUSH, null);
+                        if(myBT.getAppConf().getNotConnected_event())
+                            mTTS.speak(getString(R.string.notconnected_msg), TextToSpeech.QUEUE_FLUSH, null);
                     }
                 }
             }
@@ -522,7 +512,7 @@ public class MainScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(!receiving) {
-                    if (soundOn)
+                    if (soundOn & myBT.getAppConf().getAcquisition_satellite_event())
                         mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);
                 }
             }
@@ -882,7 +872,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
                         0, 0, 0);
                 telemetry = true;
-                if (soundOn) {
+                if (soundOn & myBT.getAppConf().getConnectedDisconnected_event()) {
                     mTTS.speak(getString(R.string.connected), TextToSpeech.QUEUE_FLUSH, null);
                 }
                 startTelemetry();
