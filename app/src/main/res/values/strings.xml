@@ -165,4 +165,9 @@
     <string name="credit_goes_to_philippe_huguenin_bergenat_n_for_all_the_testing">Credit goes to Philippe Huguenin-Bergenat \n for all the testing</string>
     <string name="distance">Distance</string>
 
+    <string name="share_with">Share with</string>
+    <string name="share_file">Share file</string>
+    <string name="simpletracker_has_shared">SimpleTracker has shared with you some info</string>
+    <string name="no_app_available">No app available</string>
+
 </resources>

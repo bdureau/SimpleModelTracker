@@ -38,7 +38,7 @@ public class ShareHandler {
                 boolean mkdir = mainDir.mkdir();
             }
 
-            String path = mainDir + "/" + "AltiMultiCurve" + "-" + format + ".jpeg";
+            String path = mainDir + "/" + "SimpleTracker" + "-" + format + ".jpeg";
             view.setDrawingCacheEnabled(true);
             Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
             view.setDrawingCacheEnabled(false);
@@ -68,12 +68,11 @@ public class ShareHandler {
         intent.setAction(Intent.ACTION_SEND);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setType("image/*");
-        //intent.putExtra(android.content.Intent.EXTRA_TEXT, ctx.getString(R.string.bearconsole_has_shared4));
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "ctx.getString(R.string.bearconsole_has_shared4)");
+
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, ctx.getString(R.string.simpletracker_has_shared));
         intent.putExtra(Intent.EXTRA_STREAM, uri);
 
-        //Intent chooser = Intent.createChooser(intent, ctx.getString(R.string.share_file4));
-        Intent chooser = Intent.createChooser(intent, "ctx.getString(R.string.share_file4)");
+        Intent chooser = Intent.createChooser(intent, ctx.getString(R.string.share_file));
 
         List<ResolveInfo> resInfoList = ctx.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
 
@@ -83,10 +82,10 @@ public class ShareHandler {
         }
 
         try {
-            //ctx.startActivity(Intent.createChooser(intent, ctx.getString(R.string.share_with4)));
-            ctx.startActivity(Intent.createChooser(intent, "ctx.getString(R.string.share_with4)"));
+
+            ctx.startActivity(Intent.createChooser(intent, ctx.getString(R.string.share_with)));
         } catch (ActivityNotFoundException e) {
-            //Toast.makeText(ctx, ctx.getString(R.string.no_app_available4), Toast.LENGTH_SHORT).show();
+
             Toast.makeText(ctx, "ctx.getString(R.string.no_app_available4)", Toast.LENGTH_SHORT).show();
         }
     }

@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.location.Location;
@@ -17,7 +16,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -57,11 +55,7 @@ import com.bdureau.simplemodeltracker.track.TrackMapFragment;
 
 import org.osmdroid.config.Configuration;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -460,10 +454,7 @@ public class MainScreenActivity extends AppCompatActivity {
                         address = myBT.getAddress();
                         Log.d(TAG,"Connecting using bluetooth");
                         if (address != null) {
-                            Log.d(TAG,"Connecting using bluetooth2");
                             new ConnectBT().execute(); //Call the class to connect
-                            Log.d(TAG,"Connecting using bluetooth3");
-
                         } else {
                             // choose the bluetooth device
                             Intent i = new Intent(MainScreenActivity.this, SearchBluetooth.class);
@@ -866,9 +857,6 @@ public class MainScreenActivity extends AppCompatActivity {
             } else {
                 //Connected.
                 myBT.setConnected(true);
-                //EnableUI();
-                Log.d(TAG,"connection success");
-                Log.d(TAG,"Connecting using bluetooth4");
                 btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
                         0, 0, 0);
                 telemetry = true;
