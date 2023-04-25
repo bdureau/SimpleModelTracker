@@ -36,12 +36,12 @@
     <string name="application_units_config">Unitées Application</string>
     <string name="baud_rate">Baud Rate</string>
     <string name="connection_type">Type de Connexion</string>
-    <string name="telemetry_voice">Voix Telemetrie</string>
+    <string name="telemetry_voice">Voix Télémetrie</string>
     <string name="test_telemetry_voice">Test Voix</string>
     <string name="phone_english">Anglais</string>
     <string name="phone_french">Français</string>
     <string name="phone_language">langue telphone</string>
-    <string name="config_unit_meters">Metres</string>
+    <string name="config_unit_meters">Mètres</string>
     <string name="config_unit_feet">Pieds</string>
 
     <!-- About screen -->
@@ -82,7 +82,7 @@
     <string name="m3DR_attempt_con">Tentative de connexion au module 3DR</string>
     <string name="m3DR_attempt_con2">Tentative de connexion à:</string>
     <string name="m3DR_connect_ok">Connexion avec succès à:</string>
-    <string name="m3DR_failed_con">Echec de connexion.\n Déconnecter le cable USB et reconnectez le\n Redémarez l\'application\n et réessayez</string>
+    <string name="m3DR_failed_con">Echec de connexion.\n Déconnecter le câble USB et reconnectez le\n Redémarez l\'application\n et réessayez</string>
     <string name="m3DR_connecting">Connexion en cours</string>
     <string name="configure_telemetry_module">Configuration du module de télémétrie</string>
     <string name="m3DR_version">Version:</string>
@@ -124,7 +124,7 @@
     <string name="lora_configure_module_title">Configuration du module Lora</string>
     <string name="lora_module_channel">Canal:</string>
     <string name="lora_module_trans_mode">Trans mode:</string>
-    <string name="lora_module_address">Addresse:</string>
+    <string name="lora_module_address">Adresse:</string>
     <string name="lora_module_channel_rssi">Canal RSSI</string>
     <string name="lora_module_key">Key:</string>
     <string name="lora_module_parity">Parité</string>
@@ -138,15 +138,15 @@
     <string name="lora_module_config_msg_title">Configuration des modules de telémetrie Lora</string>
     <string name="lora_module_config_button_ok">OK</string>
     <string name="lora_module_loading_config_msg">Chargement de la configuration du module Lora</string>
-    <string name="lora_module_channel_msg">Le canal du module ne peut pas etre vide</string>
-    <string name="lora_module_invalid_channel">Le Canal est invalid</string>
-    <string name="lora_module_channel_value_msg">Canal doit etre entre 0 et 83</string>
-    <string name="lora_module_address_empty_msg">L\'addresse du module ne peut pas être vide</string>
-    <string name="lora_module_address_range">L\'addresse doit être entre 0 et 65535</string>
-    <string name="lora_module_address_invalid">L\'addresse n\'est pas valide</string>
-    <string name="lora_module_updating_address_msg">Mise à jour de l\'addresse du module</string>
+    <string name="lora_module_channel_msg">Le canal du module ne peut pas être vide</string>
+    <string name="lora_module_invalid_channel">Le Canal est invalide</string>
+    <string name="lora_module_channel_value_msg">Canal doit être entre 0 et 83</string>
+    <string name="lora_module_address_empty_msg">L\'adresse du module ne peut pas être vide</string>
+    <string name="lora_module_address_range">L\'adresse doit être entre 0 et 65535</string>
+    <string name="lora_module_address_invalid">L\'adresse n\'est pas valide</string>
+    <string name="lora_module_updating_address_msg">Mise à jour de l\'adresse du module</string>
     <string name="lora_module_updating_msg2">Mise à jour serial speed, parity et air rate</string>
-    <string name="lora_module_updating_msg3">Mise à jour packet , RSSI noise et transmitting power</string>
+    <string name="lora_module_updating_msg3">Mise à jour packet, RSSI noise et transmitting power</string>
     <string name="lora_module_updating_msg4">Mise à jour channel</string>
     <string name="lora_module_updating_msg5">Mise à jour RSSI Byte, trans Mode, LBT et WOR Cycle</string>
     <string name="lora_module_updating_msg6">mise à jour key</string>
@@ -160,7 +160,7 @@
     <string name="_3dr_settings">config 3DR ...</string>
     <string name="bt_settings">config BT ...</string>
 
-    <string name="main_screen_actity">Cancel</string>
+    <string name="main_screen_actity">Annuler</string>
     <string name="MS_msg1">Connexion en cours...</string>
     <string name="MS_msg2">Attendez s\'il vous plait!!!</string>
     <string name="notconnected_msg">Vous n\'êtes pas connecté, connectez s\'il vous plait votre récepteur</string>
