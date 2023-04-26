@@ -26,14 +26,11 @@ import java.util.Locale;
 
 public class AppConfig1Fragment extends Fragment {
     private Spinner spMapColor, spAppLanguage, spAppUnit, spBaudRate, spConnectionType;
-    private Spinner spinnerModelType;
+    private Spinner spModelType;
 
     private boolean ViewCreated = false;
     private ConsoleApplication BT;
-    //private Button btnTestVoice;
-    //private TextToSpeech mTTS;
-    //private Spinner spTelemetryVoice;
-    //private int nbrVoices = 0;
+
     private AppConfigData appConfigData;
 
     public AppConfig1Fragment(ConsoleApplication lBT,
@@ -49,15 +46,6 @@ public class AppConfig1Fragment extends Fragment {
     public void setMapColor(int value) {
         this.spMapColor.setSelection(value);
     }
-
-    /*public void setTelemetryVoice(int value) {
-        if (value < nbrVoices)
-            this.spTelemetryVoice.setSelection(value);
-    }
-
-    public int getTelemetryVoice() {
-        return (int) this.spTelemetryVoice.getSelectedItemId();
-    }*/
 
     public int getAppLanguage() {
         return (int) this.spAppLanguage.getSelectedItemId();
@@ -91,14 +79,14 @@ public class AppConfig1Fragment extends Fragment {
         this.spConnectionType.setSelection(value);
     }
 
-   /* public void setVoices(String itemsVoices[]) {
-        nbrVoices = itemsVoices.length;
-        ArrayAdapter<String> adapterVoice = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, itemsVoices);
-        spTelemetryVoice.setAdapter(adapterVoice);
-        if (BT.getAppConf().getTelemetryVoice() < nbrVoices)
-            spTelemetryVoice.setSelection(BT.getAppConf().getTelemetryVoice());
-    }*/
+    public void setModelType(int value) {
+        this.spModelType.setSelection(value);
+    }
+
+    public int getModelType() {
+        return (int) this.spModelType.getSelectedItemId();
+    }
+
 
     public boolean isViewCreated() {
         return ViewCreated;
@@ -143,11 +131,11 @@ public class AppConfig1Fragment extends Fragment {
         spConnectionType.setAdapter(adapterConnectionType);
 
         //ModelType
-        spinnerModelType = (Spinner) view.findViewById(R.id.spinnerModelType);
+        spModelType = (Spinner) view.findViewById(R.id.spinnerModelType);
 
         ArrayAdapter<String> adapterModelType = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsModelType());
-        spinnerModelType.setAdapter(adapterModelType);
+        spModelType.setAdapter(adapterModelType);
 
         //spTelemetryVoice = (Spinner) view.findViewById(R.id.spinnerTelemetryVoice);
 
@@ -306,7 +294,7 @@ public class AppConfig1Fragment extends Fragment {
         spAppUnit.setSelection(BT.getAppConf().getUnits());
         spBaudRate.setSelection(BT.getAppConf().getBaudRate());
         spConnectionType.setSelection(BT.getAppConf().getConnectionType());
-
+        spModelType.setSelection(BT.getAppConf().getModelType());
         ViewCreated = true;
         return view;
     }

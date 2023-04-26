@@ -18,9 +18,9 @@ public class GlobalConfig {
     private int units = 0;
 
     //graph background color
-    private int graphBackColor = 1;
+    //private int graphBackColor = 1;
     //graph color
-    private int graphColor = 0;
+    //private int graphColor = 0;
 
     //graph font size
     private int fontSize = 10;
@@ -30,8 +30,6 @@ public class GlobalConfig {
     private int baudRate = 8;
     private int modelType = 0;
 
-    private boolean allowMultipleDrogueMain = false;
-    private boolean fullUSBSupport = false;
 
     private boolean say_connecteddisconnected_event = false;
     private boolean say_acquisiation_satellite_event = false;
@@ -49,11 +47,7 @@ public class GlobalConfig {
 
     //map color
     private int mapColor = 0;
-    //map type
-    private int mapType = 2;
 
-    private boolean allowManualRecording = true;
-    private boolean useOpenMap = true;
 
     public GlobalConfig(Context current) {
         context = current;
@@ -66,17 +60,17 @@ public class GlobalConfig {
 
     public void ResetDefaultConfig() {
         applicationLanguage = 0; // default to english
-        graphBackColor = 1;
-        graphColor = 0;
+        //graphBackColor = 1;
+        //graphColor = 0;
         mapColor = 0;
-        mapType = 2;
+        //mapType = 2;
         fontSize = 10;
         units = 0; //default to meters
         baudRate = 8; // default to 38400 baud
         connectionType = 0;
-        modelType = 1; //Default to rocket
-        allowMultipleDrogueMain = false;
-        fullUSBSupport = false;
+        modelType = 0; //Default to rocket
+        //allowMultipleDrogueMain = false;
+        //fullUSBSupport = false;
 
         say_connecteddisconnected_event = false;
         say_acquisiation_satellite_event = false;
@@ -91,8 +85,8 @@ public class GlobalConfig {
         telemetryVoice = 0;
         rocketLatitude = 0.0f;
         rocketLongitude = 0.0f;
-        allowManualRecording = true;
-        useOpenMap = true;
+        //allowManualRecording = true;
+        //useOpenMap = true;
     }
 
     public void ReadConfig() {
@@ -105,21 +99,9 @@ public class GlobalConfig {
             int appUnit = appConfig.getInt("Units", 0);
             setUnits(appUnit);
 
-            //Graph color
-            int graphColor = appConfig.getInt("GraphColor", 0);
-            setGraphColor(graphColor);
-
-            //Graph Background color
-            int graphBackColor = appConfig.getInt("GraphBackColor", 1);
-            setGraphBackColor(graphBackColor);
-
             //Map color
             int mapColor = appConfig.getInt("MapColor", 1);
             setMapColor(mapColor);
-
-            //Map type
-            int mapType = appConfig.getInt("MapType", 2);
-            setMapType(mapType);
 
             //Font size
             int fontSize = appConfig.getInt("FontSize", 10);
@@ -133,17 +115,10 @@ public class GlobalConfig {
             int connectionType = appConfig.getInt("ConnectionType", 0);
             setConnectionType(connectionType);
 
-            //Graphics Lib Type
-            int graphicsLibType = appConfig.getInt("GraphicsLibType", 1);
-            setModelType(graphicsLibType);
+            //Model Type
+            int modelType = appConfig.getInt("ModelType", 0);
+            setModelType(modelType);
 
-            //Allow multiple drogue and main
-            boolean allowMultipleDrogueMain = appConfig.getBoolean("AllowMultipleDrogueMain", false);
-            setAllowMultipleDrogueMain(allowMultipleDrogueMain);
-
-            //enable full USB support
-            boolean fullUSBSupport = appConfig.getBoolean("fullUSBSupport", false);
-            setFullUSBSupport(fullUSBSupport);
 
             //say_connecteddisconnected_event
             boolean say_connecteddisconnected_event = appConfig.getBoolean("say_connecteddisconnected_event", false);
@@ -193,13 +168,7 @@ public class GlobalConfig {
             float rocketLongitude = appConfig.getFloat("rocketLongitude", 0.0f);
             setRocketLongitude(rocketLongitude);
 
-            //allowManualRecording
-            boolean allowManualRecording = appConfig.getBoolean("allowManualRecording", false);
-            setManualRecording(allowManualRecording);
 
-            //useOpenMap
-            boolean useOpenMap = appConfig.getBoolean("useOpenMap", false);
-            setUseOpenMap(useOpenMap);
         } catch (Exception e) {
 
         }
@@ -208,16 +177,11 @@ public class GlobalConfig {
     public void SaveConfig() {
         edit.putInt("AppLanguage", getApplicationLanguage());
         edit.putInt("Units", getUnits());
-        edit.putInt("GraphColor", getGraphColor());
-        edit.putInt("GraphBackColor", getGraphBackColor());
         edit.putInt("MapColor", getMapColor());
-        edit.putInt("MapType", getMapType());
         edit.putInt("FontSize", getFontSize());
         edit.putInt("BaudRate", getBaudRate());
         edit.putInt("ConnectionType", getConnectionType());
         edit.putInt("ModelType", getModelType());
-        edit.putBoolean("AllowMultipleDrogueMain", getAllowMultipleDrogueMain());
-        edit.putBoolean("fullUSBSupport", getFullUSBSupport());
 
         edit.putBoolean("say_connecteddisconnected_event", getConnectedDisconnected_event());
         edit.putBoolean("say_acquisition_satellite_event", getAcquisition_satellite_event());
@@ -232,8 +196,7 @@ public class GlobalConfig {
         edit.putInt("telemetryVoice", getTelemetryVoice());
         edit.putFloat("rocketLatitude", getRocketLatitude());
         edit.putFloat("rocketLongitude", getRocketLongitude());
-        edit.putBoolean("allowManualRecording", getManualRecording());
-        edit.putBoolean("useOpenMap", getUseOpenMap());
+
         edit.commit();
 
     }
@@ -268,36 +231,12 @@ public class GlobalConfig {
         units = value;
     }
 
-    public int getGraphColor() {
-        return graphColor;
-    }
-
-    public void setGraphColor(int value) {
-        graphColor = value;
-    }
-
-    public int getGraphBackColor() {
-        return graphBackColor;
-    }
-
-    public void setGraphBackColor(int value) {
-        graphBackColor = value;
-    }
-
     public int getMapColor() {
         return mapColor;
     }
 
     public void setMapColor(int value) {
         mapColor = value;
-    }
-
-    public int getMapType() {
-        return mapType;
-    }
-
-    public void setMapType(int value) {
-        mapType = value;
     }
 
     //get the id of the current connection type
@@ -337,25 +276,6 @@ public class GlobalConfig {
     public void setBaudRate(int value) {
         baudRate = value;
     }
-
-
-    public void setAllowMultipleDrogueMain(boolean value) {
-        allowMultipleDrogueMain = value;
-    }
-
-    public boolean getAllowMultipleDrogueMain() {
-        return allowMultipleDrogueMain;
-    }
-
-    public void setFullUSBSupport(boolean value) {
-        fullUSBSupport = value;
-    }
-
-    public boolean getFullUSBSupport() {
-        return fullUSBSupport;
-    }
-
-
 
     public void setConnectedDisconnected_event(boolean value) {
         say_connecteddisconnected_event = value;
@@ -454,21 +374,6 @@ public class GlobalConfig {
         return rocketLongitude;
     }
 
-    public void setManualRecording(boolean value) {
-        allowManualRecording = value;
-    }
-
-    public boolean getManualRecording() {
-        return allowManualRecording;
-    }
-
-    public void setUseOpenMap(boolean value) {
-        useOpenMap = value;
-    }
-
-    public boolean getUseOpenMap() {
-        return useOpenMap;
-    }
 
     public int ConvertFont(int font) {
         return font + 8;

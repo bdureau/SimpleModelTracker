@@ -160,7 +160,7 @@ public class AppTabConfigActivity extends AppCompatActivity {
             myBT.getAppConf().setUnits(appConfigPage1.getAppUnit());
             myBT.getAppConf().setBaudRate(appConfigPage1.getBaudRate());
             myBT.getAppConf().setConnectionType(appConfigPage1.getConnectionType());
-
+            myBT.getAppConf().setModelType(appConfigPage1.getModelType());
             myBT.getAppConf().setMapColor(appConfigPage1.getMapColor());
         }
         if(appConfigPage2.isViewCreated()) {
@@ -182,8 +182,9 @@ public class AppTabConfigActivity extends AppCompatActivity {
             appConfigPage1.setAppUnit(myBT.getAppConf().getUnits());
             appConfigPage1.setBaudRate(myBT.getAppConf().getBaudRate());
             appConfigPage1.setConnectionType(myBT.getAppConf().getConnectionType());
-
+            appConfigPage1.setModelType(myBT.getAppConf().getModelType());
             appConfigPage1.setMapColor(myBT.getAppConf().getMapColor());
+
         }
         if(appConfigPage2.isViewCreated()) {
             appConfigPage2.setNotConnectedEvent(myBT.getAppConf().getNotConnected_event());

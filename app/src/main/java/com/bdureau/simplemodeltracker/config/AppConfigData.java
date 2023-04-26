@@ -19,7 +19,7 @@ public class AppConfigData {
     private String[] itemsLanguages = null;
 
     private String[] itemsColor = null;
-    private String[] itemsMaps = null;
+
     //"Meters", "Feet"
     private String[] itemsUnits = null;
     private String[] itemsFontSize = new String[]{"8","9", "10", "11", "12","13",
@@ -40,17 +40,16 @@ public class AppConfigData {
     private String[] itemsConnectionType = new String[]{ "bluetooth",
             "usb"};
     private String[] itemsModel = new String[] {"Rocket",
-            "Plane",
             "Boat",
             "Car",
-            "Hot air ballon"};
-    private String allowMultipleDrogueMain = "false";
+            "Hot air ballon",
+            "Plane"
+            };
 
-    private String fullUSBSupport = "false";
 
     private String rocketLatitude = "0.0";
     private String rocketLongitude = "0.0";
-    private String darkMode = "true";
+
 
     public AppConfigData(Context current)
     {
@@ -81,13 +80,7 @@ public class AppConfigData {
                 context.getResources().getString(R.string.color_ltgray), //"LTGRAY",
                 context.getResources().getString(R.string.color_red) //"RED"
         };
-        itemsMaps = new String[] {
-                "None", // MAP_TYPE_NONE = 0
-                "Normal", //MAP_TYPE_NORMAL =1
-                "Satellite", // MAP_TYPE_SATELLITE = 2
-                "Terrain", // MAP_TYPE_TERRAIN = 3
-                "Hybrid" //MAP_TYPE_HYBRID = 4
-        };
+
     }
     public String [] getItemsLanguages() {
         return itemsLanguages;
@@ -134,9 +127,6 @@ public class AppConfigData {
     }
     public String[] getItemsModelType() {return itemsModel;}
     public String getModelTypeByNbr(int modelType) {return itemsModel[modelType];}
-    public String getMultipleDrogueMain () {
-        return allowMultipleDrogueMain;
-    }
 
     public String [] getItemsColorMap() {
         return itemsColor;
@@ -145,10 +135,5 @@ public class AppConfigData {
         return itemsColor[colorNbr];
     }
 
-    public String [] getItemsMap() {
-        return itemsMaps;
-    }
-    public String  getMapByNbr(int mapNbr) {
-        return itemsMaps[mapNbr];
-    }
+
 }
