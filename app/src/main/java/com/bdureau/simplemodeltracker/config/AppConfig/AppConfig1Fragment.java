@@ -26,6 +26,7 @@ import java.util.Locale;
 
 public class AppConfig1Fragment extends Fragment {
     private Spinner spMapColor, spAppLanguage, spAppUnit, spBaudRate, spConnectionType;
+    private Spinner spinnerModelType;
 
     private boolean ViewCreated = false;
     private ConsoleApplication BT;
@@ -140,6 +141,13 @@ public class AppConfig1Fragment extends Fragment {
         ArrayAdapter<String> adapterConnectionType = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsConnectionType());
         spConnectionType.setAdapter(adapterConnectionType);
+
+        //ModelType
+        spinnerModelType = (Spinner) view.findViewById(R.id.spinnerModelType);
+
+        ArrayAdapter<String> adapterModelType = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsModelType());
+        spinnerModelType.setAdapter(adapterModelType);
 
         //spTelemetryVoice = (Spinner) view.findViewById(R.id.spinnerTelemetryVoice);
 

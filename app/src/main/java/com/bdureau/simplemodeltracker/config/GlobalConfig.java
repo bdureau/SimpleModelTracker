@@ -28,7 +28,7 @@ public class GlobalConfig {
     private int connectionType = 0;
     // default baud rate for USB is 38400
     private int baudRate = 8;
-    private int graphicsLibType = 0;
+    private int modelType = 0;
 
     private boolean allowMultipleDrogueMain = false;
     private boolean fullUSBSupport = false;
@@ -74,7 +74,7 @@ public class GlobalConfig {
         units = 0; //default to meters
         baudRate = 8; // default to 38400 baud
         connectionType = 0;
-        graphicsLibType = 1; //Default to MP android chart lib
+        modelType = 1; //Default to rocket
         allowMultipleDrogueMain = false;
         fullUSBSupport = false;
 
@@ -135,7 +135,7 @@ public class GlobalConfig {
 
             //Graphics Lib Type
             int graphicsLibType = appConfig.getInt("GraphicsLibType", 1);
-            setGraphicsLibType(graphicsLibType);
+            setModelType(graphicsLibType);
 
             //Allow multiple drogue and main
             boolean allowMultipleDrogueMain = appConfig.getBoolean("AllowMultipleDrogueMain", false);
@@ -215,7 +215,7 @@ public class GlobalConfig {
         edit.putInt("FontSize", getFontSize());
         edit.putInt("BaudRate", getBaudRate());
         edit.putInt("ConnectionType", getConnectionType());
-        edit.putInt("GraphicsLibType", getGraphicsLibType());
+        edit.putInt("ModelType", getModelType());
         edit.putBoolean("AllowMultipleDrogueMain", getAllowMultipleDrogueMain());
         edit.putBoolean("fullUSBSupport", getFullUSBSupport());
 
@@ -314,16 +314,16 @@ public class GlobalConfig {
         connectionType = value;
     }
 
-    public int getGraphicsLibType() {
-        return graphicsLibType;
+    public int getModelType() {
+        return modelType;
     }
 
-    public String getGraphicsLibTypeValue() {
-        return appCfgData.getGraphicsLibTypeByNbr(graphicsLibType);
+    public String getModelTypeValue() {
+        return appCfgData.getModelTypeByNbr(modelType);
     }
 
-    public void setGraphicsLibType(int value) {
-        graphicsLibType = value;
+    public void setModelType(int value) {
+        modelType = value;
     }
 
     public int getBaudRate() {

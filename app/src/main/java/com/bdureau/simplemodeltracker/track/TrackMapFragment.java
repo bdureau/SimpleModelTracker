@@ -65,7 +65,17 @@ public class TrackMapFragment extends Fragment {
 
 
         markerDest = new Marker(mMap);
-        markerDest.setIcon(getResources().getDrawable(R.drawable.ic_rocket_map));
+        if (myBT.getAppConf().getModelType() == 0) {
+            markerDest.setIcon(getResources().getDrawable(R.drawable.ic_rocket_map));
+        } else if(myBT.getAppConf().getModelType() == 1) {
+            markerDest.setIcon(getResources().getDrawable(R.drawable.ic_boat_map));
+        } else if(myBT.getAppConf().getModelType() == 2) {
+            markerDest.setIcon(getResources().getDrawable(R.drawable.ic_car_map));
+        } else if(myBT.getAppConf().getModelType() == 3) {
+            markerDest.setIcon(getResources().getDrawable(R.drawable.ic_hot_air_balloon_map));
+        } else if(myBT.getAppConf().getModelType() == 4) {
+            markerDest.setIcon(getResources().getDrawable(R.drawable.ic_plane_map));
+        }
         mMap.getOverlays().add(markerDest);
 
         polyline = new Polyline();

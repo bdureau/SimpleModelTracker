@@ -39,8 +39,11 @@ public class AppConfigData {
             "230400"};
     private String[] itemsConnectionType = new String[]{ "bluetooth",
             "usb"};
-    private String[] itemsGraphicsLib = new String[] {"AFreeChart",
-            "MPAndroidChart"};
+    private String[] itemsModel = new String[] {"Rocket",
+            "Plane",
+            "Boat",
+            "Car",
+            "Hot air ballon"};
     private String allowMultipleDrogueMain = "false";
 
     private String fullUSBSupport = "false";
@@ -129,8 +132,8 @@ public class AppConfigData {
     public String getConnectionTypeByNbr (int connectionTypeNbr) {
         return itemsConnectionType[connectionTypeNbr];
     }
-    public String[] getItemsGraphicsLib() {return itemsGraphicsLib;}
-    public String getGraphicsLibTypeByNbr(int graphicsLibNbr) {return itemsGraphicsLib[graphicsLibNbr];}
+    public String[] getItemsModelType() {return itemsModel;}
+    public String getModelTypeByNbr(int modelType) {return itemsModel[modelType];}
     public String getMultipleDrogueMain () {
         return allowMultipleDrogueMain;
     }
