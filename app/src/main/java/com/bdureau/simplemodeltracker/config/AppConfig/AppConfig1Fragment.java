@@ -2,14 +2,12 @@ package com.bdureau.simplemodeltracker.config.AppConfig;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.Voice;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -22,11 +20,11 @@ import com.bdureau.simplemodeltracker.ConsoleApplication;
 import com.bdureau.simplemodeltracker.R;
 import com.bdureau.simplemodeltracker.config.AppConfigData;
 
-import java.util.Locale;
 
 public class AppConfig1Fragment extends Fragment {
     private Spinner spMapColor, spAppLanguage, spAppUnit, spBaudRate, spConnectionType;
     private Spinner spModelType;
+    public ImageView imageAlti;
 
     private boolean ViewCreated = false;
     private ConsoleApplication BT;
@@ -130,6 +128,7 @@ public class AppConfig1Fragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsConnectionType());
         spConnectionType.setAdapter(adapterConnectionType);
 
+        imageAlti = (ImageView) view.findViewById(R.id.imageAlti);
         //ModelType
         spModelType = (Spinner) view.findViewById(R.id.spinnerModelType);
 
@@ -137,159 +136,28 @@ public class AppConfig1Fragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item, appConfigData.getItemsModelType());
         spModelType.setAdapter(adapterModelType);
 
-        //spTelemetryVoice = (Spinner) view.findViewById(R.id.spinnerTelemetryVoice);
-
-        //init text to speech
-        /*mTTS = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+        spModelType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    int result = 0;
-
-                    if (Locale.getDefault().getLanguage().equals("en"))
-                        //result = mTTS.setLanguage(Locale.ENGLISH);
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("fr"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("es"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                        //result = mTTS.setLanguage(Locale.FRENCH);
-                    else if (Locale.getDefault().getLanguage().equals("tr"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("nl"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("it"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("hu"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("ru"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else
-                        result = mTTS.setLanguage(Locale.ENGLISH);
-
-
-                    Log.d("Voice", BT.getAppConf().getTelemetryVoice() + "");
-                    try {
-                        for (Voice tmpVoice : mTTS.getVoices()) {
-                            Log.d("Voice", tmpVoice.getName());
-                            if (tmpVoice.getName().equals(spTelemetryVoice.getSelectedItem().toString())) {
-                                mTTS.setVoice(tmpVoice);
-                                Log.d("Voice", "Found voice");
-                                break;
-                            }
-                        }
-                    } catch (Exception e) {
-                        msg(Locale.getDefault().getLanguage());
-                    }
-
-                    mTTS.setPitch(1.0f);
-                    mTTS.setSpeechRate(1.0f);
-                    if (Locale.getDefault().getLanguage().equals("en"))
-                        mTTS.speak("Bearaltimeter altimeters are the best", TextToSpeech.QUEUE_FLUSH, null);
-                    if (Locale.getDefault().getLanguage().equals("fr"))
-                        mTTS.speak("Les altimètres Bearaltimeter sont les meilleurs", TextToSpeech.QUEUE_FLUSH, null);
-                    if (Locale.getDefault().getLanguage().equals("es"))
-                        mTTS.speak("Los altimietros Bearaltimeter son los mejores", TextToSpeech.QUEUE_FLUSH, null);
-                    if (Locale.getDefault().getLanguage().equals("it"))
-                        mTTS.speak("Gli altimetri Bearaltimeter sono i migliori", TextToSpeech.QUEUE_FLUSH, null);
-                    if (Locale.getDefault().getLanguage().equals("tr"))
-                        mTTS.speak("Roket inis yapti", TextToSpeech.QUEUE_FLUSH, null);
-                    if (Locale.getDefault().getLanguage().equals("nl"))
-                        mTTS.speak("De Bearaltimeter-hoogtemeters zijn de beste", TextToSpeech.QUEUE_FLUSH, null);
-                    if (Locale.getDefault().getLanguage().equals("hu"))
-                        mTTS.speak("A Bearaltiméter a legjobb", TextToSpeech.QUEUE_FLUSH, null);
-                    if (Locale.getDefault().getLanguage().equals("ru"))
-                        mTTS.speak("Медвежатник - это лучшее", TextToSpeech.QUEUE_FLUSH, null);
-                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Log.e("TTS", "Language not supported");
-                    } else {
-                        //msg(Locale.getDefault().getLanguage());
-                    }
-                } else {
-                    Log.e("TTS", "Init failed");
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (spModelType.getSelectedItemId()== 0) {
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ic_rocket_map, view.getContext().getTheme()));
+                } else if (spModelType.getSelectedItemId()== 1) {
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ic_boat_map, view.getContext().getTheme()));
+                } else if (spModelType.getSelectedItemId()== 2) {
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ic_car_map, view.getContext().getTheme()));
+                } else if (spModelType.getSelectedItemId()== 3) {
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ic_hot_air_balloon_map, view.getContext().getTheme()));
+                }else if (spModelType.getSelectedItemId()== 4) {
+                    imageAlti.setImageDrawable(getResources().getDrawable(R.drawable.ic_plane_map, view.getContext().getTheme()));
                 }
             }
-        });*/
 
-        /*btnTestVoice = (Button) view.findViewById(R.id.butTestVoice);
-        btnTestVoice.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //init text to speech
-                mTTS = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int status) {
-                        if (status == TextToSpeech.SUCCESS) {
-                            int result = 0;
-
-                            if (Locale.getDefault().getLanguage().equals("en"))
-                                //result = mTTS.setLanguage(Locale.ENGLISH);
-                                result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage().equals("fr"))
-                                result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage().equals("es"))
-                                result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                                //result = mTTS.setLanguage(Locale.FRENCH);
-                            else if (Locale.getDefault().getLanguage().equals("tr"))
-                                result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage().equals("nl"))
-                                result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage().equals("it"))
-                                result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage().equals("hu"))
-                                result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else if (Locale.getDefault().getLanguage().equals("ru"))
-                                result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                            else
-                                result = mTTS.setLanguage(Locale.ENGLISH);
-
-
-                            Log.d("Voice", BT.getAppConf().getTelemetryVoice() + "");
-                            try {
-                                for (Voice tmpVoice : mTTS.getVoices()) {
-                                    Log.d("Voice", tmpVoice.getName());
-                                    if (tmpVoice.getName().equals(spTelemetryVoice.getSelectedItem().toString())) {
-                                        mTTS.setVoice(tmpVoice);
-                                        Log.d("Voice", "Found voice");
-                                        break;
-                                    }
-                                }
-                            } catch (Exception e) {
-                                msg(Locale.getDefault().getLanguage());
-                            }
-
-                            mTTS.setPitch(1.0f);
-                            mTTS.setSpeechRate(1.0f);
-                            if (Locale.getDefault().getLanguage().equals("en"))
-                                mTTS.speak("Bearaltimeter altimeters are the best", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage().equals("fr"))
-                                mTTS.speak("Les altimètres Bearaltimeter sont les meilleurs", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage().equals("es"))
-                                mTTS.speak("Los altimietros Bearaltimeter son los mejores", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage().equals("it"))
-                                mTTS.speak("Gli altimetri Bearaltimeter sono i migliori", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage().equals("tr"))
-                                mTTS.speak("Roket inis yapti", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage().equals("nl"))
-                                mTTS.speak("De Bearaltimeter-hoogtemeters zijn de beste", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage().equals("hu"))
-                                mTTS.speak("A Bearaltiméter a legjobb", TextToSpeech.QUEUE_FLUSH, null);
-                            if (Locale.getDefault().getLanguage().equals("ru"))
-                                mTTS.speak("Медвежатник - это лучшее", TextToSpeech.QUEUE_FLUSH, null);
-                            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                                Log.e("TTS", "Language not supported");
-                            } else {
-                                //msg(Locale.getDefault().getLanguage());
-                            }
-                        } else {
-                            Log.e("TTS", "Init failed");
-                        }
-                    }
-                });
-
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
             }
-        });*/
 
+        });
         spAppLanguage.setSelection(BT.getAppConf().getApplicationLanguage());
         spAppUnit.setSelection(BT.getAppConf().getUnits());
         spBaudRate.setSelection(BT.getAppConf().getBaudRate());

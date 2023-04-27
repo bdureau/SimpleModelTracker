@@ -173,4 +173,9 @@
     <string name="share_file">Partager Fichier</string>
     <string name="simpletracker_has_shared">SimpleTracker a partagé avec vous des informations</string>
     <string name="no_app_available">Pas d\'application disponible</string>
+    <string name="model_rocket">Rocket</string>
+    <string name="model_boat">Boat</string>
+    <string name="model_car">Car</string>
+    <string name="model_ballon">Hot air ballon</string>
+    <string name="model_plane">Plane</string>
 </resources>

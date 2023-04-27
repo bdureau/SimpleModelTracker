@@ -123,4 +123,12 @@
         android:layout_alignBaseline="@+id/textViewModel"
         android:layout_alignParentRight="true" />
 
+    <ImageView
+        android:id="@+id/imageAlti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinnerModelType"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_rocket_map" />
+
 </RelativeLayout>

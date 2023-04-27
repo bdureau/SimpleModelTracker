@@ -304,7 +304,7 @@ public class AppTabConfigActivity extends AppCompatActivity {
         //open help screen
         if (id == R.id.action_help) {
             Intent i = new Intent(AppTabConfigActivity.this, HelpActivity.class);
-            i.putExtra("help_file", "help_config_application");
+            i.putExtra("help_file", "help_config");
             startActivity(i);
             return true;
         }

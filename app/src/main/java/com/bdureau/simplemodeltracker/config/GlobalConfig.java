@@ -17,11 +17,6 @@ public class GlobalConfig {
     //Graph units
     private int units = 0;
 
-    //graph background color
-    //private int graphBackColor = 1;
-    //graph color
-    //private int graphColor = 0;
-
     //graph font size
     private int fontSize = 10;
     // connection type is bluetooth
@@ -60,17 +55,12 @@ public class GlobalConfig {
 
     public void ResetDefaultConfig() {
         applicationLanguage = 0; // default to english
-        //graphBackColor = 1;
-        //graphColor = 0;
         mapColor = 0;
-        //mapType = 2;
         fontSize = 10;
         units = 0; //default to meters
         baudRate = 8; // default to 38400 baud
         connectionType = 0;
         modelType = 0; //Default to rocket
-        //allowMultipleDrogueMain = false;
-        //fullUSBSupport = false;
 
         say_connecteddisconnected_event = false;
         say_acquisiation_satellite_event = false;

@@ -19,6 +19,7 @@ public class AppConfigData {
     private String[] itemsLanguages = null;
 
     private String[] itemsColor = null;
+    private String[] itemsModel = null;
 
     //"Meters", "Feet"
     private String[] itemsUnits = null;
@@ -39,12 +40,7 @@ public class AppConfigData {
             "230400"};
     private String[] itemsConnectionType = new String[]{ "bluetooth",
             "usb"};
-    private String[] itemsModel = new String[] {"Rocket",
-            "Boat",
-            "Car",
-            "Hot air ballon",
-            "Plane"
-            };
+
 
 
     private String rocketLatitude = "0.0";
@@ -54,12 +50,10 @@ public class AppConfigData {
     public AppConfigData(Context current)
     {
         context = current;
-        //context.getApplicationContext().getSharedPreferences()
-                //getSharedPreferences
+
         itemsLanguages = new String[]{
                 context.getResources().getString(R.string.phone_language),//"Phone language"
                 context.getResources().getString(R.string.phone_english)// "English",
-                //context.getResources().getString(R.string.phone_french) //"French",
 
         };
         itemsUnits = new String[]{
@@ -81,6 +75,12 @@ public class AppConfigData {
                 context.getResources().getString(R.string.color_red) //"RED"
         };
 
+        itemsModel = new String[] {context.getResources().getString(R.string.model_rocket), //rocket
+                context.getResources().getString(R.string.model_boat), //boat
+                context.getResources().getString(R.string.model_car), //car
+                context.getResources().getString(R.string.model_ballon), //ballon
+                context.getResources().getString(R.string.model_plane) //plane
+        };
     }
     public String [] getItemsLanguages() {
         return itemsLanguages;
