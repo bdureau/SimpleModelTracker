@@ -44,5 +44,5 @@ dependencies {
     implementation 'com.squareup.okio:okio:3.3.0' //this is needed so that my local userial lib work
     //for openmap
     implementation 'androidx.preference:preference:1.2.0'
-    implementation 'org.osmdroid:osmdroid-android:6.0.2'
+    implementation 'org.osmdroid:osmdroid-android:6.1.16'
 }

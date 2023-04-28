@@ -178,4 +178,5 @@
     <string name="model_car">Car</string>
     <string name="model_ballon">Hot air ballon</string>
     <string name="model_plane">Plane</string>
+    <string name="model_type">Model type:</string>
 </resources>
