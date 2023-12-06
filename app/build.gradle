@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'com.bdureau.simplemodeltracker'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.bdureau.simplemodeltracker"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -26,12 +26,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     implementation files('libs/physicaloid.aar')
@@ -41,8 +42,8 @@ dependencies {
 
     implementation files('libs/usbserial-6.1.0.aar') //special version of usbserial that work with Android 12
     //implementation 'com.github.felHR85:UsbSerial:6.1.0' //that does not work with Android 12
-    implementation 'com.squareup.okio:okio:3.3.0' //this is needed so that my local userial lib work
+    implementation 'com.squareup.okio:okio:3.6.0' //this is needed so that my local userial lib work
     //for openmap
-    implementation 'androidx.preference:preference:1.2.0'
-    implementation 'org.osmdroid:osmdroid-android:6.1.16'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'org.osmdroid:osmdroid-android:6.1.17'
 }
