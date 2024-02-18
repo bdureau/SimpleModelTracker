@@ -1,5 +1,7 @@
 package com.bdureau.simplemodeltracker;
 
+import static android.content.Context.RECEIVER_NOT_EXPORTED;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -311,7 +313,12 @@ public class MainScreenActivity extends AppCompatActivity {
         filter.addAction(ACTION_USB_PERMISSION);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        registerReceiver(broadcastReceiver, filter);
+        //registerReceiver(broadcastReceiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(broadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(broadcastReceiver, filter);
+        }
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -641,7 +648,12 @@ public class MainScreenActivity extends AppCompatActivity {
 
     private void startService() {
         IntentFilter filter = new IntentFilter("ACT_LOC");
-        registerReceiver(receiver, filter);
+        //registerReceiver(receiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(broadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(broadcastReceiver, filter);
+        }
         locIntent = new Intent(MainScreenActivity.this, LocationService.class);
         startService(locIntent);
     }
@@ -667,10 +679,14 @@ public class MainScreenActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 1:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startService();
-                } else {
-                    Toast.makeText(this, "permission need to be granted", Toast.LENGTH_LONG).show();
+                try {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        startService();
+                    } else {
+                        Toast.makeText(this, "permission need to be granted", Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+
                 }
         }
     }
