@@ -1,6 +1,6 @@
 package com.bdureau.simplemodeltracker;
 
-import static android.content.Context.RECEIVER_NOT_EXPORTED;
+//import static android.content.Context.RECEIVER_NOT_EXPORTED;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -24,7 +24,7 @@ import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.text.Html;
-import android.text.format.DateFormat;
+//import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,6 +57,7 @@ import com.bdureau.simplemodeltracker.track.TrackMapFragment;
 
 import org.osmdroid.config.Configuration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -262,10 +263,26 @@ public class MainScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         myBT = (ConsoleApplication) getApplication();
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
+        org.osmdroid.config.IConfigurationProvider osmConf = org.osmdroid.config.Configuration.getInstance();
+        File basePath = new File(getCacheDir().getAbsolutePath(), "osmdroid");
+        osmConf.setOsmdroidBasePath(basePath);
+        File tileCache = new File(osmConf.getOsmdroidBasePath().getAbsolutePath(), "tile");
+        osmConf.setOsmdroidTileCache(tileCache);
+
         receiver = new LocationBroadCastReceiver();
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                startService();
+            }
+        } else {
+            startService();
+        }
 
         usbManager = (UsbManager) getSystemService(this.USB_SERVICE);
 
@@ -315,12 +332,15 @@ public class MainScreenActivity extends AppCompatActivity {
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         //registerReceiver(broadcastReceiver, filter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(broadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
+            //registerReceiver(broadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
+            //registerReceiver(broadcastReceiver, filter, RECEIVER_EXPORTED);
+            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
         } else {
-            registerReceiver(broadcastReceiver, filter);
+            //registerReceiver(broadcastReceiver, filter);
+            registerReceiver(receiver, filter);
         }
 
-        if (Build.VERSION.SDK_INT >= 23) {
+        /*if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             } else {
@@ -328,7 +348,7 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         } else {
             startService();
-        }
+        }*/
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
@@ -337,9 +357,9 @@ public class MainScreenActivity extends AppCompatActivity {
             if (checkSelfPermission(android.Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, 1);
             }
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            /*if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            }
+            }*/
         }
 
 
@@ -611,13 +631,13 @@ public class MainScreenActivity extends AppCompatActivity {
                 int deviceVID = device.getVendorId();
 
                 PendingIntent pi;
-                if (android.os.Build.VERSION.SDK_INT >= 31) {
+                //if (android.os.Build.VERSION.SDK_INT >= 31) {
                     pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
                             new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
-                } else {
+               /* } else {
                     pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
                             new Intent(ACTION_USB_PERMISSION), 0);
-                }
+                }*/
 
                 usbManager.requestPermission(device, pi);
                 keep = false;
@@ -650,9 +670,12 @@ public class MainScreenActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("ACT_LOC");
         //registerReceiver(receiver, filter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            registerReceiver(broadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
+            //registerReceiver(broadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
+            //registerReceiver(broadcastReceiver, filter, RECEIVER_EXPORTED);
+            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
         } else {
-            registerReceiver(broadcastReceiver, filter);
+            //registerReceiver(broadcastReceiver, filter);
+            registerReceiver(receiver, filter);
         }
         locIntent = new Intent(MainScreenActivity.this, LocationService.class);
         startService(locIntent);
@@ -709,6 +732,7 @@ public class MainScreenActivity extends AppCompatActivity {
             if (intent.getAction().equals("ACT_LOC")) {
                 double latitude = intent.getDoubleExtra("latitude", 0f);
                 double longitude = intent.getDoubleExtra("longitude", 0f);
+
                 if (tabPage2 != null) {
                     tabPage2.setTelLatitudeValue(latitude + "");
                     tabPage2.setTelLongitudeValue(longitude + "");

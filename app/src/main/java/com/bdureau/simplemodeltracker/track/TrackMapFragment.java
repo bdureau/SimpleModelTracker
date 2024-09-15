@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
+import com.bdureau.simplemodeltracker.BuildConfig;
 import com.bdureau.simplemodeltracker.ConsoleApplication;
 import com.bdureau.simplemodeltracker.R;
 
@@ -50,6 +51,7 @@ public class TrackMapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Configuration.getInstance().load(this.getContext(),
                 PreferenceManager.getDefaultSharedPreferences(this.getContext()));
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
         View view = inflater.inflate(R.layout.fragment_track_open_map, container, false);
 
         textViewdistance = (TextView) view.findViewById(R.id.textViewdistance);
