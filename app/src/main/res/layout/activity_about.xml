@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".Help.AboutActivity">
 
     <ImageView
@@ -41,7 +42,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Copyright (c) Boris du Reau 2016-2024"
+        android:text="Copyright (c) Boris du Reau 2016-2025"
         android:id="@+id/txtViewCopyright"
         android:layout_below="@+id/txtViewVersion"
         android:layout_centerHorizontal="true"

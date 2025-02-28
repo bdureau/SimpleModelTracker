@@ -88,13 +88,13 @@ public class MainScreenActivity extends AppCompatActivity {
     private TextToSpeech mTTS;
 
 
-    private long notConnectedTime =0;
-    private long lastSpeakNotConnectedTime =1000;
+    private long notConnectedTime = 0;
+    private long lastSpeakNotConnectedTime = 1000;
 
     private long lastReceivedMessageTime = 0;
 
     private boolean soundOn = true;
-    private boolean sateliteAcquisitionCompleteSaid=false;
+    private boolean sateliteAcquisitionCompleteSaid = false;
     Intent locIntent = null;
 
     UsbManager usbManager;
@@ -170,14 +170,13 @@ public class MainScreenActivity extends AppCompatActivity {
                         if (l != null) {
                             setLatitudeValue(l.getLatitude() + "");
                             setLongitudeValue(l.getLongitude() + "");
-                            int nbrOfSat= l.getExtras().getInt("satellites");
-                            if(!sateliteAcquisitionCompleteSaid && nbrOfSat > 2 ) {
+                            int nbrOfSat = l.getExtras().getInt("satellites");
+                            if (!sateliteAcquisitionCompleteSaid && nbrOfSat > 2) {
                                 sateliteAcquisitionCompleteSaid = true;
-                                if(soundOn & myBT.getAppConf().getAcquisition_satellite_event())
+                                if (soundOn & myBT.getAppConf().getAcquisition_satellite_event())
                                     mTTS.speak(getString(R.string.sat_acq_complete_msg), TextToSpeech.QUEUE_FLUSH, null);
-                            }
-                            else {
-                                if(sateliteAcquisitionCompleteSaid && nbrOfSat < 3) {
+                            } else {
+                                if (sateliteAcquisitionCompleteSaid && nbrOfSat < 3) {
                                     sateliteAcquisitionCompleteSaid = false;
                                     /*if(soundOn)
                                         mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);*/
@@ -187,19 +186,17 @@ public class MainScreenActivity extends AppCompatActivity {
                             if (tabPage2 != null) {
                                 tabPage2.setLatitudeValue(l.getLatitude() + "");
                                 tabPage2.setLongitudeValue(l.getLongitude() + "");
-                                tabPage2.setHdopVal(l.getAccuracy()+"");
-                                tabPage2.setGPSAltitudeVal(l.getAltitude()+"");
-                                tabPage2.setGPSSpeedVal(l.getSpeed()+"");
-                                tabPage2.setSatellitesVal(l.getExtras().getInt("satellites") +"");
+                                tabPage2.setHdopVal(l.getAccuracy() + "");
+                                tabPage2.setGPSAltitudeVal(l.getAltitude() + "");
+                                tabPage2.setGPSSpeedVal(l.getSpeed() + "");
+                                tabPage2.setSatellitesVal(l.getExtras().getInt("satellites") + "");
                                 //tabPage2.setTimeSatValue(l.getElapsedRealtimeAgeMillis()+"");
                                 receiving = true;
-                            }
-                            else {
+                            } else {
                                 receiving = false;
                                 sateliteAcquisitionCompleteSaid = false;
                             }
-                        }
-                        else {
+                        } else {
                             Log.d(TAG, "Connection lost");
                             sateliteAcquisitionCompleteSaid = false;
                             notConnectedTime = System.currentTimeMillis();
@@ -479,7 +476,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 } else {
                     if (myBT.getConnectionType().equals("bluetooth")) {
                         address = myBT.getAddress();
-                        Log.d(TAG,"Connecting using bluetooth");
+                        Log.d(TAG, "Connecting using bluetooth");
                         if (address != null) {
                             new ConnectBT().execute(); //Call the class to connect
                         } else {
@@ -507,15 +504,14 @@ public class MainScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (soundOn) {
-                    if(myBT.getConnected()) {
-                        if(myBT.getAppConf().getDistance_event()) {
+                    if (myBT.getConnected()) {
+                        if (myBT.getAppConf().getDistance_event()) {
                             mTTS.speak(getString(R.string.distance) + " " + String.valueOf((int) distance) + " "
                                     + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
                         }
                         Log.d(TAG, "unit value:" + myBT.getAppConf().getUnitsValue());
-                    } else
-                    {
-                        if(myBT.getAppConf().getNotConnected_event())
+                    } else {
+                        if (myBT.getAppConf().getNotConnected_event())
                             mTTS.speak(getString(R.string.notconnected_msg), TextToSpeech.QUEUE_FLUSH, null);
                     }
                 }
@@ -529,7 +525,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                if(!receiving) {
+                if (!receiving) {
                     if (soundOn & myBT.getAppConf().getAcquisition_satellite_event())
                         mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);
                 }
@@ -632,8 +628,8 @@ public class MainScreenActivity extends AppCompatActivity {
 
                 PendingIntent pi;
                 //if (android.os.Build.VERSION.SDK_INT >= 31) {
-                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
-                            new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
+                pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
+                        new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
                /* } else {
                     pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
                             new Intent(ACTION_USB_PERMISSION), 0);
@@ -690,9 +686,9 @@ public class MainScreenActivity extends AppCompatActivity {
             unregisterReceiver(receiver);
             receiver = null;
         }
-        if(timerDistance !=null)
+        if (timerDistance != null)
             timerDistance.cancel();
-        if(timerNotReceiving!=null)
+        if (timerNotReceiving != null)
             timerNotReceiving.cancel();
 
     }
@@ -740,7 +736,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude, longitude, rocketLongitude);
 
                 //Warn if we have not received GPS trame
-                if((lastReceivedMessageTime -System.currentTimeMillis()) > 60000) {
+                if ((lastReceivedMessageTime - System.currentTimeMillis()) > 60000) {
                     notConnectedTime = System.currentTimeMillis();
                     if ((notConnectedTime - lastSpeakNotConnectedTime) > 60000) {
                         if (soundOn)
@@ -860,7 +856,7 @@ public class MainScreenActivity extends AppCompatActivity {
             //"Connecting...", "Please wait!!!"
             builder = new AlertDialog.Builder(MainScreenActivity.this);
             //Connecting...
-            Log.d(TAG,"Connecting...");
+            Log.d(TAG, "Connecting...");
             builder.setMessage(getResources().getString(R.string.MS_msg1) + "\n" + myBT.getModuleName())
                     .setTitle(getResources().getString(R.string.MS_msg2))
                     .setCancelable(false)
@@ -893,7 +889,7 @@ public class MainScreenActivity extends AppCompatActivity {
             super.onPostExecute(result);
 
             if (!ConnectSuccess) {
-                Log.d(TAG,"connection unsuccessfull");
+                Log.d(TAG, "connection unsuccessfull");
             } else {
                 //Connected.
                 myBT.setConnected(true);
