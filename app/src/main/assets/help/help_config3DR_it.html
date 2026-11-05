@@ -12,7 +12,123 @@
 <p> </p>
 <p>Devi configurare il modulo in modo che funzioni con la tua scheda altimetro.</p>
 <p>Nota che questi moduli di solito vengono preimpostati per funzionare a 57600 bauds. Tuttavia la tua scheda altimetro funzionerà in modo predefinito a 38400 bauds, quindi dovrai assicurarti di connetterti alla velocità corretta.</p>
-<p></p>
+<p></p><!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul, ol {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .img-container {
+            margin: 10px 0 16px 0;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .warning {
+            background-color: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 0 4px 4px 0;
+            color: #9b2c2c;
+            font-weight: 600;
+        }
+        .note {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .note p:last-child, .warning p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Configurazione del modulo di telemetria 3DR</h1>
+<p>Per utilizzare la telemetria a lungo raggio, è necessario sostituire il modulo Bluetooth con un modulo radio 3DR.</p>
+<div class="img-container">
+    <img src="file:///android_asset/help/images/3DR_module-small.png" alt="3DR Module"/>
+</div>
+<p>Assicurati che la batteria del dispositivo Android fornisca alimentazione sufficiente. Se utilizzi un modulo ad alta potenza, collega una batteria esterna o un hub USB alimentato.</p>
+
+<h2>Hardware necessario</h2>
+<ul>
+    <li><strong>Cavo adattatore seriale USB-TTL</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Cavo adattatore seriale USB-TTL"/></div>
+    </li>
+    <li><strong>Adattatore USB OTG (USB-C o Micro-USB a seconda del dispositivo)</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adattatore USB OTG (USB-C o Micro-USB a seconda del dispositivo)"/></div>
+    </li>
+    <li><strong>Adattatore JST e cavetti di connessione JST dedicati</strong></li>
+</ul>
+
+<div class="note">
+    <p>Questi moduli sono generalmente preimpostati a 57600 baud. La scheda altimetro opera invece per impostazione predefinita a 38400 baud: assicurati di selezionare la velocità corretta.</p>
+    <p>I moduli 3DR funzionano in coppia: è necessario configurare sia il trasmettitore di bordo che il ricevitore di terra con parametri identici (Net ID, frequenza, canali e baud rate).</p>
+</div>
+
+<div class="warning">
+    <p>ATTENZIONE: Non scollegare mai il modulo o il cavo durante le operazioni di lettura o scrittura.</p>
+</div>
+
+<h2>Lettura della configurazione del modulo</h2>
+<ol>
+    <li>Collega il modulo 3DR al dispositivo Android tramite il cavo TTL e l'adattatore USB OTG.</li>
+    <li>Tocca <strong>[Recupera cfg]</strong>. L'applicazione testerà diverse velocità standard fino a sincronizzarsi con il modulo.</li>
+    <li>A connessione avvenuta, i parametri correnti del modulo appariranno sullo schermo.</li>
+</ol>
+
+<h2>Salvataggio della configurazione</h2>
+<ol>
+    <li>Modifica i parametri necessari (baud rate, Net ID, frequenza, air data rate, potenza di trasmissione). Verifica che il baud rate corrisponda alla scheda altimetro.</li>
+    <li>Tocca <strong>[Salva cfg]</strong>. I comandi verranno registrati nella memoria permanente (EEPROM). In caso di errore, il processo di scrittura verrà interrotto in sicurezza.</li>
+</ol>
+
+<p><em>Nota: Ripeti la procedura di configurazione per ciascuno dei due moduli della coppia.</em></p>
+</body>
+</html>
 <p>Nota che i moduli 3DR vengono forniti in coppia, quindi dovrai configurare sia il trasmettitore che il ricevitore</p>
 <p></p>
 <p><span style="color: #ff0000;">ATTENZIONE: assicurati di non scollegare il modulo durante le seguenti operazioni</span></p>

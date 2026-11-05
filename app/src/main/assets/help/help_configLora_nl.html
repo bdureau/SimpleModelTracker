@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul, ol {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .img-container {
+            margin: 10px 0 16px 0;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .warning {
+            background-color: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 0 4px 4px 0;
+            color: #9b2c2c;
+            font-weight: 600;
+        }
+        .note {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .note p:last-child, .warning p:last-child {
+            margin-bottom: 0;
+        }
+        .modules-list {
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+            list-style-type: square;
+        }
+    </style>
+</head>
+<body>
+<h1>Configuratie van de eByte LoRa E220-module</h1>
+<p>Om telemetrie over lange afstand mogelijk te maken, vervangt u de Bluetooth-module door een eByte LoRa E220-radiomodule.</p>
+
+<h2>Ondersteunde en geteste modules</h2>
+<ul class="modules-list">
+    <li><code>E220-400T30D</code></li>
+    <li><code>E220-400T30S</code></li>
+    <li><code>E220-900T30D</code></li>
+    <li><code>E220-900T30S</code></li>
+    <li><code>E220-400T22D</code></li>
+    <li><code>E220-900T22S</code></li>
+</ul>
+
+<div class="img-container">
+    <img src="file:///android_asset/help/images/E220-900T22S.jpg" alt="LoRa E220-900T22S"/>
+</div>
+<div class="img-container">
+    <img src="file:///android_asset/help/images/E220-900T30D.jpg" alt="LoRa E220-900T30D"/>
+</div>
+
+<h2>Vereiste hardware</h2>
+<ul>
+    <li><strong>USB-naar-seriële TTL-kabel</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="USB-naar-seriële TTL-kabel"/></div>
+    </li>
+    <li><strong>USB OTG-adapter (USB-C of Micro-USB afhankelijk van uw apparaat)</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB OTG-adapter (USB-C of Micro-USB afhankelijk van uw apparaat)"/></div>
+    </li>
+    <li><strong>JST-adapter en bijbehorende JST-bedrading</strong></li>
+</ul>
+
+<p>Zorg ervoor dat de batterij van uw Android-apparaat voldoende stroom levert aan de LoRa-module. Gebruik een externe voedingsbron bij zware zendmodules (30 dBm / 1W).</p>
+
+<div class="note">
+    <p><strong>Configuratiemodus (M0/M1): Plaats beide jumpers op pinnen M0 en M1 om de configuratiemodus te activeren.</strong></p>
+    <p>Programmiersnelheid: De interne configuratieregisters werken strikt op 9600 baud. De seriële communicatiesnelheid voor vluchtgegevens moet overeenkomen met de hoogtemeter (standaard 38400 baud).</p>
+    <p>LoRa-systemen werken in paren: stel zowel de boordzender als de grondontvanger in met identieke radioparameters (frequentiekanaal, netwerkadres, luchtsnelheid en encryptiesleutel).</p>
+</div>
+
+<div class="warning">
+    <p>LET OP: Koppel de module of kabel nooit los tijdens het lezen of schrijven van instellingen.</p>
+</div>
+
+<h2>De moduleconfiguratie ophalen</h2>
+<ol>
+    <li>Controleer of beide jumpers zijn geplaatst en sluit de module aan op uw Android-apparaat via de TTL-kabel en de USB OTG-adapter.</li>
+    <li>Tik op <strong>[Retrieve cfg]</strong> (Configuratie ophalen). De app maakt verbinding op 9600 baud en leest de registers uit.</li>
+    <li>Zodra het uitlezen is voltooid, worden de huidige instellingen van de module weergegeven.</li>
+</ol>
+
+<h2>De nieuwe configuratie opslaan</h2>
+<ol>
+    <li>Pas de gewenste parameters aan. Zorg ervoor dat de gekozen baudrate overeenkomt met uw hoogtemeter (standaard 38400 baud).</li>
+    <li>Controleer of het frequentiekanaal en de encryptiesleutel identiek zijn ingesteld op zowel de zender als de ontvanger.</li>
+    <li>Tik op <strong>[Save cfg]</strong> (Configuratie opslaan). De gegevens worden opgeslagen in het permanente geheugen. Bij een fout wordt het proces veilig afgebroken.</li>
+</ol>
+
+<div class="note">
+    <p><em>Opmerking: Herhaal deze configuratiestappen afzonderlijk voor beide modules van het LoRa-paar.</em></p>
+    <p><strong>Belangrijk: Verwijder beide jumpers (normale werkmodus M0=0, M1=0) voordat u met de raket gaat vliegen.</strong></p>
+    <p>Compatibiliteit: LoRa-telemetriemodules worden momenteel niet ondersteund op ESP32-hoogtemeterprintplaten.</p>
+</div>
+</body>
+</html>

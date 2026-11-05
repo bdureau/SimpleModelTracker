@@ -1,17 +1,75 @@
-<h1>Simple model tracker configuration help file</h1>
-<p>The application look and feel as well as behavious can be configured with a couple of screen </p>
-<p>On the first screen:</p>
-<p>- choose the color of the line on the map</p>
-<p>- you can for the application help language, as english is the main language for the application
-    it will always be up to date</p>
-<p>- application units, you can choose between metrics and imperial</p>
-<p>- baud rate can be change if you are using some slow telemetry module</p>
-<p>- connection type can be bluetooth or USB. Bluetooth is more reliable if your USB cable is a bit loose</p>
-<p>- Model type will allow you to select various icons depending on the model that you want to track</p>
-<p></p>
-<p>On the second screen:</p>
-<p>This is for the telemetry voice. As you might want to visually look for your model it is sometime
-    more convenient to listen to events. You can choose the events that you want to listen to as well
-as the voice for those</p>
-<p></p>
-<p></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .highlight {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Simple Model Tracker Configuration</h1>
+<p>The appearance, display units, and operational behavior of the application can be customized across two configuration screens.</p>
+
+<h2>First Screen: General Settings</h2>
+<ul>
+    <li><strong>Trajectory line color:</strong> Choose the color of the tracking path rendered on the map.</li>
+    <li><strong>Help language:</strong> Force the application help documentation language. English is the reference language and will always be up to date.</li>
+    <li><strong>Application units:</strong> Toggle between Metric (meters, km/h) and Imperial (feet, mph) measurement units.</li>
+    <li><strong>Baud rate:</strong> Adjust the serial communication speed if using slower telemetry transceiver modules.</li>
+    <li><strong>Connection type:</strong> Select between Bluetooth or USB OTG connection. Bluetooth is recommended if your physical USB cable tends to be loose.</li>
+    <li><strong>Model type:</strong> Select custom map marker icons matching the specific type of model aircraft or rocket you are tracking.</li>
+</ul>
+
+<h2>Second Screen: Voice Telemetry</h2>
+<div class="highlight">
+    <p>Configure audio speech synthesis for telemetry callouts. While keeping your eyes on the sky to spot your model, audio alerts allow you to monitor flight events hands-free. You can customize which flight events are spoken as well as the voice profile.</p>
+</div>
+</body>
+</html>

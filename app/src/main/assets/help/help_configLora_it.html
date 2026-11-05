@@ -1,43 +1,144 @@
-<h1>Configurazione del modulo eByte Lora E220</h1>
-<p>Per effettuare la telemetria a lunga distanza, è necessario sostituire il modulo Bluetooth con un modulo di telemetria a lunga distanza come il Lora E22O.</p>
-<p>I seguenti moduli sono stati configurati con successo:</p>
-<p>E220-400T30D</p>
-<p>E220-400T30S</p>
-<p>E220-900T30D</p>
-<p>E220-900T30S</p>
-<p>E220-400T22D</p>
-<p>ecc...</p>
-<p><img src="file:///android_asset/help/images/E220-900T22S.jpg"/></p>
-<p><img src="file:///android_asset/help/images/E220-900T30D.jpg"/></p>
-<p> </p>
-<p>Per programmare il modulo è necessario un cavo TTL</p>
-<p><img src="file:///android_asset/help/images/ttl_cable-small.jpg"/></p>
-<p>Un adattatore USB (USBC o micro USB a seconda del dispositivo Android) </p>
-<p><img src="file:///android_asset/help/images/usb_adpter-small.jpg"/></p>
-<p>è necessario un adattatore JST e alcuni cavi JST.</p>
-<p> </p>
-<p>Si prega di notare che la batteria del dispositivo Android deve essere abbastanza potente per alimentare il modulo Lora. Considerare l'utilizzo di una batteria esterna se si dispone di un modulo potente.</p>
-<p></p>
-<p>Per entrare in modalità di configurazione, è necessario inserire entrambi i ponti.</p>
-<p>È necessario configurare il modulo in modo che funzioni con la scheda altimetro.</p>
-<p>Si noti che questi moduli di solito vengono preimpostati per funzionare a 57600 baud. Tuttavia, la scheda altimetro di default funzionerà a 38400 baud, quindi sarà necessario assicurarsi di connettersi alla velocità corretta.</p>
-<p></p>
-<p>Si noti che i moduli Lora vengono forniti in coppia, quindi sarà necessario configurare sia il trasmettitore che il ricevitore.</p>
-<p></p>
-<p><span style="color: #ff0000;">ATTENZIONE: assicurarsi di non scollegare il modulo durante la procedura.</span></p>
-<p></p>
-<p><strong>Recupero della configurazione del modulo</strong></p>
-<p>Collegare il modulo al dispositivo Android utilizzando un cavo OTG o qualsiasi adattatore USB che possa funzionare con micro USB o type C USB</p>
-<p>Quindi fare clic su [recupera cfg], questo cerca di connettersi al modulo utilizzando 9600 baud. Quindi recupera la configurazione del modulo in modo da poterla modificare.</p>
-<p></p>
-<p><strong>Salvataggio della configurazione del modulo</strong></p>
-<p>Modificare le impostazioni che si desidera modificare. Assicurarsi di aver selezionato una velocità di trasmissione che funzionerà con la scheda (di default 38400). Assicurarsi che i canali siano gli stessi per il trasmettitore e il ricevitore. Se si imposta una chiave di crittografia, assicurarsi che sia la stessa su entrambi. Dopo aver terminato, fare clic su [Salva cfg]. Questo salverà la configurazione. Se si verifica un errore durante il salvataggio, verrà annullato il salvataggio.</p>
-<p></p>
-<p>Si noti che sarà necessario ripetere la stessa procedura per ogni modulo.</p>
-<p>Prima dell'uso, assicurarsi di rimuovere entrambi i ponti per uscire dalla modalità di configurazione.</p>
-<p></p>
-<p>I moduli di telemetria Lora attualmente non funzionano con la scheda ESP32.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul, ol {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .img-container {
+            margin: 10px 0 16px 0;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .warning {
+            background-color: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 0 4px 4px 0;
+            color: #9b2c2c;
+            font-weight: 600;
+        }
+        .note {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .note p:last-child, .warning p:last-child {
+            margin-bottom: 0;
+        }
+        .modules-list {
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+            list-style-type: square;
+        }
+    </style>
+</head>
+<body>
+<h1>Configurazione del modulo eByte LoRa E220</h1>
+<p>Per abilitare la telemetria a lungo raggio, sostituisci il modulo Bluetooth con un modulo radio eByte LoRa E220.</p>
+
+<h2>Moduli testati e supportati</h2>
+<ul class="modules-list">
+    <li><code>E220-400T30D</code></li>
+    <li><code>E220-400T30S</code></li>
+    <li><code>E220-900T30D</code></li>
+    <li><code>E220-900T30S</code></li>
+    <li><code>E220-400T22D</code></li>
+    <li><code>E220-900T22S</code></li>
+</ul>
+
+<div class="img-container">
+    <img src="file:///android_asset/help/images/E220-900T22S.jpg" alt="LoRa E220-900T22S"/>
+</div>
+<div class="img-container">
+    <img src="file:///android_asset/help/images/E220-900T30D.jpg" alt="LoRa E220-900T30D"/>
+</div>
+
+<h2>Hardware necessario</h2>
+<ul>
+    <li><strong>Cavo adattatore seriale USB-TTL</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Cavo adattatore seriale USB-TTL"/></div>
+    </li>
+    <li><strong>Adattatore USB OTG (USB-C o Micro-USB a seconda del dispositivo Android)</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adattatore USB OTG (USB-C o Micro-USB a seconda del dispositivo Android)"/></div>
+    </li>
+    <li><strong>Adattatore JST e cavetti di collegamento JST dedicati</strong></li>
+</ul>
+
+<p>Assicurati che la batteria del dispositivo Android fornisca alimentazione sufficiente al modulo LoRa. Se utilizzi un modulo ad alta potenza (30 dBm / 1W), collega una batteria o un alimentatore esterno.</p>
+
+<div class="note">
+    <p><strong>Modalità di configurazione (M0/M1): Inserisci entrambi i ponticelli (jumper) sui pin M0 e M1 per attivare la modalità di configurazione.</strong></p>
+    <p>Velocità di programmazione: I registri di configurazione interna rispondono rigidamente a 9600 baud. La velocità di comunicazione con l'altimetro in volo deve essere impostata a 38400 baud di default.</p>
+    <p>I moduli LoRa funzionano in coppia: configura il trasmettitore di bordo e il ricevitore di terra con gli stessi parametri RF (canale, indirizzo, velocità radio e chiave di cifratura).</p>
+</div>
+
+<div class="warning">
+    <p>ATTENZIONE: Non scollegare mai il modulo o il cavo durante le operazioni di lettura o scrittura.</p>
+</div>
+
+<h2>Lettura della configurazione del modulo</h2>
+<ol>
+    <li>Assicurati che entrambi i ponticelli siano inseriti, quindi collega il modulo al dispositivo Android tramite il cavo TTL e l'adattatore USB OTG.</li>
+    <li>Tocca <strong>[Recupera cfg]</strong>. L'applicazione si collegherà a 9600 baud e leggerà i registri del modulo.</li>
+    <li>Al termine della lettura, i parametri correnti del modulo appariranno sullo schermo.</li>
+</ol>
+
+<h2>Salvataggio della configurazione</h2>
+<ol>
+    <li>Modifica i parametri necessari. Assicurati che la velocità seriale selezionata corrisponda alla scheda altimetro (38400 baud per impostazione predefinita).</li>
+    <li>Verifica che i canali di frequenza e la chiave di crittografia siano identici su trasmettitore e ricevitore.</li>
+    <li>Tocca <strong>[Salva cfg]</strong>. I parametri verranno registrati in memoria non volatile. In caso di errore, il salvataggio verrà interrotto in sicurezza.</li>
+</ol>
+
+<div class="note">
+    <p><em>Nota: È necessario ripetere questa procedura di configurazione separatamente per ciascuno dei due moduli.</em></p>
+    <p><strong>Importante: Rimuovi entrambi i ponticelli (modalità normale M0=0, M1=0) prima dell'uso operativo in volo.</strong></p>
+    <p>Nota di compatibilità: I moduli di telemetria LoRa attualmente non sono compatibili con le schede altimetro basate su ESP32.</p>
+</div>
+</body>
+</html>

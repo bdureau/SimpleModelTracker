@@ -1,17 +1,75 @@
-<h1>Simple model tracker configuration help file</h1>
-<p>The application look and feel as well as behavious can be configured with a couple of screen </p>
-<p>On the first screen:</p>
-<p>- choose the color of the line on the map</p>
-<p>- you can for the application help language, as english is the main language for the application
-    it will always be up to date</p>
-<p>- application units, you can choose between metrics and imperial</p>
-<p>- baud rate can be change if you are using some slow telemetry module</p>
-<p>- connection type can be bluetooth or USB. Bluetooth is more reliable if your USB cable is a bit loose</p>
-<p>- Model type will allow you to select various icons depending on the model that you want to track</p>
-<p></p>
-<p>On the second screen:</p>
-<p>This is for the telemetry voice. As you might want to visually look for your model it is sometime
-    more convenient to listen to events. You can choose the events that you want to listen to as well
-    as the voice for those</p>
-<p></p>
-<p></p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .highlight {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Configuration de Simple Model Tracker</h1>
+<p>L'apparence visuelle, les unités et le comportement de l'application se configurent facilement via deux écrans dédiés.</p>
+
+<h2>Premier écran : Paramètres généraux</h2>
+<ul>
+    <li><strong>Couleur du tracé :</strong> Choisissez la couleur de la ligne de suivi affichée sur la carte.</li>
+    <li><strong>Langue de l'aide :</strong> Sélectionnez la langue des fichiers d'aide. L'anglais étant la langue principale de développement, elle reste toujours à jour.</li>
+    <li><strong>Unités de l'application :</strong> Basculez entre le système métrique (mètres, km/h) et le système impérial (pieds, mph).</li>
+    <li><strong>Vitesse en bauds (Baud rate) :</strong> Modifiez la vitesse de communication série si vous utilisez un module de télémétrie plus lent.</li>
+    <li><strong>Type de connexion :</strong> Choisissez entre une liaison Bluetooth ou USB OTG. Le Bluetooth offre une meilleure fiabilité si votre connecteur USB a du jeu.</li>
+    <li><strong>Type de modèle :</strong> Personnalisez l'icône du marqueur sur la carte en fonction du type de modèle ou de fusée suivi.</li>
+</ul>
+
+<h2>Deuxième écran : Télémétrie vocale</h2>
+<div class="highlight">
+    <p>Configurez la synthèse vocale pour les annonces de télémétrie en temps réel. Lorsque vous suivez visuellement votre modèle des yeux, les alertes sonores vous permettent de rester informé sans regarder l'écran. Vous pouvez choisir les événements à annoncer et sélectionner la voix souhaitée.</p>
+</div>
+</body>
+</html>

@@ -1,40 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul, ol {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .img-container {
+            margin: 10px 0 16px 0;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .warning {
+            background-color: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 0 4px 4px 0;
+            color: #9b2c2c;
+            font-weight: 600;
+        }
+        .note {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .note p:last-child, .warning p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
 <h1>Configuración del módulo Bluetooth</h1>
-<p>Para configurar su módulo Bluetooth para conectar su altímetro con su teléfono, primero deberá
-    configurarlo para que funcione a la misma velocidad que la placa del altímetro.</p>
-<p></p>
-<p>La siguiente pantalla le ayudará a configurar un módulo Bluetooth para que pueda usarlo con su
-    placa. Los módulos como HC05, HC06, etc. deberían funcionar</p>
-<p><img src="file:///android_asset/help/images/bluetooth_module.jpg"/></p>
-<p>Para programar el módulo necesita un cable TTL</p>
-<p><img src="file:///android_asset/help/images/ttl_cable-small.jpg"/></p>
-<p>Un adaptador USB (USBC o micro USB dependiendo del dispositivo Android)</p>
-<p><img src="file:///android_asset/help/images/usb_adpter-small.jpg"/></p>
-<p>Un adaptador JST y algunos cables JST son necesarios</p>
-<p> </p>
-<p>Deberá configurar el módulo para que funcione con su placa del altímetro.</p>
-<p>Tenga en cuenta que estos módulos suelen venir preconfigurados para trabajar a 9600 baudios.
-    Sin embargo, su placa del altímetro trabajará de forma predeterminada a 38400 baudios, por lo
-    que debe asegurarse de conectarse a la velocidad correcta.</p>
-<p></p>
-<p><span style="color: #ff0000;">PRECAUCIÓN: asegúrese de no desconectar el módulo mientras realiza lo siguiente</span></p>
-<p></p>
-<p><strong>Recuperar la configuración del módulo</strong></p>
-<p>Conecte el módulo a su dispositivo Android utilizando un cable TTL y un adaptador USB que pueda funcionar con
-    micro USB o tipo C USB</p>
-<p>Deberá seleccionar el módulo de Bluetooth que tiene. Si no sabe cuál tiene,
-    seleccione el predeterminado o cualquier otro compatible. Si no puede usar ningún módulo,
-    envíeme las referencias del módulo y/o las imágenes del módulo.</p>
-<p>Luego, haga clic en [recuperar cfg], esto intentará conectarse al módulo utilizando la velocidad de transmisión de 38600 baudios predeterminada.
-    Si falla, intente de nuevo, utilizará varias velocidades de transmisión hasta que se conecte.
-    Entonces recuperará la configuración del módulo para que pueda cambiarlo</p>
-<p></p>
-<p><strong>Guardar la configuración del módulo</strong></p>
-<p>Cambie la configuración que desee cambiar, como el nombre del módulo o la velocidad. Asegúrese de haber seleccionado una velocidad de transmisión que funcione
-    con su tablero y haga clic en [Guardar cfg]. Esto guardará la configuración.
-    Si ocurre algún error al guardar, se abortará el guardado</p>
-<p></p>
-<p>Tenga en cuenta que deberá repetir los mismos pasos para cada módulo de Bluetooth que desee configurar</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>Para conectar su altímetro a su teléfono o tableta mediante Bluetooth, primero deberá configurarlo para que funcione a la misma velocidad de comunicación que la placa del altímetro.</p>
+<p>Esta pantalla le ayudará a configurar módulos compatibles como HC-05, HC-06, JDY-30, JDY-31, SPP y AT-09.</p>
+<div class="img-container">
+    <img src="file:///android_asset/help/images/bluetooth_module.jpg" alt="Bluetooth module"/>
+</div>
+
+<h2>Material necesario</h2>
+<ul>
+    <li><strong>Cable adaptador USB a serie TTL</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Cable adaptador USB a serie TTL"/></div>
+    </li>
+    <li><strong>Adaptador USB OTG (USB-C o Micro-USB según su dispositivo Android)</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adaptador USB OTG (USB-C o Micro-USB según su dispositivo Android)"/></div>
+    </li>
+    <li><strong>Adaptador JST y cables de conexión JST compatibles</strong></li>
+</ul>
+
+<div class="note">
+    <p>Tenga en cuenta que estos módulos suelen venir preconfigurados de fábrica a 9600 baudios. Sin embargo, su placa del altímetro funcionará por defecto a 38400 baudios, por lo que debe asegurarse de conectarse a la velocidad correcta.</p>
+</div>
+
+<div class="warning">
+    <p>ATENCIÓN: Asegúrese de no desconectar el módulo ni el cable durante las operaciones de lectura o escritura.</p>
+</div>
+
+<h2>Recuperar la configuración del módulo</h2>
+<ol>
+    <li>Conecte el módulo a su dispositivo Android utilizando el cable TTL y el adaptador USB OTG.</li>
+    <li>Seleccione el modelo de módulo Bluetooth en el menú desplegable. Si no está seguro, elija HC-05, HC-06 o Unknown. Si ningún módulo responde, envíeme las referencias y fotos del módulo.</li>
+    <li>Pulse en <strong>[Recuperar cfg]</strong>. La aplicación intentará conectarse utilizando la velocidad predeterminada de 38400 baudios. Si falla, probará varias velocidades de transmisión hasta conectarse.</li>
+    <li>Una vez establecida la conexión, se recuperará la configuración del módulo para que pueda modificarla.</li>
+</ol>
+
+<h2>Guardar la nueva configuración</h2>
+<ol>
+    <li>Cambie los ajustes que desee, como el nombre del módulo, PIN o velocidad. Asegúrese de seleccionar una velocidad compatible con su placa (habitualmente 38400 baudios).</li>
+    <li>Pulse en <strong>[Guardar cfg]</strong>. Esto guardará la configuración en el módulo. Si ocurre algún error durante el guardado, el proceso se cancelará de forma segura.</li>
+</ol>
+
+<p><em>Nota: Deberá repetir este mismo procedimiento de forma individual para cada módulo Bluetooth que desee configurar.</em></p>
+</body>
+</html>

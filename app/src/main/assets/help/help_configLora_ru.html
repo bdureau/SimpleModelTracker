@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul, ol {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .img-container {
+            margin: 10px 0 16px 0;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .warning {
+            background-color: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 0 4px 4px 0;
+            color: #9b2c2c;
+            font-weight: 600;
+        }
+        .note {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .note p:last-child, .warning p:last-child {
+            margin-bottom: 0;
+        }
+        .modules-list {
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+            list-style-type: square;
+        }
+    </style>
+</head>
+<body>
+<h1>Настройка радиомодуля eByte LoRa E220</h1>
+<p>Для организации дальней телеметрии необходимо заменить модуль Bluetooth на радиомодуль eByte LoRa серии E220.</p>
+
+<h2>Проверенные и поддерживаемые модули</h2>
+<ul class="modules-list">
+    <li><code>E220-400T30D</code></li>
+    <li><code>E220-400T30S</code></li>
+    <li><code>E220-900T30D</code></li>
+    <li><code>E220-900T30S</code></li>
+    <li><code>E220-400T22D</code></li>
+    <li><code>E220-900T22S</code></li>
+</ul>
+
+<div class="img-container">
+    <img src="file:///android_asset/help/images/E220-900T22S.jpg" alt="LoRa E220-900T22S"/>
+</div>
+<div class="img-container">
+    <img src="file:///android_asset/help/images/E220-900T30D.jpg" alt="LoRa E220-900T30D"/>
+</div>
+
+<h2>Необходимое оборудование</h2>
+<ul>
+    <li><strong>Кабель-адаптер USB-TTL</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Кабель-адаптер USB-TTL"/></div>
+    </li>
+    <li><strong>Адаптер USB OTG (USB-C или Micro-USB в зависимости от устройства)</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Адаптер USB OTG (USB-C или Micro-USB в зависимости от устройства)"/></div>
+    </li>
+    <li><strong>Адаптер JST и соединительные провода JST</strong></li>
+</ul>
+
+<p>Убедитесь, что аккумулятор Android-устройства обеспечивает достаточный ток для модуля LoRa. При использовании мощных модулей (30 дБм / 1 Вт) используйте внешний источник питания.</p>
+
+<div class="note">
+    <p><strong>Режим настройки (M0/M1): Установите обе перемычки (джамперы) на контакты M0 и M1 для входа в режим конфигурации.</strong></p>
+    <p>Скорость программирования: Внутренние регистры конфигурации модуля считываются строго на скорости 9600 бод. Скорость передачи данных полета должна совпадать с высотомером (обычно 38400 бод).</p>
+    <p>Модули LoRa работают в паре: настройте бортовой передатчик и наземный приемник с одинаковыми параметрами (канал, адрес, скорость передачи в эфире и ключ шифрования).</p>
+</div>
+
+<div class="warning">
+    <p>ВНИМАНИЕ: Не отключайте модуль и кабель во время чтения или записи настроек.</p>
+</div>
+
+<h2>Считывание конфигурации модуля</h2>
+<ol>
+    <li>Убедитесь, что установлены обе перемычки, затем подключите модуль к устройству Android через кабель TTL и адаптер USB OTG.</li>
+    <li>Нажмите <strong>[Считать конф]</strong> (Retrieve cfg). Приложение подключится на скорости 9600 бод и считает регистры модуля.</li>
+    <li>После считывания текущие параметры отобразятся на экране для редактирования.</li>
+</ol>
+
+<h2>Сохранение новой конфигурации</h2>
+<ol>
+    <li>Измените необходимые параметры. Убедитесь, что скорость последовательного порта совпадает с высотомером (по умолчанию 38400 бод).</li>
+    <li>Проверьте, что частотный канал и ключ шифрования полностью совпадают на передатчике и приемнике.</li>
+    <li>Нажмите <strong>[Сохранить конф]</strong> (Save cfg). Параметры будут записаны в энергонезависимую память. В случае ошибки запись будет безопасно прервана.</li>
+</ol>
+
+<div class="note">
+    <p><em>Примечание: Процедуру настройки необходимо выполнить отдельно для каждого из двух модулей пары.</em></p>
+    <p><strong>Важно: Обязательно снимите обе перемычки (рабочий режим M0=0, M1=0) перед выполнением полетов.</strong></p>
+    <p>Совместимость: В настоящее время модули телеметрии LoRa не поддерживаются на платах высотомеров с микроконтроллером ESP32.</p>
+</div>
+</body>
+</html>

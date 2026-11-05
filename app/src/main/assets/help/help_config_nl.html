@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .highlight {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Configuratie Simple Model Tracker</h1>
+<p>Het uiterlijk, de eenheden en het gedrag van de applicatie kunnen worden ingesteld via twee configuratieschermen.</p>
+
+<h2>Eerste scherm: Algemene instellingen</h2>
+<ul>
+    <li><strong>Kleur van de routelijn:</strong> Kies de kleur van het gevolgde traject dat op de kaart wordt getekend.</li>
+    <li><strong>Taal van de helpfunctie:</strong> Selecteer de taal van de helpbestanden. Engels is de hoofdtaal en zal altijd actueel zijn.</li>
+    <li><strong>Applicatie-eenheden:</strong> Schakel tussen het metrieke stelsel (meters, km/u) en het imperiale stelsel (voet, mph).</li>
+    <li><strong>Baudrate:</strong> Pas de seriële communicatiesnelheid aan bij het gebruik van tragere telemetriemodules.</li>
+    <li><strong>Verbindingstype:</strong> Kies tussen Bluetooth of USB OTG. Bluetooth verdient de voorkeur wanneer uw fysieke USB-kabel speling heeft.</li>
+    <li><strong>Modeltype:</strong> Kies verschillende kaartmarker-iconen die aansluiten bij het type model of raket dat u volgt.</li>
+</ul>
+
+<h2>Tweede scherm: Gesproken telemetrie</h2>
+<div class="highlight">
+    <p>Configureer de spraaksynthese voor realtime telemetriemeldingen. Wanneer u uw model visueel in de lucht volgt, is het handig om meldingen te horen zonder op het scherm te hoeven kijken. U kunt bepalen welke gebeurtenissen worden uitgesproken en de gewenste stem selecteren.</p>
+</div>
+</body>
+</html>

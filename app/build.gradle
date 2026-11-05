@@ -11,8 +11,8 @@ android {
         minSdk 23
         targetSdk 37
         //noinspection OldTargetApi
-        versionCode 10
-        versionName '1.0.10'
+        versionCode 12
+        versionName '1.0.12'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,15 +32,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    buildToolsVersion '36.0.0 rc4'
-    compileSdkMinor 0
-
+    buildToolsVersion '37.0.0'
+    compileSdkMinor 1
+    /*buildFeatures {
+        buildConfig true
+    }*/
 }
 
 dependencies {
 
     //implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.appcompat:appcompat:1.8.0'
     implementation 'com.google.android.material:material:1.14.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.2'
     testImplementation 'junit:junit:4.13.2'

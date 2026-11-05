@@ -1,41 +1,117 @@
-<h1>Configuration d'un module Bluetooth </h1>
-<p>De manière à pouvoir configurer un module bluetooth pour connecter un altimetre à votre telephone
-    vous aurez besoin de le configurer pour qu'il soit à la meme vitesse que votre altimètre .</p>
-<p></p>
-<p>Cet ecran vous aidera à configurer un module bluetooth de maniere à pouvoir l'utiliser avec votre carte.</p>
-<p>Les modules comme le HC05, HC06 etc ... devraient fonctionner</p>
-<p><img  src="file:///android_asset/help/images/bluetooth_module.jpg"/></p>
-<p>Pour programmer le module vous avez besoin d'un cable TTL</p>
-<p><img  src="file:///android_asset/help/images/ttl_cable-small.jpg"/></p>
-<p>un adaptateur USB  (USBC ou micro USB suivant votre apareil Android )</p>
-<p><img  src="file:///android_asset/help/images/usb_adpter-small.jpg"/></p>
-<p>un adaptateur jst et des cables jst</p>
-<p> </p>
-<p>Notez que ces modules sont en général pré-configurés à 9600 bauds. Cependant votre altimetre par defaut est
-    configuré à 38400 bauds, il faudra donc vous assurer de vous connecter à la bonne vittesse.</p>
-<p></p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul, ol {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .img-container {
+            margin: 10px 0 16px 0;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .warning {
+            background-color: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 0 4px 4px 0;
+            color: #9b2c2c;
+            font-weight: 600;
+        }
+        .note {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .note p:last-child, .warning p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Configuration du module Bluetooth</h1>
+<p>Pour connecter votre altimètre à votre téléphone ou tablette via Bluetooth, le module doit impérativement être configuré à la même vitesse de communication que votre carte altimètre.</p>
+<p>Cet écran vous permet de programmer des modules standards compatibles tels que les HC-05, HC-06, JDY-30, JDY-31, SPP et AT-09.</p>
+<div class="img-container">
+    <img src="file:///android_asset/help/images/bluetooth_module.jpg" alt="Bluetooth module"/>
+</div>
 
-<p><span style="color: #ff0000;">Attention: Assurez vous de ne pas débrancher le module lorsque vous faites ce qui suit</span></p>
-<p></p>
-<p><strong>Charger la configuration du module</strong></p>
-<p>Connectez le module à votre appareil Android en utilisant un cable TTL et un adaptateur USB
-    compatible avec votre telephone en micro USB ou USB type C.</p>
-<p>Vous auraez besoin de choisir le module bluetooth que vous avez. Si vous ne savez pas lequel vous avez
-    choisissez celui par defaut ou tout autre module compatible. Si vous ne pouvez utilisez aucun des modules
-    envoyez moi la reference du module et/ou des photos du module.</p>
-<p>Ensuite cliquez sur [Charger cfg], cela tentera de se connectez au module en utilisant la vitesse pour defaut de 38600 baud.
-    Si cela ne fonctionne pas essayez encore, cela utilisera differentes vitesses jusqu'à ce qu'il se connecte.
-Cela chargera la configuration du module de manière à ce que vous puissiez la changer</p>
-<p></p>
-<p><strong>Sauvegarder la configuration du module </strong></p>
-<p>Changez les parametres que vous desirez comme le nom du module ou sa vitesse. Assurez vous que
-    vous avez choisi une vitesse qui fonctionnera avec votre carte et cliquez [Sauvez cfg].
-    Cela sauvegardera la configuration.
-    Si il y a une erreur pendant la sauvegarde celle ci est interrompue</p>
-<p></p>
-<p>Notez qu'il faudra refaire les memes etapes pour chaque module bluetooth que vous devez configurer</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>Matériel requis</h2>
+<ul>
+    <li><strong>Câble adaptateur USB-Série TTL</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Câble adaptateur USB-Série TTL"/></div>
+    </li>
+    <li><strong>Adaptateur USB OTG (USB-C ou Micro-USB selon votre appareil Android)</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adaptateur USB OTG (USB-C ou Micro-USB selon votre appareil Android)"/></div>
+    </li>
+    <li><strong>Adaptateur JST et cordons de liaison JST correspondants</strong></li>
+</ul>
 
+<div class="note">
+    <p>Ces modules sont généralement livrés préconfigurés à 9600 bauds. Cependant, votre altimètre fonctionne par défaut à 38400 bauds. Vous devez donc vous assurer de programmer la vitesse adéquate.</p>
+</div>
+
+<div class="warning">
+    <p>ATTENTION : Ne débranchez jamais le module ou le câble pendant la lecture ou l'écriture des paramètres.</p>
+</div>
+
+<h2>Charger la configuration du module</h2>
+<ol>
+    <li>Raccordez le module Bluetooth à votre appareil Android à l'aide du câble TTL et de l'adaptateur USB OTG.</li>
+    <li>Sélectionnez le modèle de module dans le menu déroulant. Si vous ne le connaissez pas, choisissez HC-05, HC-06 ou Unknown. Si aucun profil ne fonctionne, envoyez-moi les références et des photos de votre module.</li>
+    <li>Appuyez sur <strong>[Charger cfg]</strong>. L'application essaiera de se connecter à la vitesse par défaut de 38400 bauds. En cas d'échec, elle testera différentes vitesses jusqu'à établir la liaison.</li>
+    <li>Une fois connecté, la configuration actuelle du module est chargée afin que vous puissiez la modifier.</li>
+</ol>
+
+<h2>Sauvegarder la nouvelle configuration</h2>
+<ol>
+    <li>Modifiez les paramètres désirés (nom du module, code PIN, vitesse). Assurez-vous de choisir une vitesse compatible avec votre carte altimètre (en général 38400 bauds).</li>
+    <li>Appuyez sur <strong>[Sauver cfg]</strong>. Les commandes sont écrites dans le module. Si une erreur survient pendant la sauvegarde, celle-ci est interrompue en toute sécurité.</li>
+</ol>
+
+<p><em>Remarque : Vous devez répéter ces mêmes étapes individuellement pour chaque module Bluetooth à configurer.</em></p>
+</body>
+</html>

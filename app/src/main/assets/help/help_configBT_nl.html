@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul, ol {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .img-container {
+            margin: 10px 0 16px 0;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .warning {
+            background-color: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 0 4px 4px 0;
+            color: #9b2c2c;
+            font-weight: 600;
+        }
+        .note {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .note p:last-child, .warning p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Configuratie van de Bluetooth-module</h1>
+<p>Om uw hoogtemeter via Bluetooth te verbinden met uw telefoon of tablet, moet de module werken met dezelfde communicatiesnelheid (baudrate) als de hoogtemeterprintplaat.</p>
+<p>Met dit scherm kunt u compatibele standaardmodules configureren, zoals de HC-05, HC-06, JDY-30, JDY-31, SPP en AT-09.</p>
+<div class="img-container">
+    <img src="file:///android_asset/help/images/bluetooth_module.jpg" alt="Bluetooth module"/>
+</div>
+
+<h2>Vereiste hardware</h2>
+<ul>
+    <li><strong>USB-naar-seriële TTL-kabel</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="USB-naar-seriële TTL-kabel"/></div>
+    </li>
+    <li><strong>USB OTG-adapter (USB-C of Micro-USB afhankelijk van uw Android-apparaat)</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="USB OTG-adapter (USB-C of Micro-USB afhankelijk van uw Android-apparaat)"/></div>
+    </li>
+    <li><strong>JST-adapter en bijbehorende JST-bedrading</strong></li>
+</ul>
+
+<div class="note">
+    <p>Deze modules worden meestal geleverd met een voorinstelling van 9600 baud. De hoogtemeter werkt standaard echter op 38400 baud. Zorg er daarom voor dat u de juiste snelheid instelt.</p>
+</div>
+
+<div class="warning">
+    <p>LET OP: Koppel de module of kabel nooit los tijdens het lezen of schrijven van instellingen.</p>
+</div>
+
+<h2>De moduleconfiguratie ophalen</h2>
+<ol>
+    <li>Sluit de Bluetooth-module aan op uw Android-apparaat met behulp van de TTL-kabel en de USB OTG-adapter.</li>
+    <li>Selecteer het type Bluetooth-module in het vervolgkeuzemenu. Als u het niet zeker weet, kies dan HC-05, HC-06 of Unknown. Als geen enkele module werkt, neem dan contact op met foto's en referenties van de module.</li>
+    <li>Tik op <strong>[Retrieve cfg]</strong> (Configuratie ophalen). De app probeert verbinding te maken met de standaardsnelheid van 38400 baud. Als dat mislukt, worden automatisch verschillende snelheden getest tot er verbinding is.</li>
+    <li>Zodra de verbinding actief is, worden de huidige instellingen van de module geladen zodat u deze kunt aanpassen.</li>
+</ol>
+
+<h2>De nieuwe configuratie opslaan</h2>
+<ol>
+    <li>Pas de gewenste instellingen aan, zoals de modulenaam, pincode of baudrate. Zorg ervoor dat de gekozen baudrate overeenkomt met uw hoogtemeter (meestal 38400 baud).</li>
+    <li>Tik op <strong>[Save cfg]</strong> (Configuratie opslaan). De configuratieopdrachten worden naar de module geschreven. Als er een fout optreedt, wordt het opslagproces veilig afgebroken.</li>
+</ol>
+
+<p><em>Opmerking: U dient deze stappen voor elke Bluetooth-module die u wilt configureren afzonderlijk te herhalen.</em></p>
+</body>
+</html>

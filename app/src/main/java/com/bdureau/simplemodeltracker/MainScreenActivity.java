@@ -1,7 +1,18 @@
 package com.bdureau.simplemodeltracker;
-
-//import static android.content.Context.RECEIVER_NOT_EXPORTED;
-
+/*
+ * =================================================================================================
+ * Project:        Simple Model Tracker (Rocket GPS & Telemetry Tracker)
+ * Package:        com.bdureau.simplemodeltracker
+ * Class:          MainScreenActivity.java
+ *
+ * Description:    Main application activity providing real-time rocket telemetry visualization,
+ *                 GPS coordinates tracking, live OpenStreetMap rendering, and text-to-speech (TTS)
+ *                 audio announcements. Supports USB OTG and Bluetooth serial links.
+ *
+ * Author:         Bear Instruments / Rocket Telemetry Team
+ * Target Platform: Android API 21+ (Compatible with Android 13/14 modern broadcast restrictions)
+ * =================================================================================================
+ */
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -19,12 +30,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
-import android.text.Html;
-//import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +47,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -59,6 +70,7 @@ import org.osmdroid.config.Configuration;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -71,9 +83,13 @@ public class MainScreenActivity extends AppCompatActivity {
     private static ViewPager mViewPager; // it is static to avoid losing the map
     String address = null;
 
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
+
     private TextView[] dotsSlide;
     private LinearLayout linearDots;
     public LocationBroadCastReceiver receiver = null;
+    private boolean locationReceiverRegistered = false;
+    private boolean usbReceiverRegistered = false;
     SectionsStatusPageAdapter adapter;
     private TrackMapFragment tabPage1 = null;
     private TrackInfoFragment tabPage2 = null;
@@ -84,83 +100,85 @@ public class MainScreenActivity extends AppCompatActivity {
     private Button btnDismiss, butAudio, btnConnect;
     private ConsoleApplication myBT;
     Thread rocketTelemetry;
-    private boolean telemetry = false;
+    // read by the telemetry thread and the timers: volatile so that every thread sees the change
+    private volatile boolean telemetry = false;
     private TextToSpeech mTTS;
-
 
     private long notConnectedTime = 0;
     private long lastSpeakNotConnectedTime = 1000;
 
-    private long lastReceivedMessageTime = 0;
+    private volatile long lastReceivedMessageTime = 0;
 
-    private boolean soundOn = true;
+    private volatile boolean soundOn = true;
     private boolean sateliteAcquisitionCompleteSaid = false;
     Intent locIntent = null;
 
     UsbManager usbManager;
     UsbDevice device;
-    double distance;
-    boolean receiving = false;
+    volatile double distance;
+    volatile boolean receiving = false;
     Timer timerDistance;
     Timer timerNotReceiving;
 
     public final String ACTION_USB_PERMISSION = "com.bdureau.simplemodeltracker.USB_PERMISSION";
 
+    // Languages for which the text to speech uses the language of the phone
+    private static final List<String> TTS_LANGUAGES = Arrays.asList("en", "fr", "tr", "nl", "es", "it", "hu", "ru");
+
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() { //Broadcast Receiver to automatically start and stop the Serial connection.
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
-                boolean granted = true;
-                if (android.os.Build.VERSION.SDK_INT < 31)
-                    granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
+            String action = intent.getAction();
+            if (action == null)
+                return;
+            if (action.equals(ACTION_USB_PERMISSION)) {
+                // The extra is only filled when the PendingIntent is mutable; the USB manager
+                // is the reliable source on every Android version
+                boolean granted = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)
+                        || (device != null && usbManager.hasPermission(device));
 
-                if (granted) {
-                    Log.d("Flight win", "Permission granted");
+                if (granted && device != null) {
+                    Log.d(TAG, "Permission granted");
                     if (myBT.connect(usbManager, device, Integer.parseInt(myBT.getAppConf().getBaudRateValue()))) {
-                        //Log.d("baud rate", "baud:"+myBT.getAppConf().getBaudRateValue());
                         myBT.setConnected(true);
-                        Log.d("Flight win", "about to enableUI");
                         myBT.setConnectionType("usb");
-                        if (!telemetry) {
-                            telemetry = true;
-                        }
-                        if (soundOn & myBT.getAppConf().getConnectedDisconnected_event()) {
-                            mTTS.speak(getString(R.string.connected), TextToSpeech.QUEUE_FLUSH, null);
+                        btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
+                                0, 0, 0);
+                        if (myBT.getAppConf().getConnectedDisconnected_event()) {
+                            speak(getString(R.string.connected));
                         }
                         startTelemetry();
+                    } else {
+                        setDisconnectedUI();
                     }
-
                 } else {
                     msg("PERM NOT GRANTED");
+                    setDisconnectedUI();
                 }
-            } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
+            } else if (action.equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
                 msg("I can connect via usb");
                 myBT.setConnectionType("usb");
-                telemetry = true;
                 btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
                         0, 0, 0);
                 connect();
-            } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
-                if (myBT.getConnectionType().equals("usb"))
-                    if (myBT.getConnected()) {
-                        myBT.Disconnect();
-
-                        telemetry = false;
-                        myBT.setConnected(false);
-                        Log.d(TAG, "Stopped telemetry");
-                        btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
-                                0, 0, 0);
-                        if (soundOn & myBT.getAppConf().getConnectedDisconnected_event()) {
-                            mTTS.speak(getString(R.string.disconnected), TextToSpeech.QUEUE_FLUSH, null);
-                        }
+            } else if (action.equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
+                if ("usb".equals(myBT.getConnectionType()) && myBT.getConnected()) {
+                    myBT.Disconnect();
+                    myBT.setConnected(false);
+                    setDisconnectedUI();
+                    Log.d(TAG, "Stopped telemetry");
+                    if (myBT.getAppConf().getConnectedDisconnected_event()) {
+                        speak(getString(R.string.disconnected));
                     }
+                }
             }
         }
     };
 
-    Handler handler = new Handler() {
+    // Messages from the telemetry thread are handled on the main (UI) thread
+    Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case 1:
                     lastReceivedMessageTime = System.currentTimeMillis();
@@ -168,19 +186,15 @@ public class MainScreenActivity extends AppCompatActivity {
                     try {
                         Location l = p.parse((String) msg.obj);
                         if (l != null) {
-                            setLatitudeValue(l.getLatitude() + "");
-                            setLongitudeValue(l.getLongitude() + "");
-                            int nbrOfSat = l.getExtras().getInt("satellites");
+                            setLatitudeValue(l.getLatitude());
+                            setLongitudeValue(l.getLongitude());
+                            int nbrOfSat = (l.getExtras() != null) ? l.getExtras().getInt("satellites") : 0;
                             if (!sateliteAcquisitionCompleteSaid && nbrOfSat > 2) {
                                 sateliteAcquisitionCompleteSaid = true;
-                                if (soundOn & myBT.getAppConf().getAcquisition_satellite_event())
-                                    mTTS.speak(getString(R.string.sat_acq_complete_msg), TextToSpeech.QUEUE_FLUSH, null);
-                            } else {
-                                if (sateliteAcquisitionCompleteSaid && nbrOfSat < 3) {
-                                    sateliteAcquisitionCompleteSaid = false;
-                                    /*if(soundOn)
-                                        mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);*/
-                                }
+                                if (myBT.getAppConf().getAcquisition_satellite_event())
+                                    speak(getString(R.string.sat_acq_complete_msg));
+                            } else if (sateliteAcquisitionCompleteSaid && nbrOfSat < 3) {
+                                sateliteAcquisitionCompleteSaid = false;
                             }
 
                             if (tabPage2 != null) {
@@ -189,8 +203,7 @@ public class MainScreenActivity extends AppCompatActivity {
                                 tabPage2.setHdopVal(l.getAccuracy() + "");
                                 tabPage2.setGPSAltitudeVal(l.getAltitude() + "");
                                 tabPage2.setGPSSpeedVal(l.getSpeed() + "");
-                                tabPage2.setSatellitesVal(l.getExtras().getInt("satellites") + "");
-                                //tabPage2.setTimeSatValue(l.getElapsedRealtimeAgeMillis()+"");
+                                tabPage2.setSatellitesVal(nbrOfSat + "");
                                 receiving = true;
                             } else {
                                 receiving = false;
@@ -201,8 +214,8 @@ public class MainScreenActivity extends AppCompatActivity {
                             sateliteAcquisitionCompleteSaid = false;
                             notConnectedTime = System.currentTimeMillis();
                             if ((notConnectedTime - lastSpeakNotConnectedTime) > 60000) {
-                                if (soundOn & myBT.getAppConf().getAcquisition_satellite_event())
-                                    mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);
+                                if (myBT.getAppConf().getAcquisition_satellite_event())
+                                    speak(getString(R.string.sat_acq_lost_msg));
                                 lastSpeakNotConnectedTime = notConnectedTime;
                             }
                         }
@@ -216,37 +229,32 @@ public class MainScreenActivity extends AppCompatActivity {
         }
     };
 
-    private void setLatitudeValue(String value) {
-        if (value.matches("\\d+(?:\\.\\d+)?")) {
-            float val = Float.parseFloat(value);
-            Log.d("track", "latitude:" + value);
-            if (val != 0.0f) {
-                rocketLatitude = Float.parseFloat(value);
-                myBT.getAppConf().setRocketLatitude(rocketLatitude);
-            }
+    // Coordinates can be negative (west of Greenwich, southern hemisphere): 0 means "no fix"
+    private void setLatitudeValue(double value) {
+        Log.d("track", "latitude:" + value);
+        if (value != 0.0 && !Double.isNaN(value)) {
+            rocketLatitude = (float) value;
+            myBT.getAppConf().setRocketLatitude(rocketLatitude);
         }
     }
 
-    private void setLongitudeValue(String value) {
-        if (value.matches("\\d+(?:\\.\\d+)?")) {
-            float val = Float.parseFloat(value);
-            Log.d("track", "longitude:" + value);
-            if (val != 0.0f) {
-                rocketLongitude = Float.parseFloat(value);
-                myBT.getAppConf().setRocketLongitude(rocketLongitude);
-                myBT.getAppConf().SaveConfig();
-            }
+    private void setLongitudeValue(double value) {
+        Log.d("track", "longitude:" + value);
+        if (value != 0.0 && !Double.isNaN(value)) {
+            rocketLongitude = (float) value;
+            myBT.getAppConf().setRocketLongitude(rocketLongitude);
+            myBT.getAppConf().SaveConfig();
         }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState()");
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         Log.d(TAG, "onRestoreInstanceState()");
     }
@@ -256,13 +264,26 @@ public class MainScreenActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
 
+    // Speaks a message if the sound is on (callable from any thread)
+    private void speak(String text) {
+        if (soundOn && mTTS != null)
+            mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, null, "SimpleModelTracker");
+    }
+
+    // Shows the "not connected" icon and stops the telemetry thread
+    private void setDisconnectedUI() {
+        telemetry = false;
+        btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
+                0, 0, 0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
         myBT = (ConsoleApplication) getApplication();
-        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
+        Configuration.getInstance().setUserAgentValue(getPackageName());
 
         org.osmdroid.config.IConfigurationProvider osmConf = org.osmdroid.config.Configuration.getInstance();
         File basePath = new File(getCacheDir().getAbsolutePath(), "osmdroid");
@@ -271,17 +292,14 @@ public class MainScreenActivity extends AppCompatActivity {
         osmConf.setOsmdroidTileCache(tileCache);
 
         receiver = new LocationBroadCastReceiver();
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            } else {
-                startService();
-            }
+        if (Build.VERSION.SDK_INT >= 23
+                && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         } else {
             startService();
         }
 
-        usbManager = (UsbManager) getSystemService(this.USB_SERVICE);
+        usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 
         LocationManager lm = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
@@ -323,66 +341,31 @@ public class MainScreenActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
+        // USB events go to the USB receiver (they were registered on the location receiver).
+        // System broadcasts and our own PendingIntent are delivered to a not exported receiver.
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_USB_PERMISSION);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        //registerReceiver(broadcastReceiver, filter);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //registerReceiver(broadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
-            //registerReceiver(broadcastReceiver, filter, RECEIVER_EXPORTED);
-            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
-        } else {
-            //registerReceiver(broadcastReceiver, filter);
-            registerReceiver(receiver, filter);
-        }
+        ContextCompat.registerReceiver(this, broadcastReceiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+        usbReceiverRegistered = true;
 
-        /*if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            } else {
-                startService();
-            }
-        } else {
-            startService();
-        }*/
-
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.INTERNET}, 1);
-            }
-            if (checkSelfPermission(android.Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, 1);
-            }
-            /*if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            }*/
-        }
-
+        // INTERNET and ACCESS_NETWORK_STATE are normal permissions granted at install time:
+        // they must only be declared in the manifest, not requested at run time.
 
         //init text to speech
         mTTS = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
-                    int result = 0;
-
-                    if (Locale.getDefault().getLanguage().equals("en"))
+                    String language = Locale.getDefault().getLanguage();
+                    int result;
+                    if (language.equals("en"))
                         result = mTTS.setLanguage(Locale.ENGLISH);
-                    else if (Locale.getDefault().getLanguage().equals("fr"))
+                    else if (language.equals("fr"))
                         result = mTTS.setLanguage(Locale.FRENCH);
-                    else if (Locale.getDefault().getLanguage().equals("tr"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("nl"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("es"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("it"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("hu"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
-                    else if (Locale.getDefault().getLanguage().equals("ru"))
-                        result = mTTS.setLanguage(getResources().getConfiguration().locale);
+                    else if (TTS_LANGUAGES.contains(language))
+                        result = mTTS.setLanguage(Locale.getDefault());
                     else
                         result = mTTS.setLanguage(Locale.ENGLISH);
 
@@ -390,27 +373,25 @@ public class MainScreenActivity extends AppCompatActivity {
 
                     int i = 0;
                     try {
-                        for (Voice tmpVoice : mTTS.getVoices()) {
-
-                            if (tmpVoice.getName().startsWith(Locale.getDefault().getLanguage())) {
-                                Log.d("Voice", tmpVoice.getName());
-                                if (myBT.getAppConf().getTelemetryVoice() == i) {
-                                    mTTS.setVoice(tmpVoice);
-                                    Log.d("Voice", "Found voice");
-                                    break;
+                        if (mTTS.getVoices() != null) {
+                            for (Voice tmpVoice : mTTS.getVoices()) {
+                                if (tmpVoice.getName().startsWith(language)) {
+                                    Log.d("Voice", tmpVoice.getName());
+                                    if (myBT.getAppConf().getTelemetryVoice() == i) {
+                                        mTTS.setVoice(tmpVoice);
+                                        Log.d("Voice", "Found voice");
+                                        break;
+                                    }
+                                    i++;
                                 }
-                                i++;
                             }
                         }
                     } catch (Exception e) {
-
+                        Log.e("TTS", "Cannot set the voice", e);
                     }
-
 
                     if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                         Log.e("TTS", "Language not supported");
-                    } else {
-
                     }
                 } else {
                     Log.e("TTS", "Init failed");
@@ -419,7 +400,6 @@ public class MainScreenActivity extends AppCompatActivity {
         });
         mTTS.setPitch(1.0f);
         mTTS.setSpeechRate(1.0f);
-
 
         btnDismiss = (Button) findViewById(R.id.butDismiss);
         btnConnect = (Button) findViewById(R.id.butConnect);
@@ -463,14 +443,12 @@ public class MainScreenActivity extends AppCompatActivity {
                     myBT.setConnectionType("usb");
 
                 if (myBT.getConnected()) {
-                    btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi_error32x32,
-                            0, 0, 0);
                     myBT.Disconnect();
-                    telemetry = false;
                     myBT.setConnected(false);
+                    setDisconnectedUI();
                     Log.d(TAG, "Stopped telemetry");
-                    if (soundOn & myBT.getAppConf().getConnectedDisconnected_event()) {
-                        mTTS.speak(getString(R.string.disconnected), TextToSpeech.QUEUE_FLUSH, null);
+                    if (myBT.getAppConf().getConnectedDisconnected_event()) {
+                        speak(getString(R.string.disconnected));
                     }
 
                 } else {
@@ -485,14 +463,11 @@ public class MainScreenActivity extends AppCompatActivity {
                             startActivity(i);
                         }
                     } else {
-                        myBT.setModuleName("USB");
                         //this is a USB connection
-                        telemetry = true;
                         btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
                                 0, 0, 0);
                         connect();
                     }
-
                 }
             }
         });
@@ -506,19 +481,18 @@ public class MainScreenActivity extends AppCompatActivity {
                 if (soundOn) {
                     if (myBT.getConnected()) {
                         if (myBT.getAppConf().getDistance_event()) {
-                            mTTS.speak(getString(R.string.distance) + " " + String.valueOf((int) distance) + " "
-                                    + myBT.getAppConf().getUnitsValue(), TextToSpeech.QUEUE_FLUSH, null);
+                            speak(getString(R.string.distance) + " " + (int) distance + " "
+                                    + myBT.getAppConf().getUnitsValue());
                         }
                         Log.d(TAG, "unit value:" + myBT.getAppConf().getUnitsValue());
                     } else {
                         if (myBT.getAppConf().getNotConnected_event())
-                            mTTS.speak(getString(R.string.notconnected_msg), TextToSpeech.QUEUE_FLUSH, null);
+                            speak(getString(R.string.notconnected_msg));
                     }
                 }
             }
 
         }, 0, 15000);
-
 
         timerNotReceiving = new Timer();
         timerNotReceiving.scheduleAtFixedRate(new TimerTask() {
@@ -526,8 +500,8 @@ public class MainScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (!receiving) {
-                    if (soundOn & myBT.getAppConf().getAcquisition_satellite_event())
-                        mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);
+                    if (myBT.getAppConf().getAcquisition_satellite_event())
+                        speak(getString(R.string.sat_acq_lost_msg));
                 }
             }
 
@@ -543,14 +517,12 @@ public class MainScreenActivity extends AppCompatActivity {
 
         adapter.addFragment(tabPage1, "TAB1");
         adapter.addFragment(tabPage2, "TAB2");
-        adapter.addFragment(tabPage3, "TAB2");
-
+        adapter.addFragment(tabPage3, "TAB3");
 
         linearDots = findViewById(R.id.idAltiStatusLinearDots);
         agregaIndicateDots(0, adapter.getCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(viewListener);
-
     }
 
     public void agregaIndicateDots(int pos, int nbr) {
@@ -559,14 +531,14 @@ public class MainScreenActivity extends AppCompatActivity {
 
         for (int i = 0; i < dotsSlide.length; i++) {
             dotsSlide[i] = new TextView(this);
-            dotsSlide[i].setText(Html.fromHtml("&#8226;"));
+            dotsSlide[i].setText("\u2022");   // bullet
             dotsSlide[i].setTextSize(35);
-            dotsSlide[i].setTextColor(getResources().getColor(R.color.colorWhiteTransparent));
+            dotsSlide[i].setTextColor(ContextCompat.getColor(this, R.color.colorWhiteTransparent));
             linearDots.addView(dotsSlide[i]);
         }
 
         if (dotsSlide.length > 0) {
-            dotsSlide[pos].setTextColor(getResources().getColor(R.color.colorWhite));
+            dotsSlide[pos].setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
         }
     }
 
@@ -586,8 +558,8 @@ public class MainScreenActivity extends AppCompatActivity {
     };
 
     public class SectionsStatusPageAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList();
-        private final List<String> mFragmentTitleList = new ArrayList();
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
@@ -598,13 +570,13 @@ public class MainScreenActivity extends AppCompatActivity {
             super(fm);
         }
 
-
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            return super.getPageTitle(position);
+            return mFragmentTitleList.get(position);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             return mFragmentList.get(position);
@@ -620,41 +592,46 @@ public class MainScreenActivity extends AppCompatActivity {
         myBT.setModuleName("USB");
         //this is a USB connection
         HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
-        if (!usbDevices.isEmpty()) {
-            boolean keep = true;
-            for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
-                device = entry.getValue();
-                int deviceVID = device.getVendorId();
-
-                PendingIntent pi;
-                //if (android.os.Build.VERSION.SDK_INT >= 31) {
-                pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
-                        new Intent(ACTION_USB_PERMISSION), PendingIntent.FLAG_IMMUTABLE);
-               /* } else {
-                    pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
-                            new Intent(ACTION_USB_PERMISSION), 0);
-                }*/
-
-                usbManager.requestPermission(device, pi);
-                keep = false;
-
-                if (!keep)
-                    break;
-            }
+        if (usbDevices.isEmpty()) {
+            msg(getString(R.string.notconnected_msg));
+            setDisconnectedUI();
+            return;
+        }
+        for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
+            device = entry.getValue();
+            // Explicit intent (our package): it can be mutable on Android 12+, so that the
+            // system can add EXTRA_PERMISSION_GRANTED, and it reaches the not exported receiver
+            Intent permissionIntent = new Intent(ACTION_USB_PERMISSION).setPackage(getPackageName());
+            int flags = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                    ? PendingIntent.FLAG_MUTABLE : 0;
+            PendingIntent pi = PendingIntent.getBroadcast(MainScreenActivity.this, 0,
+                    permissionIntent, flags);
+            usbManager.requestPermission(device, pi);
+            break;   // only the first USB device is used
         }
     }
 
     public void startTelemetry() {
         telemetry = true;
+        // only one reading thread at a time
+        if (rocketTelemetry != null && rocketTelemetry.isAlive())
+            return;
         Log.d(TAG, "Started telemetry");
 
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                while (true) {
-                    if (!telemetry) break;
-                    if (myBT.getConnected())
+                while (telemetry) {
+                    if (myBT.getConnected()) {
                         myBT.ReadResult(1000);
+                    } else {
+                        // wait instead of looping at full speed while not connected
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            break;
+                        }
+                    }
                 }
             }
         };
@@ -663,57 +640,60 @@ public class MainScreenActivity extends AppCompatActivity {
     }
 
     private void startService() {
-        IntentFilter filter = new IntentFilter("ACT_LOC");
-        //registerReceiver(receiver, filter);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //registerReceiver(broadcastReceiver, filter, RECEIVER_NOT_EXPORTED);
-            //registerReceiver(broadcastReceiver, filter, RECEIVER_EXPORTED);
-            registerReceiver(receiver, filter, RECEIVER_EXPORTED);
-        } else {
-            //registerReceiver(broadcastReceiver, filter);
-            registerReceiver(receiver, filter);
+        if (!locationReceiverRegistered) {
+            // ACT_LOC is sent by our own LocationService: the receiver does not need to be exported
+            IntentFilter filter = new IntentFilter("ACT_LOC");
+            ContextCompat.registerReceiver(this, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+            locationReceiverRegistered = true;
         }
-        locIntent = new Intent(MainScreenActivity.this, LocationService.class);
-        startService(locIntent);
+        if (locIntent == null) {
+            locIntent = new Intent(MainScreenActivity.this, LocationService.class);
+            startService(locIntent);
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        telemetry = false;
         if (locIntent != null)
             stopService(locIntent);
-        if (receiver != null) {
+        if (locationReceiverRegistered) {
             unregisterReceiver(receiver);
-            receiver = null;
+            locationReceiverRegistered = false;
+        }
+        if (usbReceiverRegistered) {
+            unregisterReceiver(broadcastReceiver);
+            usbReceiverRegistered = false;
         }
         if (timerDistance != null)
             timerDistance.cancel();
         if (timerNotReceiving != null)
             timerNotReceiving.cancel();
-
+        if (mTTS != null) {
+            mTTS.stop();
+            mTTS.shutdown();
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1:
-                try {
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        startService();
-                    } else {
-                        Toast.makeText(this, "permission need to be granted", Toast.LENGTH_LONG).show();
-                    }
-                } catch (Exception e) {
-
-                }
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startService();
+            } else {
+                Toast.makeText(this, "permission need to be granted", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (receiver == null)
+        // restart the location updates if the permission was granted meanwhile (e.g. in the settings)
+        if (Build.VERSION.SDK_INT < 23
+                || checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
             startService();
     }
 
@@ -725,9 +705,9 @@ public class MainScreenActivity extends AppCompatActivity {
     public class LocationBroadCastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals("ACT_LOC")) {
-                double latitude = intent.getDoubleExtra("latitude", 0f);
-                double longitude = intent.getDoubleExtra("longitude", 0f);
+            if ("ACT_LOC".equals(intent.getAction())) {
+                double latitude = intent.getDoubleExtra("latitude", 0d);
+                double longitude = intent.getDoubleExtra("longitude", 0d);
 
                 if (tabPage2 != null) {
                     tabPage2.setTelLatitudeValue(latitude + "");
@@ -735,19 +715,18 @@ public class MainScreenActivity extends AppCompatActivity {
                 }
                 distance = LocationUtils.distanceBetweenCoordinate(latitude, rocketLatitude, longitude, rocketLongitude);
 
-                //Warn if we have not received GPS trame
-                if ((lastReceivedMessageTime - System.currentTimeMillis()) > 60000) {
+                //Warn if we have not received GPS trame for one minute
+                if ((System.currentTimeMillis() - lastReceivedMessageTime) > 60000) {
                     notConnectedTime = System.currentTimeMillis();
                     if ((notConnectedTime - lastSpeakNotConnectedTime) > 60000) {
-                        if (soundOn)
-                            mTTS.speak(getString(R.string.sat_acq_lost_msg), TextToSpeech.QUEUE_FLUSH, null);
+                        speak(getString(R.string.sat_acq_lost_msg));
                         lastSpeakNotConnectedTime = notConnectedTime;
                     }
                 }
 
                 if (tabPage1 != null) {
                     tabPage1.updateMap(latitude, longitude, rocketLatitude, rocketLongitude);
-                    tabPage1.setDistance(String.format("%.2f", distance) + " " + myBT.getAppConf().getUnitsValue());
+                    tabPage1.setDistance(String.format(Locale.getDefault(), "%.2f", distance) + " " + myBT.getAppConf().getUnitsValue());
                 }
             }
         }
@@ -765,17 +744,9 @@ public class MainScreenActivity extends AppCompatActivity {
 
         myBT.getAppConf().ReadConfig();
         //only enable bluetooth module search if connection type is bluetooth
-        if (myBT.getAppConf().getConnectionType() == 1) {
-            menu.findItem(R.id.action_bluetooth).setEnabled(false);
-        } else {
-            menu.findItem(R.id.action_bluetooth).setEnabled(true);
-        }
-
-        //if we are connected then enable some menu options and if not disable them
-        if (myBT.getConnected()) {
-            // We are connected so no need to choose the bluetooth
-            menu.findItem(R.id.action_bluetooth).setEnabled(false);
-        }
+        //and if we are not connected (no need to choose the bluetooth module then)
+        boolean bluetooth = myBT.getAppConf().getConnectionType() != 1;
+        menu.findItem(R.id.action_bluetooth).setEnabled(bluetooth && !myBT.getConnected());
         return true;
     }
 
@@ -875,10 +846,7 @@ public class MainScreenActivity extends AppCompatActivity {
         protected Void doInBackground(Void... devices) //while the progress dialog is shown, the connection is done in background
         {
             if (!myBT.getConnected()) {
-                if (myBT.connect())
-                    ConnectSuccess = true;
-                else
-                    ConnectSuccess = false;
+                ConnectSuccess = myBT.connect();
             }
             return null;
         }
@@ -895,13 +863,13 @@ public class MainScreenActivity extends AppCompatActivity {
                 myBT.setConnected(true);
                 btnConnect.setCompoundDrawablesWithIntrinsicBounds(R.drawable.wifi32x32,
                         0, 0, 0);
-                telemetry = true;
-                if (soundOn & myBT.getAppConf().getConnectedDisconnected_event()) {
-                    mTTS.speak(getString(R.string.connected), TextToSpeech.QUEUE_FLUSH, null);
+                if (myBT.getAppConf().getConnectedDisconnected_event()) {
+                    speak(getString(R.string.connected));
                 }
                 startTelemetry();
             }
-            alert.dismiss();
+            if (alert != null && alert.isShowing())
+                alert.dismiss();
         }
     }
 }

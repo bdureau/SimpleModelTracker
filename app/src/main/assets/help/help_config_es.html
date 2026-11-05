@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .highlight {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Configuración de Simple Model Tracker</h1>
+<p>El aspecto visual, las unidades y el comportamiento de la aplicación se pueden personalizar a través de dos pantallas de ajustes.</p>
+
+<h2>Primera pantalla: Ajustes generales</h2>
+<ul>
+    <li><strong>Color de la trayectoria:</strong> Elija el color de la línea de seguimiento mostrada en el mapa.</li>
+    <li><strong>Idioma de la ayuda:</strong> Seleccione el idioma de la documentación de ayuda. El inglés es el idioma de referencia y siempre estará actualizado.</li>
+    <li><strong>Unidades de la aplicación:</strong> Alterne entre el sistema métrico (metros, km/h) e imperial (pies, mph).</li>
+    <li><strong>Velocidad en baudios:</strong> Ajuste la velocidad de comunicación serie si utiliza un módulo de telemetría más lento.</li>
+    <li><strong>Tipo de conexión:</strong> Seleccione entre conexión Bluetooth o USB OTG. El Bluetooth resulta más fiable si el cable USB físico queda algo suelto.</li>
+    <li><strong>Tipo de modelo:</strong> Seleccione diferentes iconos para el marcador del mapa según el tipo de modelo o cohete que esté rastreando.</li>
+</ul>
+
+<h2>Segunda pantalla: Telemetría por voz</h2>
+<div class="highlight">
+    <p>Configure la síntesis de voz para los avisos de telemetría en tiempo real. Mientras mantiene la vista fija en el cielo buscando su modelo, los avisos sonoros le permiten seguir los eventos sin mirar la pantalla. Puede elegir qué eventos escuchar y cambiar la voz del sintetizador.</p>
+</div>
+</body>
+</html>

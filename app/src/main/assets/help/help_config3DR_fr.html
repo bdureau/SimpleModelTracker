@@ -1,38 +1,117 @@
-<h1>Configuration du module 3DR</h1>
-<p>De manière à pouvoir faire de la télémétrie  longue distance vous devez remplacer votre module bluetooth par
-    un module télémétrie 3DR.</p>
-<p><img  src="file:///android_asset/help/images/3DR_module-small.png"/></p>
-<p></p>
-<p>A noter que la batterie de votre appareil Android doit être suffisamment puissante pour alimenter le module 3DR.
-    Envisager l'utilisation d'une batterie externe si vous avez un module puissant</p>
-<p></p>
-<p>Pour programmer votre module vous aurez besoins d'un cable TTL</p>
-<p><img  src="file:///android_asset/help/images/ttl_cable-small.jpg"/></p>
-<p>un adaptateur USB  (USBC ou micro USB suivant votre apareil Android )</p>
-<p><img  src="file:///android_asset/help/images/usb_adpter-small.jpg"/></p>
-<p>un adaptateur jst et des cables jst</p>
-<p> </p>
-<p>Vous devez configurer votre module de manière à ce qu'il puisse fonctionner avec votre altimètre.</p>
-<p>A noter que ces modules sont en général préconfigurés à 57600 bauds. Cependant votre altimètre
-    par défaut sera configuré à 38400 bauds vous devez donc vous assurer de vous connecter à la bonne vitesse.</p>
-<p></p>
-<p>A noter que les modules 3DR sont vendu par paire donc il sera nécessaire de configurer à la fois l'émetteur et le récepteur</p>
-<p></p>
-<p><span style="color: #ff0000;">ATTENTION: assurez vous de ne pas débrancher le module lorsque vous faites les opérations qui suivent</span></p>
-<p></p>
-<p><strong>Charger la configuration du module</strong></p>
-<p>Branchez le module dans votre appareil Android en utilisant un câble OTG ou un adaptateur USB qui peut fonctionner
-    avec micro USB ou USB type C.</p>
-<p>Ensuite cliquez sur [charger cfg] , cela effectuera des tentatives de connexion au module à différentes vitesses jusqu'à ce qu'il se connecte.
-    Puis la configuration de module sera chargée de manière à ce que vous puissiez la changer</p>
-<p></p>
-<p><strong>Sauvegarder la configuration du module</strong></p>
-<p>Changez les paramètres que vous voulez changer. Assurez vous que vous avec choisi la vitesse qui fonctionnera
-    avec votre carte et cliquez [Sauver cfg]. Cela sauvegardera la configuration.
-    En cas d'erreur lors de la sauvegarde celle-ci sera annulée</p>
-<p></p>
-<p>A noter que vous devrez répéter la même opération pour chaque module</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            font-size: 1.45rem;
+            border-bottom: 2px solid #3182ce;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        h2 {
+            color: #2b6cb0;
+            font-size: 1.15rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            font-size: 0.98rem;
+        }
+        ul, ol {
+            margin: 0 0 16px 0;
+            padding-left: 22px;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.98rem;
+        }
+        li strong {
+            color: #1a202c;
+        }
+        .img-container {
+            margin: 10px 0 16px 0;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .warning {
+            background-color: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 12px 14px;
+            margin: 16px 0;
+            border-radius: 0 4px 4px 0;
+            color: #9b2c2c;
+            font-weight: 600;
+        }
+        .note {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .note p:last-child, .warning p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Configuration du module de télémétrie 3DR</h1>
+<p>Pour effectuer de la télémétrie longue distance, vous devez remplacer le module Bluetooth par un module radio 3DR.</p>
+<div class="img-container">
+    <img src="file:///android_asset/help/images/3DR_module-small.png" alt="3DR Module"/>
+</div>
+<p>La batterie de votre appareil Android doit fournir une alimentation suffisante au module. Prévoyez une alimentation externe ou un hub USB alimenté si vous utilisez un module haute puissance.</p>
+
+<h2>Matériel requis</h2>
+<ul>
+    <li><strong>Câble adaptateur USB-Série TTL</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/ttl_cable-small.jpg" alt="Câble adaptateur USB-Série TTL"/></div>
+    </li>
+    <li><strong>Adaptateur USB OTG (USB-C ou Micro-USB selon votre appareil Android)</strong>
+        <div class="img-container"><img src="file:///android_asset/help/images/usb_adpter-small.jpg" alt="Adaptateur USB OTG (USB-C ou Micro-USB selon votre appareil Android)"/></div>
+    </li>
+    <li><strong>Adaptateur JST et câbles de liaison JST correspondants</strong></li>
+</ul>
+
+<div class="note">
+    <p>Ces modules sont généralement livrés préconfigurés à 57600 bauds. La carte altimètre fonctionnant par défaut à 38400 bauds, assurez-vous de configurer la vitesse adéquate.</p>
+    <p>Les modules 3DR fonctionnent toujours par paire : vous devez impérativement configurer l'émetteur embarqué et le récepteur au sol avec les mêmes paramètres (Net ID, fréquence, canaux et débit).</p>
+</div>
+
+<div class="warning">
+    <p>ATTENTION : Ne débranchez jamais le module ou le câble pendant la lecture ou l'écriture des paramètres.</p>
+</div>
+
+<h2>Charger la configuration du module</h2>
+<ol>
+    <li>Raccordez le module 3DR à votre appareil Android avec le câble TTL et l'adaptateur USB OTG.</li>
+    <li>Appuyez sur <strong>[Charger cfg]</strong>. L'application teste automatiquement différentes vitesses en bauds jusqu'à établir la liaison série.</li>
+    <li>Une fois connecté, les paramètres actuels du module s'affichent automatiquement dans l'interface.</li>
+</ol>
+
+<h2>Sauvegarder la nouvelle configuration</h2>
+<ol>
+    <li>Modifiez les paramètres nécessaires (vitesse en bauds, Net ID, fréquence, débit radio, puissance d'émission). Vérifiez que la vitesse correspond bien à votre altimètre.</li>
+    <li>Appuyez sur <strong>[Sauver cfg]</strong>. Les commandes AT sont envoyées et écrites en mémoire permanente (EEPROM). En cas d'erreur, la sauvegarde est interrompue pour préserver la mémoire.</li>
+</ol>
+
+<p><em>Remarque : Cette opération de configuration doit être répétée individuellement sur chacun des deux modules de la paire.</em></p>
+</body>
+</html>
